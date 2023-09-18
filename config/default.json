@@ -1,0 +1,17 @@
+{
+  "board": {
+    "size": 400,
+    "inverted": false,
+    "rankandfile": {
+      "type" : 2,
+      "color" : "#FAF3DCFF",
+      "size" : 18
+    },
+    "white": "#FAF3DCFF",
+    "black": "#E1DBB5FF",
+    "border" : {
+      "width" : 20,
+      "color" : "#70663EFF"
+    }
+  }
+}
