@@ -25,10 +25,10 @@ type Board struct {
 }
 
 type BoardImage struct {
-	Path          string    // Path to an image of a chessboard, if specified, the rest of the Board settings is ignored
-	Board         Rectangle // The rectangle in the image that represents the board
-	PieceDistance Size      // The distance between the top left corner of each square and
-	// the top left corner of the piece image
+	Path  string    // Path to an image of a chessboard, if specified, the rest of the Board settings is ignored
+	Board Rectangle // The rectangle in the image that represents the board
+	Top   int       // The distance between the top left corner of each square and
+	Left  int       // the top left corner of the piece image
 }
 
 type RankAndFile struct {
@@ -46,4 +46,10 @@ type Pieces struct {
 	Paths          [12]string    // List of paths to chess piece images
 	ImageMapPath   string        // Path to an image containing the pieces
 	ImageMapCoords [12]Rectangle // List of rectangles in the map for each piece
+}
+
+type Border struct {
+	Width int
+	Color string
+	color color.Color
 }

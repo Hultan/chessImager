@@ -22,3 +22,7 @@ func toRGBA(col color.Color) (float64, float64, float64, float64) {
 	r, g, b, a := col.RGBA()
 	return float64(r) / 65535, float64(g) / 65535, float64(b) / 65535, float64(a) / 65535
 }
+
+func invert(x, y int) (int, int) {
+	return 7 - x, 7 - y
+}

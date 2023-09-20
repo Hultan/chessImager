@@ -1,26 +1,14 @@
 package chessImager
 
-import "image/color"
-
-type Position struct {
-	Top  int
-	Left int
-}
-
-type Size struct {
-	Width  int
-	Height int
-}
-
 type Rectangle struct {
-	Position
-	Size
+	X      float64
+	Y      float64
+	Width  float64
+	Height float64
 }
 
-type Border struct {
-	Width int
-	Color string
-	color color.Color
+func (r Rectangle) Coords() (float64, float64, float64, float64) {
+	return r.X, r.Y, r.Width, r.Height
 }
 
 type Format int

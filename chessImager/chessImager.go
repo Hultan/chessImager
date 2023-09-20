@@ -68,25 +68,23 @@ func (i *Imager) algToCoords(alg string) (int, int) {
 	}
 	x, y := int(alg[0]-'a'), int(alg[1]-'1')
 	if i.settings.Board.Inverted {
-		return i.invert(x, y)
+		return invert(x, y)
 	}
 	return x, y
 }
 
 // TODO : implement a getRankBox and getFileBox function
 // and then simplify rankAndFileRenderer.
-// TODO : remove Imager.square and border
-// TODO : getSquareBounds should return a Rectangle
-// TODO : Rectangle should have the toCoords() method
-func (i *Imager) getSquareBounds(x, y int) (float64, float64, float64, float64) {
+func (i *Imager) getSquareBounds(x, y int) Rectangle {
 	square := float64(i.settings.Board.Size) / 8
 	border := float64(i.settings.Board.Border.Width)
 
-	return border + float64(x)*square, border + float64(7-y)*square, square, square
-}
-
-func (i *Imager) invert(x, y int) (int, int) {
-	return 7 - x, 7 - y
+	return Rectangle{
+		X:      border + float64(x)*square,
+		Y:      border + float64(7-y)*square,
+		Width:  square,
+		Height: square,
+	}
 }
 
 // getRenderers returns a slice of all the renderers (in order of their importance).

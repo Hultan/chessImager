@@ -1,7 +1,7 @@
 {
   "board": {
     "size": 400,
-    "inverted": false,
+    "inverted": true,
     "rankandfile": {
       "type" : 2,
       "color" : "#FAF3DCFF",

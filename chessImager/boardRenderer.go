@@ -23,7 +23,7 @@ func (r *boardRenderer) draw(c *gg.Context, _ ImageSettings) {
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {
-				c.DrawRectangle(r.getSquareBounds(x, y))
+				c.DrawRectangle(r.getSquareBounds(x, y).Coords())
 				c.Fill()
 			}
 		}
