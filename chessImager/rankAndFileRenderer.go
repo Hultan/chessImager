@@ -12,12 +12,17 @@ type rankAndFileRenderer struct {
 	*Imager
 }
 
+type RankFile struct {
+	box  Rectangle
+	text string
+}
+
 func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
-	var dx, dy float64
+	var dx, dy float64 // InSquare adjustments
+
 	square := float64(r.settings.Board.Size) / 8
 	border := float64(r.settings.Board.Border.Width)
 	size := r.settings.Board.RankAndFile.Size
-	color := r.settings.Board.RankAndFile.color
 
 	switch r.settings.Board.RankAndFile.Type {
 	case RankAndFileNone:
@@ -27,15 +32,63 @@ func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 			return
 		}
 	case RankAndFileInSquares:
-		// TODO : Should use r.getSquare() instead
 		if border < 10 {
 			return
 		}
-		dx, dy = (square-border)/2, -border*1.15
+		dx, dy = (square-border)/2, -border
 	}
 
+	c.SetRGBA(toRGBA(r.settings.Board.RankAndFile.color))
+	r.setFontFace(c, size)
+	r.drawRanksAndFiles(c, dx, dy)
+}
+
+func (r *rankAndFileRenderer) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
+	rf := r.getRFBoxes()
+
+	for _, r := range rf {
+		tw, th := c.MeasureString(r.text)
+		x := r.box.X + (r.box.Width-tw)/2
+		y := r.box.Y + (r.box.Height-th)/2 + th
+		c.DrawString(r.text, x+dx, y+dy)
+	}
+}
+
+func (r *rankAndFileRenderer) getRFBoxes() []RankFile {
+	var rf []RankFile
+
+	for i := 0; i < 8; i++ {
+		// Ranks
+		text := r.getRankText(i)
+		box := r.getRankBox(i)
+		rf = append(rf, RankFile{box: box, text: text})
+
+		// Files
+		text = r.getFileText(i)
+		box = r.getFileBox(i)
+		rf = append(rf, RankFile{box: box, text: text})
+	}
+	return rf
+}
+
+func (r *rankAndFileRenderer) getRankText(n int) string {
+	if r.settings.Board.Inverted {
+		return fmt.Sprintf("%d", 8-n)
+	} else {
+		return fmt.Sprintf("%d", n+1)
+	}
+}
+
+func (r *rankAndFileRenderer) getFileText(n int) string {
+	if r.settings.Board.Inverted {
+		return fmt.Sprintf("%c", 'a'+n)
+	} else {
+		return fmt.Sprintf("%c", 'h'-n)
+	}
+}
+
+func (r *rankAndFileRenderer) setFontFace(c *gg.Context, size int) {
 	// Set font face
-	c.SetRGBA(toRGBA(color))
 	font, err := truetype.Parse(goregular.TTF)
 	if err != nil {
 		panic("")
@@ -44,35 +97,4 @@ func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 		Size: float64(size),
 	})
 	c.SetFontFace(face)
-
-	r.drawRanksAndFiles(c, border, square, dx, dy)
-}
-
-func (r *rankAndFileRenderer) drawRanksAndFiles(c *gg.Context, border, square, dx, dy float64) {
-	var text string
-
-	// Rank
-	for i := 0; i < 8; i++ {
-		if r.settings.Board.Inverted {
-			text = fmt.Sprintf("%d", i+1)
-		} else {
-			text = fmt.Sprintf("%d", 8-i)
-		}
-		tw, th := c.MeasureString(text)
-		x := (border - tw) / 2
-		y := border + square*float64(i+1) - (square-th)/2
-		c.DrawString(text, x+dx, y+dy)
-	}
-	// File
-	for i := 0; i < 8; i++ {
-		if r.settings.Board.Inverted {
-			text = fmt.Sprintf("%c", 'h'-i)
-		} else {
-			text = fmt.Sprintf("%c", 'a'+i)
-		}
-		tw, th := c.MeasureString(text)
-		x := border + square*float64(i) + (square-tw)/2
-		y := border*1.85 + square*8 - (border-th)/2
-		c.DrawString(text, x+dx, y+dy)
-	}
 }

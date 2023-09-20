@@ -73,9 +73,31 @@ func (i *Imager) algToCoords(alg string) (int, int) {
 	return x, y
 }
 
-// TODO : implement a getRankBox and getFileBox function
-// and then simplify rankAndFileRenderer.
-func (i *Imager) getSquare(x, y int) Rectangle {
+func (i *Imager) getRankBox(rank int) Rectangle {
+	square := float64(i.settings.Board.Size) / 8
+	border := float64(i.settings.Board.Border.Width)
+
+	return Rectangle{
+		X:      0,
+		Y:      border + float64(7-rank)*square,
+		Width:  border,
+		Height: square,
+	}
+}
+
+func (i *Imager) getFileBox(file int) Rectangle {
+	square := float64(i.settings.Board.Size) / 8
+	border := float64(i.settings.Board.Border.Width)
+
+	return Rectangle{
+		X:      border + float64(7-file)*square,
+		Y:      border + 8*square,
+		Width:  square,
+		Height: border - 4, // Adjustment for letter g
+	}
+}
+
+func (i *Imager) getSquareBox(x, y int) Rectangle {
 	square := float64(i.settings.Board.Size) / 8
 	border := float64(i.settings.Board.Border.Width)
 

@@ -1,16 +1,16 @@
 {
   "board": {
     "size": 400,
-    "inverted": true,
+    "inverted": false,
     "rankandfile": {
-      "type" : 2,
-      "color" : "#FAF3DCFF",
-      "size" : 18
+      "type" : 1,
+      "color": "#FAF3DCFF",
+      "size" : 14
     },
     "white": "#FAF3DCFF",
     "black": "#E1DBB5FF",
     "border" : {
-      "width" : 20,
+      "width" : 18,
       "color" : "#70663EFF"
     }
   }

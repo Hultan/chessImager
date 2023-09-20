@@ -23,8 +23,8 @@ type RankAndFileType int
 
 const (
 	RankAndFileNone RankAndFileType = iota
-	RankAndFileInSquares
 	RankAndFileInBorder
+	RankAndFileInSquares
 )
 
 type PositionType int

@@ -10,7 +10,7 @@ type highlightedSquareRenderer struct {
 
 func (r *highlightedSquareRenderer) draw(c *gg.Context, settings ImageSettings) {
 	for _, s := range settings.Highlight {
-		x, y, w, h := r.getSquare(r.algToCoords(s.Square)).Coords()
+		x, y, w, h := r.getSquareBox(r.algToCoords(s.Square)).Coords()
 		c.SetRGBA(toRGBA(s.color))
 		if s.Type == HighlightedSquareFull {
 			c.DrawRectangle(x, y, w, h)
