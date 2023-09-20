@@ -27,7 +27,7 @@ func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 			return
 		}
 	case RankAndFileInSquares:
-		// TODO : Should use r.getSquareBounds() instead
+		// TODO : Should use r.getSquare() instead
 		if border < 10 {
 			return
 		}

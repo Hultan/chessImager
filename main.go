@@ -5,7 +5,6 @@ import (
 )
 
 func main() {
-	// TODO : Extract GetSquare() function that returns boundaries for a single square
 	imager, err := chessImager.NewImager()
 	if err != nil {
 		panic(err)

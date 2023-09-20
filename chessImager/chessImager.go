@@ -75,7 +75,7 @@ func (i *Imager) algToCoords(alg string) (int, int) {
 
 // TODO : implement a getRankBox and getFileBox function
 // and then simplify rankAndFileRenderer.
-func (i *Imager) getSquareBounds(x, y int) Rectangle {
+func (i *Imager) getSquare(x, y int) Rectangle {
 	square := float64(i.settings.Board.Size) / 8
 	border := float64(i.settings.Board.Border.Width)
 
@@ -124,7 +124,7 @@ func convertColors(settings *Settings) {
 	settings.Board.RankAndFile.color = hexToRGBA(settings.Board.RankAndFile.Color)
 }
 
-// convertColors converts all color strings "#FF00BBFF" to color.RGBA
+// convertColorsForMove converts all color strings "#FF00BBFF" to color.RGBA
 func convertColorsForMove(settings *ImageSettings) {
 	for i := range settings.Highlight {
 		settings.Highlight[i].color = hexToRGBA(settings.Highlight[i].Color)
