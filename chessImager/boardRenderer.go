@@ -9,11 +9,12 @@ type boardRenderer struct {
 }
 
 func (r *boardRenderer) draw(c *gg.Context, _ ImageSettings) {
+	border := float64(r.settings.Board.Border.Width)
 	size := r.settings.Board.Size
 
 	// Set background to black color
 	c.SetRGBA(toRGBA(r.settings.Board.black))
-	c.DrawRectangle(r.border, r.border, float64(size), float64(size))
+	c.DrawRectangle(border, border, float64(size), float64(size))
 	c.Fill()
 
 	c.SetRGBA(toRGBA(r.settings.Board.white))

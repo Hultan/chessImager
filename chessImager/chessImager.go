@@ -14,8 +14,6 @@ type renderer interface {
 
 type Imager struct {
 	settings *Settings
-	square   float64
-	border   float64
 }
 
 func NewImager() (*Imager, error) {
@@ -33,9 +31,6 @@ func (i *Imager) GetImage(settings ImageSettings) *image.RGBA {
 
 	im := image.NewRGBA(i.getSize())
 	c := gg.NewContextForImage(im)
-
-	i.square = float64(i.settings.Board.Size) / 8
-	i.border = float64(i.settings.Board.Border.Width)
 
 	for _, rend := range r {
 		rend.draw(c, settings)
@@ -80,8 +75,14 @@ func (i *Imager) algToCoords(alg string) (int, int) {
 
 // TODO : implement a getRankBox and getFileBox function
 // and then simplify rankAndFileRenderer.
+// TODO : remove Imager.square and border
+// TODO : getSquareBounds should return a Rectangle
+// TODO : Rectangle should have the toCoords() method
 func (i *Imager) getSquareBounds(x, y int) (float64, float64, float64, float64) {
-	return i.border + float64(x)*i.square, i.border + float64(7-y)*i.square, i.square, i.square
+	square := float64(i.settings.Board.Size) / 8
+	border := float64(i.settings.Board.Border.Width)
+
+	return border + float64(x)*square, border + float64(7-y)*square, square, square
 }
 
 func (i *Imager) invert(x, y int) (int, int) {

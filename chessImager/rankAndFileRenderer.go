@@ -14,6 +14,8 @@ type rankAndFileRenderer struct {
 
 func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 	var dx, dy float64
+	square := float64(r.settings.Board.Size) / 8
+	border := float64(r.settings.Board.Border.Width)
 	size := r.settings.Board.RankAndFile.Size
 	color := r.settings.Board.RankAndFile.color
 
@@ -21,15 +23,15 @@ func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 	case RankAndFileNone:
 		return
 	case RankAndFileInBorder:
-		if r.border < 10 {
+		if border < 10 {
 			return
 		}
 	case RankAndFileInSquares:
 		// TODO : Should use r.getSquareBounds() instead
-		if r.border < 10 {
+		if border < 10 {
 			return
 		}
-		dx, dy = (r.square-r.border)/2, -r.border*1.15
+		dx, dy = (square-border)/2, -border*1.15
 	}
 
 	// Set font face
@@ -43,7 +45,7 @@ func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 	})
 	c.SetFontFace(face)
 
-	r.drawRanksAndFiles(c, r.border, r.square, dx, dy)
+	r.drawRanksAndFiles(c, border, square, dx, dy)
 }
 
 func (r *rankAndFileRenderer) drawRanksAndFiles(c *gg.Context, border, square, dx, dy float64) {
