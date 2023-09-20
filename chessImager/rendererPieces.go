@@ -12,11 +12,11 @@ var defaultPieces []byte
 
 var pieces map[chessPiece]image.Image
 
-type pieceRenderer struct {
+type rendererPiece struct {
 	*Imager
 }
 
-func (r *pieceRenderer) draw(c *gg.Context, _ ImageSettings) {
+func (r *rendererPiece) draw(c *gg.Context, _ ImageSettings) {
 	c.DrawImage(r.getImageAndPosition(BlackRook, 0, 7))
 	c.DrawImage(r.getImageAndPosition(BlackKnight, 1, 7))
 	c.DrawImage(r.getImageAndPosition(BlackBishop, 2, 7))
@@ -39,7 +39,7 @@ func (r *pieceRenderer) draw(c *gg.Context, _ ImageSettings) {
 	c.DrawImage(r.getImageAndPosition(WhiteRook, 7, 0))
 }
 
-func (r *pieceRenderer) getImageAndPosition(piece chessPiece, x, y int) (image.Image, int, int) {
+func (r *rendererPiece) getImageAndPosition(piece chessPiece, x, y int) (image.Image, int, int) {
 	square := r.settings.Board.Size / 8
 	border := r.settings.Board.Border.Width
 

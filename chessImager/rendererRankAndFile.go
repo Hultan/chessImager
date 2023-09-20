@@ -8,7 +8,7 @@ import (
 	"golang.org/x/image/font/gofont/goregular"
 )
 
-type rankAndFileRenderer struct {
+type rendererRankAndFile struct {
 	*Imager
 }
 
@@ -17,7 +17,7 @@ type RankFile struct {
 	text string
 }
 
-func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
+func (r *rendererRankAndFile) draw(c *gg.Context, _ ImageSettings) {
 	var dx, dy float64 // InSquare adjustments
 
 	square := float64(r.settings.Board.Size) / 8
@@ -43,7 +43,7 @@ func (r *rankAndFileRenderer) draw(c *gg.Context, _ ImageSettings) {
 	r.drawRanksAndFiles(c, dx, dy)
 }
 
-func (r *rankAndFileRenderer) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
+func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 	rf := r.getRFBoxes()
 
 	for _, r := range rf {
@@ -54,7 +54,7 @@ func (r *rankAndFileRenderer) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 	}
 }
 
-func (r *rankAndFileRenderer) getRFBoxes() []RankFile {
+func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 	var rf []RankFile
 
 	for i := 0; i < 8; i++ {
@@ -71,7 +71,7 @@ func (r *rankAndFileRenderer) getRFBoxes() []RankFile {
 	return rf
 }
 
-func (r *rankAndFileRenderer) getRankText(n int) string {
+func (r *rendererRankAndFile) getRankText(n int) string {
 	if r.settings.Board.Inverted {
 		return fmt.Sprintf("%d", 8-n)
 	} else {
@@ -79,7 +79,7 @@ func (r *rankAndFileRenderer) getRankText(n int) string {
 	}
 }
 
-func (r *rankAndFileRenderer) getFileText(n int) string {
+func (r *rendererRankAndFile) getFileText(n int) string {
 	if r.settings.Board.Inverted {
 		return fmt.Sprintf("%c", 'a'+n)
 	} else {
@@ -87,7 +87,7 @@ func (r *rankAndFileRenderer) getFileText(n int) string {
 	}
 }
 
-func (r *rankAndFileRenderer) setFontFace(c *gg.Context, size int) {
+func (r *rendererRankAndFile) setFontFace(c *gg.Context, size int) {
 	// Set font face
 	font, err := truetype.Parse(goregular.TTF)
 	if err != nil {

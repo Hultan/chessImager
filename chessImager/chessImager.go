@@ -201,11 +201,11 @@ func (i *Imager) getSquareBox(x, y int) Rectangle {
 // getRenderers returns a slice of all the renderers (in order of their importance).
 func getRenderers(i *Imager) []renderer {
 	return []renderer{
-		&borderRenderer{i},
-		&boardRenderer{i},
-		&rankAndFileRenderer{i},
-		&highlightedSquareRenderer{i},
-		&pieceRenderer{i},
+		&rendererBorder{i},
+		&rendererBoard{i},
+		&rendererRankAndFile{i},
+		&rendererHighlightedSquare{i},
+		&rendererPiece{i},
 	}
 }
 

@@ -4,11 +4,11 @@ import (
 	"github.com/fogleman/gg"
 )
 
-type boardRenderer struct {
+type rendererBoard struct {
 	*Imager
 }
 
-func (r *boardRenderer) draw(c *gg.Context, _ ImageSettings) {
+func (r *rendererBoard) draw(c *gg.Context, _ ImageSettings) {
 	border := float64(r.settings.Board.Border.Width)
 	size := r.settings.Board.Size
 

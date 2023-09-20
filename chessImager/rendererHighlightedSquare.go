@@ -4,11 +4,11 @@ import (
 	"github.com/fogleman/gg"
 )
 
-type highlightedSquareRenderer struct {
+type rendererHighlightedSquare struct {
 	*Imager
 }
 
-func (r *highlightedSquareRenderer) draw(c *gg.Context, settings ImageSettings) {
+func (r *rendererHighlightedSquare) draw(c *gg.Context, settings ImageSettings) {
 	for _, s := range settings.Highlight {
 		x, y, w, h := r.getSquareBox(r.algToCoords(s.Square)).Coords()
 		c.SetRGBA(toRGBA(s.color))
