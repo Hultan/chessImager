@@ -43,6 +43,7 @@ type RankAndFile struct {
 // * If all 12 paths are specified, and ImageMapPath is empty, they will be used
 // * Otherwise the default images will be used
 type Pieces struct {
+	Type           PiecesType    // 0=Default, 1=Images, 2=ImageMap
 	Paths          [12]string    // List of paths to chess piece images
 	ImageMapPath   string        // Path to an image containing the pieces
 	ImageMapCoords [12]Rectangle // List of rectangles in the map for each piece

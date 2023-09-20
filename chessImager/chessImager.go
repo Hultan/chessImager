@@ -1,11 +1,14 @@
 package chessImager
 
 import (
+	"bytes"
 	"encoding/json"
 	"image"
+	"image/png"
 	"os"
 
 	"github.com/fogleman/gg"
+	"github.com/nfnt/resize"
 )
 
 type renderer interface {
@@ -21,7 +24,93 @@ func NewImager() (*Imager, error) {
 	if err != nil {
 		panic(err)
 	}
-	return &Imager{settings: s}, nil
+
+	i := &Imager{settings: s}
+	i.loadPieces()
+	return i, nil
+}
+
+type SubImager interface {
+	SubImage(r image.Rectangle) image.Image
+}
+
+func (i *Imager) loadPieces() {
+	pieces = make(map[chessPiece]image.Image, 16)
+	img, _, err := image.Decode(bytes.NewReader(defaultPieces))
+	if err != nil {
+		panic(err)
+	}
+	sub, ok := img.(SubImager)
+	if !ok {
+		panic("Failed to create SubImager")
+	}
+	pieces[WhiteKing] = i.resize(sub.SubImage(image.Rect(0, 0, 333, 333)))
+	pieces[WhiteQueen] = i.resize(sub.SubImage(image.Rect(333, 0, 666, 333)))
+	pieces[WhiteBishop] = i.resize(sub.SubImage(image.Rect(666, 0, 999, 333)))
+	pieces[WhiteKnight] = i.resize(sub.SubImage(image.Rect(999, 0, 1332, 333)))
+	pieces[WhiteRook] = i.resize(sub.SubImage(image.Rect(1332, 0, 1665, 333)))
+	pieces[WhitePawn] = i.resize(sub.SubImage(image.Rect(1665, 0, 1998, 333)))
+	pieces[BlackKing] = i.resize(sub.SubImage(image.Rect(0, 333, 333, 666)))
+	pieces[BlackQueen] = i.resize(sub.SubImage(image.Rect(333, 333, 666, 666)))
+	pieces[BlackBishop] = i.resize(sub.SubImage(image.Rect(666, 333, 999, 666)))
+	pieces[BlackKnight] = i.resize(sub.SubImage(image.Rect(999, 333, 1332, 666)))
+	pieces[BlackRook] = i.resize(sub.SubImage(image.Rect(1332, 333, 1665, 666)))
+	pieces[BlackPawn] = i.resize(sub.SubImage(image.Rect(1665, 333, 1998, 666)))
+
+	//saveImage(WhitePawn)
+	//saveImage(WhiteBishop)
+	//saveImage(WhiteKnight)
+	//saveImage(WhiteRook)
+	//saveImage(WhiteQueen)
+	//saveImage(WhiteKing)
+	//saveImage(BlackPawn)
+	//saveImage(BlackBishop)
+	//saveImage(BlackKnight)
+	//saveImage(BlackRook)
+	//saveImage(BlackQueen)
+	//saveImage(BlackKing)
+}
+
+func (i *Imager) resize(img image.Image) image.Image {
+	square := uint(i.settings.Board.Size) / 8
+	return resize.Resize(square, square, img, resize.Lanczos3)
+}
+func saveImage(piece chessPiece) {
+	path := getPath(piece)
+	f, _ := os.Create(path)
+	png.Encode(f, pieces[piece])
+	f.Close()
+}
+
+func getPath(piece chessPiece) string {
+	switch piece {
+	case WhiteKing:
+		return "/home/per/temp/whiteKing.png"
+	case WhiteQueen:
+		return "/home/per/temp/whiteQueen.png"
+	case WhiteBishop:
+		return "/home/per/temp/whiteBishop.png"
+	case WhiteKnight:
+		return "/home/per/temp/whiteKnight.png"
+	case WhiteRook:
+		return "/home/per/temp/whiteRook.png"
+	case WhitePawn:
+		return "/home/per/temp/whitePawn.png"
+	case BlackKing:
+		return "/home/per/temp/blackKing.png"
+	case BlackQueen:
+		return "/home/per/temp/blackQueen.png"
+	case BlackBishop:
+		return "/home/per/temp/blackBishop.png"
+	case BlackKnight:
+		return "/home/per/temp/blackKnight.png"
+	case BlackRook:
+		return "/home/per/temp/blackRook.png"
+	case BlackPawn:
+		return "/home/per/temp/blackPawn.png"
+	default:
+		return ""
+	}
 }
 
 func (i *Imager) GetImage(settings ImageSettings) *image.RGBA {
@@ -116,6 +205,7 @@ func getRenderers(i *Imager) []renderer {
 		&boardRenderer{i},
 		&rankAndFileRenderer{i},
 		&highlightedSquareRenderer{i},
+		&pieceRenderer{i},
 	}
 }
 

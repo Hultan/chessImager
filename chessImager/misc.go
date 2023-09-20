@@ -1,5 +1,30 @@
 package chessImager
 
+type PiecesType int
+
+const (
+	DefaultPieces PiecesType = iota
+	Images
+	ImageMap
+)
+
+type chessPiece int
+
+const (
+	WhitePawn chessPiece = iota
+	WhiteBishop
+	WhiteKnight
+	WhiteRook
+	WhiteQueen
+	WhiteKing
+	BlackPawn
+	BlackBishop
+	BlackKnight
+	BlackRook
+	BlackQueen
+	BlackKing
+)
+
 type Rectangle struct {
 	X      float64
 	Y      float64

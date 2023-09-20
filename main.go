@@ -18,7 +18,7 @@ func main() {
 				Type:   1,
 			},
 			{
-				Square: "g6",
+				Square: "b1",
 				Color:  "#40f0ff80",
 				Width:  0,
 				Type:   0,
