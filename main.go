@@ -26,16 +26,16 @@ func main() {
 	}
 
 	// Advanced call
-	s, err := chessImager.GetSettings()
+	settings, err := chessImager.GetSettings()
 	if err != nil {
 		panic(err)
 	}
-	s.Highlight = append(s.Highlight, chessImager.HighlightedSquare{
+	settings.Highlight = append(settings.Highlight, chessImager.HighlightedSquare{
 		Square: "F3",
 		Color:  "#8844ffff",
 		Type:   0,
 	})
-	img2 := imager.GetImageEx("6Qb/K7/P1P5/5R2/2P1N3/P1pp3n/1P5P/1B2k3 w - - 0 1", s)
+	img2 := imager.GetImageEx("6Qb/K7/P1P5/5R2/2P1N3/P1pp3n/1P5P/1B2k3 w - - 0 1", settings)
 	f2, err := os.Create("/home/per/temp/img2.png")
 	if err != nil {
 		panic(err)

@@ -12,7 +12,7 @@
       "black": "#E1DBB5FF"
     }
   },
-  "rankandfile": {
+  "rank_and_file": {
     "type": 1,
     "color": "#FAF3DCFF",
     "size": 14
@@ -34,7 +34,7 @@
         "/home/per/code/chessImager/bq.png",
         "/home/per/code/chessImager/bk.png"
       ],
-      "imagemap": {
+      "image_map": {
         "path": "/home/per/code/chessImager/piecesMap.png",
         "coords": [
           {"x": 0,"y": 0,"width": 100,"height": 100},
