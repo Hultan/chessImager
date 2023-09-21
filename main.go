@@ -7,6 +7,10 @@ import (
 	"chessImager/chessImager"
 )
 
+const (
+	fen = "3Rr3/8/b1kp1p1p/1q5p/1P2P3/P4K2/6Qb/6N1 w - - 0 1"
+)
+
 func main() {
 	imager, err := chessImager.NewImager()
 	if err != nil {
@@ -23,7 +27,7 @@ func main() {
 		Color:  "#8844ff80",
 		Type:   0,
 	})
-	img2 := imager.GetImageEx("6Qb/K7/P1P5/5R2/2P1N3/P1pp3n/1P5P/1B2k3 w - - 0 1", settings)
+	img2 := imager.GetImageEx(fen, settings)
 	f2, err := os.Create("/home/per/temp/img2.png")
 	if err != nil {
 		panic(err)
@@ -35,7 +39,7 @@ func main() {
 	}
 
 	// Simple call
-	img := imager.GetImage("6Qb/K7/P1P5/5R2/2P1N3/P1pp3n/1P5P/1B2k3 w - - 0 1")
+	img := imager.GetImage(fen)
 	f, err := os.Create("/home/per/temp/img.png")
 	if err != nil {
 		panic(err)

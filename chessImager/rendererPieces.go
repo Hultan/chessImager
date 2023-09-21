@@ -46,6 +46,7 @@ func (r *rendererPiece) getImageAndPosition(piece chessPiece, x, y int) (image.I
 	return pieces[piece], border + x*square, border + y*square
 }
 
+// TODO : Replace with loadImageMapPieces
 func (r *rendererPiece) loadEmbeddedPieces() {
 	pieces = make(map[chessPiece]image.Image, 12)
 	img, _, err := image.Decode(bytes.NewReader(defaultPieces))
