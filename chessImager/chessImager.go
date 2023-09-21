@@ -1,14 +1,13 @@
 package chessImager
 
 import (
-	"bytes"
 	"encoding/json"
+	"fmt"
 	"image"
 	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
-	"github.com/nfnt/resize"
 )
 
 type SubImager interface {
@@ -29,7 +28,6 @@ func NewImager() (*Imager, error) {
 		panic(err)
 	}
 	i := &Imager{settings}
-	i.loadEmbeddedPieces()
 	return i, nil
 }
 
@@ -38,7 +36,10 @@ func (i *Imager) GetImage(fen string) image.Image {
 }
 
 func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
-	// TODO: Validate and normalize FEN
+	if !validateFen(fen) {
+		panic(fmt.Errorf("invalid fen : %v", fen))
+	}
+
 	var settings *Settings
 	var err error
 
@@ -56,44 +57,12 @@ func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
 
 	c := gg.NewContextForImage(image.NewRGBA(i.getBoardSize()))
 
-	r := getRenderers(i)
+	r := getRenderers(i, fen)
 	for _, rend := range r {
 		rend.draw(c)
 	}
 
 	return c.Image()
-}
-
-func (i *Imager) loadEmbeddedPieces() {
-	pieces = make(map[chessPiece]image.Image, 12)
-	img, _, err := image.Decode(bytes.NewReader(defaultPieces))
-	if err != nil {
-		panic(err)
-	}
-	sub, ok := img.(SubImager)
-	if !ok {
-		panic("Failed to create SubImager")
-	}
-	pieces[WhiteKing] = i.resize(sub.SubImage(image.Rect(0, 0, 333, 333)))
-	pieces[WhiteQueen] = i.resize(sub.SubImage(image.Rect(333, 0, 666, 333)))
-	pieces[WhiteBishop] = i.resize(sub.SubImage(image.Rect(666, 0, 999, 333)))
-	pieces[WhiteKnight] = i.resize(sub.SubImage(image.Rect(999, 0, 1332, 333)))
-	pieces[WhiteRook] = i.resize(sub.SubImage(image.Rect(1332, 0, 1665, 333)))
-	pieces[WhitePawn] = i.resize(sub.SubImage(image.Rect(1665, 0, 1998, 333)))
-	pieces[BlackKing] = i.resize(sub.SubImage(image.Rect(0, 333, 333, 666)))
-	pieces[BlackQueen] = i.resize(sub.SubImage(image.Rect(333, 333, 666, 666)))
-	pieces[BlackBishop] = i.resize(sub.SubImage(image.Rect(666, 333, 999, 666)))
-	pieces[BlackKnight] = i.resize(sub.SubImage(image.Rect(999, 333, 1332, 666)))
-	pieces[BlackRook] = i.resize(sub.SubImage(image.Rect(1332, 333, 1665, 666)))
-	pieces[BlackPawn] = i.resize(sub.SubImage(image.Rect(1665, 333, 1998, 666)))
-}
-
-func (i *Imager) resize(img image.Image) image.Image {
-	var square uint
-	if i.settings.Board.Type == BoardTypeDefault {
-		square = uint(i.settings.Board.Default.Size) / 8
-	}
-	return resize.Resize(square, square, img, resize.Lanczos3)
 }
 
 // getBoardSize returns a rectangle with the size of the board
@@ -164,13 +133,13 @@ func (i *Imager) getSquareBox(x, y int) Rectangle {
 }
 
 // getRenderers returns a slice of all the renderers (in order of their importance).
-func getRenderers(i *Imager) []renderer {
+func getRenderers(i *Imager, fen string) []renderer {
 	return []renderer{
 		&rendererBorder{i},
 		&rendererBoard{i},
 		&rendererRankAndFile{i},
 		&rendererHighlightedSquare{i},
-		&rendererPiece{i},
+		&rendererPiece{i, fen},
 	}
 }
 

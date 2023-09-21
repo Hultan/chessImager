@@ -30,6 +30,7 @@ const (
 	BlackRook
 	BlackQueen
 	BlackKing
+	NoPiece
 )
 
 type RankAndFileType int
