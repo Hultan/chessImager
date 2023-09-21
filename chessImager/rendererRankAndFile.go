@@ -17,7 +17,7 @@ type RankFile struct {
 	text string
 }
 
-func (r *rendererRankAndFile) draw(c *gg.Context, _ Settings) {
+func (r *rendererRankAndFile) draw(c *gg.Context) {
 	var dx, dy float64 // InSquare adjustments
 
 	square := float64(r.settings.Board.Default.Size) / 8

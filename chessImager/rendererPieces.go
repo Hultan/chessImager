@@ -16,7 +16,7 @@ type rendererPiece struct {
 	*Imager
 }
 
-func (r *rendererPiece) draw(c *gg.Context, _ Settings) {
+func (r *rendererPiece) draw(c *gg.Context) {
 	c.DrawImage(r.getImageAndPosition(BlackRook, 0, 7))
 	c.DrawImage(r.getImageAndPosition(BlackKnight, 1, 7))
 	c.DrawImage(r.getImageAndPosition(BlackBishop, 2, 7))

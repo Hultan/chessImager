@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"image"
-	"image/png"
 	"os"
 	"strings"
 
@@ -17,7 +16,7 @@ type SubImager interface {
 }
 
 type renderer interface {
-	draw(*gg.Context, Settings)
+	draw(*gg.Context)
 }
 
 type Imager struct {
@@ -25,18 +24,48 @@ type Imager struct {
 }
 
 func NewImager() (*Imager, error) {
-	s, err := GetSettings()
+	settings, err := GetSettings()
 	if err != nil {
 		panic(err)
 	}
-
-	i := &Imager{settings: s}
-	i.loadPieces()
+	i := &Imager{settings}
+	i.loadEmbeddedPieces()
 	return i, nil
 }
 
-func (i *Imager) loadPieces() {
-	pieces = make(map[chessPiece]image.Image, 16)
+func (i *Imager) GetImage(fen string) image.Image {
+	return i.GetImageEx(fen, nil)
+}
+
+func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
+	// TODO: Validate and normalize FEN
+	var settings *Settings
+	var err error
+
+	if s == nil {
+		settings, err = GetSettings()
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		settings = s
+	}
+
+	convertColors(settings)
+	i.settings = settings
+
+	c := gg.NewContextForImage(image.NewRGBA(i.getBoardSize()))
+
+	r := getRenderers(i)
+	for _, rend := range r {
+		rend.draw(c)
+	}
+
+	return c.Image()
+}
+
+func (i *Imager) loadEmbeddedPieces() {
+	pieces = make(map[chessPiece]image.Image, 12)
 	img, _, err := image.Decode(bytes.NewReader(defaultPieces))
 	if err != nil {
 		panic(err)
@@ -57,19 +86,6 @@ func (i *Imager) loadPieces() {
 	pieces[BlackKnight] = i.resize(sub.SubImage(image.Rect(999, 333, 1332, 666)))
 	pieces[BlackRook] = i.resize(sub.SubImage(image.Rect(1332, 333, 1665, 666)))
 	pieces[BlackPawn] = i.resize(sub.SubImage(image.Rect(1665, 333, 1998, 666)))
-
-	//saveImage(WhitePawn)
-	//saveImage(WhiteBishop)
-	//saveImage(WhiteKnight)
-	//saveImage(WhiteRook)
-	//saveImage(WhiteQueen)
-	//saveImage(WhiteKing)
-	//saveImage(BlackPawn)
-	//saveImage(BlackBishop)
-	//saveImage(BlackKnight)
-	//saveImage(BlackRook)
-	//saveImage(BlackQueen)
-	//saveImage(BlackKing)
 }
 
 func (i *Imager) resize(img image.Image) image.Image {
@@ -79,69 +95,10 @@ func (i *Imager) resize(img image.Image) image.Image {
 	}
 	return resize.Resize(square, square, img, resize.Lanczos3)
 }
-func saveImage(piece chessPiece) {
-	path := getPath(piece)
-	f, _ := os.Create(path)
-	png.Encode(f, pieces[piece])
-	f.Close()
-}
 
-func getPath(piece chessPiece) string {
-	switch piece {
-	case WhiteKing:
-		return "/home/per/temp/whiteKing.png"
-	case WhiteQueen:
-		return "/home/per/temp/whiteQueen.png"
-	case WhiteBishop:
-		return "/home/per/temp/whiteBishop.png"
-	case WhiteKnight:
-		return "/home/per/temp/whiteKnight.png"
-	case WhiteRook:
-		return "/home/per/temp/whiteRook.png"
-	case WhitePawn:
-		return "/home/per/temp/whitePawn.png"
-	case BlackKing:
-		return "/home/per/temp/blackKing.png"
-	case BlackQueen:
-		return "/home/per/temp/blackQueen.png"
-	case BlackBishop:
-		return "/home/per/temp/blackBishop.png"
-	case BlackKnight:
-		return "/home/per/temp/blackKnight.png"
-	case BlackRook:
-		return "/home/per/temp/blackRook.png"
-	case BlackPawn:
-		return "/home/per/temp/blackPawn.png"
-	default:
-		return ""
-	}
-}
-
-func (i *Imager) GetImage(fen string) image.Image {
-	return i.GetImageEx(fen, nil)
-}
-
-func (i *Imager) GetImageEx(fen string, settings *Settings) image.Image {
-	s := i.settings
-	if settings != nil {
-		s = settings
-	}
-
-	convertColors(s)
-
-	c := gg.NewContextForImage(image.NewRGBA(i.getSize()))
-
-	r := getRenderers(i)
-	for _, rend := range r {
-		rend.draw(c, *s)
-	}
-
-	return c.Image()
-}
-
-// getSize returns a rectangle with the size of the board
+// getBoardSize returns a rectangle with the size of the board
 // plus the border surrounding it.
-func (i *Imager) getSize() image.Rectangle {
+func (i *Imager) getBoardSize() image.Rectangle {
 	size := i.settings.Board.Default.Size + i.settings.Border.Width*2
 
 	return image.Rectangle{
@@ -234,15 +191,4 @@ func GetSettings() (*Settings, error) {
 	convertColors(settings)
 
 	return settings, nil
-}
-
-// convertColors converts all color strings "#FF00BBFF" to color.RGBA
-func convertColors(settings *Settings) {
-	settings.Board.Default.white = hexToRGBA(settings.Board.Default.White)
-	settings.Board.Default.black = hexToRGBA(settings.Board.Default.Black)
-	settings.Border.color = hexToRGBA(settings.Border.Color)
-	settings.RankAndFile.color = hexToRGBA(settings.RankAndFile.Color)
-	for i := range settings.Highlight {
-		settings.Highlight[i].color = hexToRGBA(settings.Highlight[i].Color)
-	}
 }

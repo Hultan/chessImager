@@ -8,7 +8,7 @@ type rendererBoard struct {
 	*Imager
 }
 
-func (r *rendererBoard) draw(c *gg.Context, _ Settings) {
+func (r *rendererBoard) draw(c *gg.Context) {
 	border := float64(r.settings.Border.Width)
 	size := r.settings.Board.Default.Size
 

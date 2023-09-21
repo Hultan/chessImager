@@ -39,7 +39,7 @@ type Board struct {
 	Image   BoardImage   `json:"image"`
 }
 
-// BoardDefault represents settings for how the board should be rendered
+// BoardDefault represents settings for how the board should be rendered when Board.Type=0 (default).
 // Inverted : If false, white will be on bottom.
 // Size : Size of the board excluding the border. Normally this value should be divisible by 8.
 // White : The color of the light squares
@@ -53,7 +53,8 @@ type BoardDefault struct {
 	black    color.Color
 }
 
-// BoardImage represents settings for the image of a chessboard
+// BoardImage represents settings for rendering the background image of a chessboard (Board.Type=1)
+// If you are using BoardImage, BoardDefault will be ignored.
 // Inverted : If false, white will be on bottom.
 // Path : Path to the background image of a chessboard
 // Board : Rectangle that defines where the board is positioned on the image
@@ -79,7 +80,7 @@ type RankAndFile struct {
 
 // HighlightedSquare defines how highlighted squares should be drawn.
 // Square : The square to be highlighted (ex "f3")
-// Color : The highlight color (RGBA, should usually be somewhat transparent)
+// Color : The highlight color
 // Type: 0 = Full square is highlighted, 1 = Only a border around the square is highlighted
 // Width : Width of the border (if Type = 1)
 type HighlightedSquare struct {
