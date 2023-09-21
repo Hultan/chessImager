@@ -6,13 +6,18 @@ import (
 	"image"
 	"image/png"
 	"os"
+	"strings"
 
 	"github.com/fogleman/gg"
 	"github.com/nfnt/resize"
 )
 
+type SubImager interface {
+	SubImage(r image.Rectangle) image.Image
+}
+
 type renderer interface {
-	draw(*gg.Context, ImageSettings)
+	draw(*gg.Context, Settings)
 }
 
 type Imager struct {
@@ -20,7 +25,7 @@ type Imager struct {
 }
 
 func NewImager() (*Imager, error) {
-	s, err := loadDefaultSettings()
+	s, err := GetSettings()
 	if err != nil {
 		panic(err)
 	}
@@ -28,10 +33,6 @@ func NewImager() (*Imager, error) {
 	i := &Imager{settings: s}
 	i.loadPieces()
 	return i, nil
-}
-
-type SubImager interface {
-	SubImage(r image.Rectangle) image.Image
 }
 
 func (i *Imager) loadPieces() {
@@ -72,7 +73,10 @@ func (i *Imager) loadPieces() {
 }
 
 func (i *Imager) resize(img image.Image) image.Image {
-	square := uint(i.settings.Board.Size) / 8
+	var square uint
+	if i.settings.Board.Type == BoardTypeDefault {
+		square = uint(i.settings.Board.Default.Size) / 8
+	}
 	return resize.Resize(square, square, img, resize.Lanczos3)
 }
 func saveImage(piece chessPiece) {
@@ -113,29 +117,32 @@ func getPath(piece chessPiece) string {
 	}
 }
 
-func (i *Imager) GetImage(settings ImageSettings) *image.RGBA {
-	convertColorsForMove(&settings)
+func (i *Imager) GetImage(fen string) image.Image {
+	return i.GetImageEx(fen, nil)
+}
+
+func (i *Imager) GetImageEx(fen string, settings *Settings) image.Image {
+	s := i.settings
+	if settings != nil {
+		s = settings
+	}
+
+	convertColors(s)
+
+	c := gg.NewContextForImage(image.NewRGBA(i.getSize()))
 
 	r := getRenderers(i)
-
-	im := image.NewRGBA(i.getSize())
-	c := gg.NewContextForImage(im)
-
 	for _, rend := range r {
-		rend.draw(c, settings)
-	}
-	err := c.SavePNG("/home/per/temp/img.png")
-	if err != nil {
-		return nil
+		rend.draw(c, *s)
 	}
 
-	return im
+	return c.Image()
 }
 
 // getSize returns a rectangle with the size of the board
 // plus the border surrounding it.
 func (i *Imager) getSize() image.Rectangle {
-	size := i.settings.Board.Size + i.settings.Board.Border.Width*2
+	size := i.settings.Board.Default.Size + i.settings.Border.Width*2
 
 	return image.Rectangle{
 		Max: image.Point{
@@ -146,6 +153,7 @@ func (i *Imager) getSize() image.Rectangle {
 }
 
 func (i *Imager) algToCoords(alg string) (int, int) {
+	alg = strings.ToLower(alg)
 	if len(alg) != 2 {
 		panic("invalid length of alg")
 	}
@@ -156,15 +164,15 @@ func (i *Imager) algToCoords(alg string) (int, int) {
 		panic("invalid character in alg : " + string(alg[1]))
 	}
 	x, y := int(alg[0]-'a'), int(alg[1]-'1')
-	if i.settings.Board.Inverted {
+	if i.settings.Board.Default.Inverted {
 		return invert(x, y)
 	}
 	return x, y
 }
 
 func (i *Imager) getRankBox(rank int) Rectangle {
-	square := float64(i.settings.Board.Size) / 8
-	border := float64(i.settings.Board.Border.Width)
+	square := float64(i.settings.Board.Default.Size) / 8
+	border := float64(i.settings.Border.Width)
 
 	return Rectangle{
 		X:      0,
@@ -175,8 +183,8 @@ func (i *Imager) getRankBox(rank int) Rectangle {
 }
 
 func (i *Imager) getFileBox(file int) Rectangle {
-	square := float64(i.settings.Board.Size) / 8
-	border := float64(i.settings.Board.Border.Width)
+	square := float64(i.settings.Board.Default.Size) / 8
+	border := float64(i.settings.Border.Width)
 
 	return Rectangle{
 		X:      border + float64(7-file)*square,
@@ -187,8 +195,8 @@ func (i *Imager) getFileBox(file int) Rectangle {
 }
 
 func (i *Imager) getSquareBox(x, y int) Rectangle {
-	square := float64(i.settings.Board.Size) / 8
-	border := float64(i.settings.Board.Border.Width)
+	square := float64(i.settings.Board.Default.Size) / 8
+	border := float64(i.settings.Border.Width)
 
 	return Rectangle{
 		X:      border + float64(x)*square,
@@ -209,8 +217,8 @@ func getRenderers(i *Imager) []renderer {
 	}
 }
 
-// loadDefaultSettings loads the default settings from a json file
-func loadDefaultSettings() (*Settings, error) {
+// GetSettings loads the default settings from a json file
+func GetSettings() (*Settings, error) {
 	f, err := os.Open("config/default.json")
 	if err != nil {
 		return nil, err
@@ -230,14 +238,10 @@ func loadDefaultSettings() (*Settings, error) {
 
 // convertColors converts all color strings "#FF00BBFF" to color.RGBA
 func convertColors(settings *Settings) {
-	settings.Board.white = hexToRGBA(settings.Board.White)
-	settings.Board.black = hexToRGBA(settings.Board.Black)
-	settings.Board.Border.color = hexToRGBA(settings.Board.Border.Color)
-	settings.Board.RankAndFile.color = hexToRGBA(settings.Board.RankAndFile.Color)
-}
-
-// convertColorsForMove converts all color strings "#FF00BBFF" to color.RGBA
-func convertColorsForMove(settings *ImageSettings) {
+	settings.Board.Default.white = hexToRGBA(settings.Board.Default.White)
+	settings.Board.Default.black = hexToRGBA(settings.Board.Default.Black)
+	settings.Border.color = hexToRGBA(settings.Border.Color)
+	settings.RankAndFile.color = hexToRGBA(settings.RankAndFile.Color)
 	for i := range settings.Highlight {
 		settings.Highlight[i].color = hexToRGBA(settings.Highlight[i].Color)
 	}

@@ -1,30 +1,5 @@
 package chessImager
 
-type PiecesType int
-
-const (
-	DefaultPieces PiecesType = iota
-	Images
-	ImageMap
-)
-
-type chessPiece int
-
-const (
-	WhitePawn chessPiece = iota
-	WhiteBishop
-	WhiteKnight
-	WhiteRook
-	WhiteQueen
-	WhiteKing
-	BlackPawn
-	BlackBishop
-	BlackKnight
-	BlackRook
-	BlackQueen
-	BlackKing
-)
-
 type Rectangle struct {
 	X      float64
 	Y      float64
@@ -35,43 +10,3 @@ type Rectangle struct {
 func (r Rectangle) Coords() (float64, float64, float64, float64) {
 	return r.X, r.Y, r.Width, r.Height
 }
-
-type Format int
-
-const (
-	Image Format = iota
-	PNG
-	BMP
-)
-
-type RankAndFileType int
-
-const (
-	RankAndFileNone RankAndFileType = iota
-	RankAndFileInBorder
-	RankAndFileInSquares
-)
-
-type PositionType int
-
-const (
-	TopRight PositionType = iota
-	BottomRight
-	BottomLeft
-	TopLeft
-	Middle
-)
-
-type MoveType int
-
-const (
-	MoveTypeArrow MoveType = iota
-	MoveTypeDots
-)
-
-type HighlightedSquareType int
-
-const (
-	HighlightedSquareFull HighlightedSquareType = iota
-	HighlightedSquareBorder
-)

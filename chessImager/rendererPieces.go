@@ -16,7 +16,7 @@ type rendererPiece struct {
 	*Imager
 }
 
-func (r *rendererPiece) draw(c *gg.Context, _ ImageSettings) {
+func (r *rendererPiece) draw(c *gg.Context, _ Settings) {
 	c.DrawImage(r.getImageAndPosition(BlackRook, 0, 7))
 	c.DrawImage(r.getImageAndPosition(BlackKnight, 1, 7))
 	c.DrawImage(r.getImageAndPosition(BlackBishop, 2, 7))
@@ -40,8 +40,8 @@ func (r *rendererPiece) draw(c *gg.Context, _ ImageSettings) {
 }
 
 func (r *rendererPiece) getImageAndPosition(piece chessPiece, x, y int) (image.Image, int, int) {
-	square := r.settings.Board.Size / 8
-	border := r.settings.Board.Border.Width
+	square := r.settings.Board.Default.Size / 8
+	border := r.settings.Border.Width
 
 	return pieces[piece], border + x*square, border + (7-y)*square
 }

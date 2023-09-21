@@ -17,14 +17,14 @@ type RankFile struct {
 	text string
 }
 
-func (r *rendererRankAndFile) draw(c *gg.Context, _ ImageSettings) {
+func (r *rendererRankAndFile) draw(c *gg.Context, _ Settings) {
 	var dx, dy float64 // InSquare adjustments
 
-	square := float64(r.settings.Board.Size) / 8
-	border := float64(r.settings.Board.Border.Width)
-	size := r.settings.Board.RankAndFile.Size
+	square := float64(r.settings.Board.Default.Size) / 8
+	border := float64(r.settings.Border.Width)
+	size := r.settings.RankAndFile.Size
 
-	switch r.settings.Board.RankAndFile.Type {
+	switch r.settings.RankAndFile.Type {
 	case RankAndFileNone:
 		return
 	case RankAndFileInBorder:
@@ -38,7 +38,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context, _ ImageSettings) {
 		dx, dy = (square-border)/2, -border
 	}
 
-	c.SetRGBA(toRGBA(r.settings.Board.RankAndFile.color))
+	c.SetRGBA(toRGBA(r.settings.RankAndFile.color))
 	r.setFontFace(c, size)
 	r.drawRanksAndFiles(c, dx, dy)
 }
@@ -72,7 +72,7 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 }
 
 func (r *rendererRankAndFile) getRankText(n int) string {
-	if r.settings.Board.Inverted {
+	if r.settings.Board.Default.Inverted {
 		return fmt.Sprintf("%d", 8-n)
 	} else {
 		return fmt.Sprintf("%d", n+1)
@@ -80,7 +80,7 @@ func (r *rendererRankAndFile) getRankText(n int) string {
 }
 
 func (r *rendererRankAndFile) getFileText(n int) string {
-	if r.settings.Board.Inverted {
+	if r.settings.Board.Default.Inverted {
 		return fmt.Sprintf("%c", 'a'+n)
 	} else {
 		return fmt.Sprintf("%c", 'h'-n)

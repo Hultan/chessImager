@@ -8,16 +8,16 @@ type rendererBoard struct {
 	*Imager
 }
 
-func (r *rendererBoard) draw(c *gg.Context, _ ImageSettings) {
-	border := float64(r.settings.Board.Border.Width)
-	size := r.settings.Board.Size
+func (r *rendererBoard) draw(c *gg.Context, _ Settings) {
+	border := float64(r.settings.Border.Width)
+	size := r.settings.Board.Default.Size
 
 	// Set background to black color
-	c.SetRGBA(toRGBA(r.settings.Board.black))
+	c.SetRGBA(toRGBA(r.settings.Board.Default.black))
 	c.DrawRectangle(border, border, float64(size), float64(size))
 	c.Fill()
 
-	c.SetRGBA(toRGBA(r.settings.Board.white))
+	c.SetRGBA(toRGBA(r.settings.Board.Default.white))
 
 	// Draw light squares
 	for y := 0; y < 8; y++ {

@@ -1,17 +1,56 @@
 {
+  "border": {
+    "width": 18,
+    "color": "#70663EFF"
+  },
   "board": {
-    "size": 400,
-    "inverted": false,
-    "rankandfile": {
-      "type" : 1,
-      "color": "#FAF3DCFF",
-      "size" : 14
-    },
-    "white": "#FAF3DCFF",
-    "black": "#E1DBB5FF",
-    "border" : {
-      "width" : 18,
-      "color" : "#70663EFF"
+    "type": 0,
+    "default": {
+      "inverted": false,
+      "size": 400,
+      "white": "#FAF3DCFF",
+      "black": "#E1DBB5FF"
+    }
+  },
+  "rankandfile": {
+    "type": 1,
+    "color": "#FAF3DCFF",
+    "size": 14
+  },
+  "pieces": {
+    "type":0,
+    "images": {
+      "paths": [
+        "/home/per/code/chessImager/wp.png",
+        "/home/per/code/chessImager/wb.png",
+        "/home/per/code/chessImager/wn.png",
+        "/home/per/code/chessImager/wr.png",
+        "/home/per/code/chessImager/wq.png",
+        "/home/per/code/chessImager/wk.png",
+        "/home/per/code/chessImager/bp.png",
+        "/home/per/code/chessImager/bb.png",
+        "/home/per/code/chessImager/bn.png",
+        "/home/per/code/chessImager/br.png",
+        "/home/per/code/chessImager/bq.png",
+        "/home/per/code/chessImager/bk.png"
+      ],
+      "imagemap": {
+        "path": "/home/per/code/chessImager/piecesMap.png",
+        "coords": [
+          {"x": 0,"y": 0,"width": 100,"height": 100},
+          {"x": 0,"y": 100,"width": 100,"height": 100},
+          {"x": 0,"y": 200,"width": 100,"height": 100},
+          {"x": 0,"y": 300,"width": 100,"height": 100},
+          {"x": 0,"y": 400,"width": 100,"height": 100},
+          {"x": 0,"y": 500,"width": 100,"height": 100},
+          {"x": 0,"y": 600,"width": 100,"height": 100},
+          {"x": 0,"y": 700,"width": 100,"height": 100},
+          {"x": 0,"y": 800,"width": 100,"height": 100},
+          {"x": 0,"y": 900,"width": 100,"height": 100},
+          {"x": 0,"y": 1000,"width": 100,"height": 100},
+          {"x": 0,"y": 1100,"width": 100,"height": 100}
+        ]
+      }
     }
   }
 }

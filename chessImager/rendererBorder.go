@@ -6,8 +6,8 @@ type rendererBorder struct {
 	*Imager
 }
 
-func (r *rendererBorder) draw(c *gg.Context, _ ImageSettings) {
+func (r *rendererBorder) draw(c *gg.Context, _ Settings) {
 	// Set background color to border color
-	c.SetRGBA(toRGBA(r.settings.Board.Border.color))
+	c.SetRGBA(toRGBA(r.settings.Border.color))
 	c.Clear()
 }
