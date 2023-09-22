@@ -1,6 +1,6 @@
 package chessImager
 
-// TODO : Add piece resize factor
+// TODO : Renderer order
 
 import "image/color"
 
@@ -94,10 +94,12 @@ type HighlightedSquare struct {
 }
 
 // Pieces represents settings of how to draw pieces
+// Factor : Resize factor for pieces, default = 1 (=100%)
 // Type: 0 = Embedded pieces, 1 = Images, 2 ImageMap
 // Images : Only used if Type=1
 // ImageMap : Only used if Type=2
 type Pieces struct {
+	Factor   float64    `json:"factor"`
 	Type     PiecesType `json:"type"`
 	Images   Images     `json:"images"`
 	ImageMap ImageMap   `json:"image_map"`

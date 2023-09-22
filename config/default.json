@@ -18,6 +18,7 @@
     "size": 14
   },
   "pieces": {
+    "factor" : 1.0,
     "type":0,
     "images": {
       "pieces": [

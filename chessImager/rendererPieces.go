@@ -30,17 +30,10 @@ func (r *rendererPiece) draw(c *gg.Context) {
 	for rank, row := range fens {
 		for file, piece := range normalizeFENRank(row) {
 			if p := letter2Piece[piece]; p != NoPiece {
-				c.DrawImage(r.getImageAndPosition(p, file, rank))
+				c.DrawImage(r.getImageAndPosition(pieces[p], file, rank))
 			}
 		}
 	}
-}
-
-func (r *rendererPiece) getImageAndPosition(piece chessPiece, x, y int) (image.Image, int, int) {
-	square := r.settings.Board.Default.Size / 8
-	border := r.settings.Border.Width
-
-	return pieces[piece], border + x*square, border + y*square
 }
 
 func getEmbeddedRectangles() []PieceRectangle {
@@ -121,11 +114,20 @@ func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRe
 
 func (r *rendererPiece) resize(img image.Image) image.Image {
 	var square uint
+
 	switch r.settings.Board.Type {
 	case BoardTypeDefault:
-		square = uint(r.settings.Board.Default.Size) / 8
+		square = uint(float64(r.settings.Board.Default.Size/8) * r.settings.Pieces.Factor)
 	case BoardTypeImage:
 		panic("Not implemented!")
 	}
 	return resize.Resize(square, square, img, resize.Lanczos3)
+}
+
+func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Image, int, int) {
+	square := r.settings.Board.Default.Size / 8
+	border := r.settings.Border.Width
+	diff := (square - img.Bounds().Size().Y) / 2
+
+	return img, border + x*square + diff, border + y*square + diff
 }
