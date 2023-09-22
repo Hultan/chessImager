@@ -37,3 +37,34 @@ func toRGBA(col color.Color) (float64, float64, float64, float64) {
 func invert(x, y int) (int, int) {
 	return 7 - x, 7 - y
 }
+
+func stringToChessPiece(piece string) chessPiece {
+	switch strings.ToUpper(piece) {
+	case "WK":
+		return WhiteKing
+	case "WQ":
+		return WhiteQueen
+	case "WR":
+		return WhiteRook
+	case "WN":
+		return WhiteKnight
+	case "WB":
+		return WhiteBishop
+	case "WP":
+		return WhitePawn
+	case "BK":
+		return BlackKing
+	case "BQ":
+		return BlackQueen
+	case "BR":
+		return BlackRook
+	case "BN":
+		return BlackKnight
+	case "BB":
+		return BlackBishop
+	case "BP":
+		return BlackPawn
+	default:
+		panic(fmt.Errorf("invalid piece : %v", piece))
+	}
+}

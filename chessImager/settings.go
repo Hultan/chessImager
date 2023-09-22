@@ -1,5 +1,7 @@
 package chessImager
 
+// TODO : Add piece resize factor
+
 import "image/color"
 
 // Settings represents general settings for the ChessImager.
@@ -102,17 +104,33 @@ type Pieces struct {
 }
 
 // Images represents settings for Pieces.Type=1, where each piece is stored as its own image
-// Paths : List of 12 paths to piece images
+// Pieces : List of 12 pieces objects containing piece identifier and a path
 type Images struct {
-	Paths [12]string `json:"paths"`
+	Pieces [12]ImagePiece `json:"pieces"`
+}
+
+// ImagePiece represents a single piece.
+// Piece : Type of piece, must be one of : "WK","WQ","WR","WN","WB","WP","BK","BQ","BR","BN","BB","BP"
+// Path : Path to the pieces image.
+type ImagePiece struct {
+	Piece string `json:"piece"`
+	Path  string `json:"path"`
 }
 
 // ImageMap represents settings for Pieces.Type=2, where all 12 pieces are in one image
 // Path : Path to the image
-// Coords : 12 rectangles that define the 12 pieces in the image
+// Pieces : 12 pieces and their rectangles that define the pieces in the image
 type ImageMap struct {
-	Path   string        `json:"path"`
-	Coords [12]Rectangle `json:"coords"`
+	Path   string            `json:"path"`
+	Pieces [12]ImageMapPiece `json:"pieces"`
+}
+
+// ImageMapPiece represents one piece in an image map
+// Piece : Type of piece, must be one of : "WK","WQ","WR","WN","WB","WP","BK","BQ","BR","BN","BB","BP"
+// Rect : A rectangle that defines where in the image map the piece is located
+type ImageMapPiece struct {
+	Piece string    `json:"piece"`
+	Rect  Rectangle `json:"rect"`
 }
 
 // Annotation represents the settings for one annotation

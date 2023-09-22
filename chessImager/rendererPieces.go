@@ -4,6 +4,7 @@ import (
 	"bytes"
 	_ "embed"
 	"image"
+	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -21,11 +22,7 @@ type rendererPiece struct {
 }
 
 func (r *rendererPiece) draw(c *gg.Context) {
-	if r.settings.Pieces.Type == PiecesTypeDefault {
-		r.loadEmbeddedPieces()
-	} else {
-		panic("not implemented")
-	}
+	r.loadPieces()
 
 	fen := normalizeFEN(r.fen)
 	fens := strings.Split(fen, "/")
@@ -47,34 +44,90 @@ func (r *rendererPiece) getImageAndPosition(piece chessPiece, x, y int) (image.I
 }
 
 // TODO : Replace with loadImageMapPieces
-func (r *rendererPiece) loadEmbeddedPieces() {
-	pieces = make(map[chessPiece]image.Image, 12)
-	img, _, err := image.Decode(bytes.NewReader(defaultPieces))
-	if err != nil {
-		panic(err)
+
+func getEmbeddedRectangles() []PieceRectangle {
+	return []PieceRectangle{
+		{WhiteKing, Rectangle{0, 0, 333, 333}},
+		{WhiteQueen, Rectangle{333, 0, 333, 333}},
+		{WhiteBishop, Rectangle{666, 0, 333, 333}},
+		{WhiteKnight, Rectangle{999, 0, 333, 333}},
+		{WhiteRook, Rectangle{1332, 0, 333, 333}},
+		{WhitePawn, Rectangle{1665, 0, 333, 333}},
+		{BlackKing, Rectangle{0, 333, 333, 333}},
+		{BlackQueen, Rectangle{333, 333, 333, 333}},
+		{BlackBishop, Rectangle{666, 333, 333, 333}},
+		{BlackKnight, Rectangle{999, 333, 333, 333}},
+		{BlackRook, Rectangle{1332, 333, 333, 333}},
+		{BlackPawn, Rectangle{1665, 333, 333, 333}},
 	}
-	sub, ok := img.(SubImager)
+}
+
+func (r *rendererPiece) loadPieces() {
+	pieces = make(map[chessPiece]image.Image, 12)
+
+	switch r.settings.Pieces.Type {
+	case PiecesTypeDefault:
+		pr := getEmbeddedRectangles()
+		imageMap, _, err := image.Decode(bytes.NewReader(defaultPieces))
+		if err != nil {
+			panic(err)
+		}
+		r.loadImageMapPieces(imageMap, pr)
+	case PiecesTypeImages:
+		for _, piece := range r.settings.Pieces.Images.Pieces {
+			f, err := os.Open(piece.Path)
+			if err != nil {
+				panic(err)
+			}
+			img, _, err := image.Decode(f)
+			if err != nil {
+				panic(err)
+			}
+
+			pieces[stringToChessPiece(piece.Piece)] = r.resize(img)
+		}
+	case PiecesTypeImageMap:
+		f, err := os.Open(r.settings.Pieces.ImageMap.Path)
+		if err != nil {
+			panic(err)
+		}
+		imageMap, _, err := image.Decode(f)
+		if err != nil {
+			panic(err)
+		}
+		pr := imageMapPieceToPieceRectangle(r.settings.Pieces.ImageMap.Pieces)
+		r.loadImageMapPieces(imageMap, pr)
+	}
+}
+
+func imageMapPieceToPieceRectangle(mapPieces [12]ImageMapPiece) []PieceRectangle {
+	var result []PieceRectangle
+	for _, piece := range mapPieces {
+		result = append(result, PieceRectangle{
+			piece: stringToChessPiece(piece.Piece),
+			rect:  piece.Rect,
+		})
+	}
+	return result
+}
+
+func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRectangle) {
+	sub, ok := imageMap.(SubImager)
 	if !ok {
 		panic("Failed to create SubImager")
 	}
-	pieces[WhiteKing] = r.resize(sub.SubImage(image.Rect(0, 0, 333, 333)))
-	pieces[WhiteQueen] = r.resize(sub.SubImage(image.Rect(333, 0, 666, 333)))
-	pieces[WhiteBishop] = r.resize(sub.SubImage(image.Rect(666, 0, 999, 333)))
-	pieces[WhiteKnight] = r.resize(sub.SubImage(image.Rect(999, 0, 1332, 333)))
-	pieces[WhiteRook] = r.resize(sub.SubImage(image.Rect(1332, 0, 1665, 333)))
-	pieces[WhitePawn] = r.resize(sub.SubImage(image.Rect(1665, 0, 1998, 333)))
-	pieces[BlackKing] = r.resize(sub.SubImage(image.Rect(0, 333, 333, 666)))
-	pieces[BlackQueen] = r.resize(sub.SubImage(image.Rect(333, 333, 666, 666)))
-	pieces[BlackBishop] = r.resize(sub.SubImage(image.Rect(666, 333, 999, 666)))
-	pieces[BlackKnight] = r.resize(sub.SubImage(image.Rect(999, 333, 1332, 666)))
-	pieces[BlackRook] = r.resize(sub.SubImage(image.Rect(1332, 333, 1665, 666)))
-	pieces[BlackPawn] = r.resize(sub.SubImage(image.Rect(1665, 333, 1998, 666)))
+	for _, item := range items {
+		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.ToRect())))
+	}
 }
 
 func (r *rendererPiece) resize(img image.Image) image.Image {
 	var square uint
-	if r.settings.Board.Type == BoardTypeDefault {
+	switch r.settings.Board.Type {
+	case BoardTypeDefault:
 		square = uint(r.settings.Board.Default.Size) / 8
+	case BoardTypeImage:
+		panic("Not implemented!")
 	}
 	return resize.Resize(square, square, img, resize.Lanczos3)
 }

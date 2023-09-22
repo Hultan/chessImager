@@ -20,37 +20,37 @@
   "pieces": {
     "type":0,
     "images": {
-      "paths": [
-        "/home/per/code/chessImager/wp.png",
-        "/home/per/code/chessImager/wb.png",
-        "/home/per/code/chessImager/wn.png",
-        "/home/per/code/chessImager/wr.png",
-        "/home/per/code/chessImager/wq.png",
-        "/home/per/code/chessImager/wk.png",
-        "/home/per/code/chessImager/bp.png",
-        "/home/per/code/chessImager/bb.png",
-        "/home/per/code/chessImager/bn.png",
-        "/home/per/code/chessImager/br.png",
-        "/home/per/code/chessImager/bq.png",
-        "/home/per/code/chessImager/bk.png"
-      ],
-      "image_map": {
-        "path": "/home/per/code/chessImager/piecesMap.png",
-        "coords": [
-          {"x": 0,"y": 0,"width": 100,"height": 100},
-          {"x": 0,"y": 100,"width": 100,"height": 100},
-          {"x": 0,"y": 200,"width": 100,"height": 100},
-          {"x": 0,"y": 300,"width": 100,"height": 100},
-          {"x": 0,"y": 400,"width": 100,"height": 100},
-          {"x": 0,"y": 500,"width": 100,"height": 100},
-          {"x": 0,"y": 600,"width": 100,"height": 100},
-          {"x": 0,"y": 700,"width": 100,"height": 100},
-          {"x": 0,"y": 800,"width": 100,"height": 100},
-          {"x": 0,"y": 900,"width": 100,"height": 100},
-          {"x": 0,"y": 1000,"width": 100,"height": 100},
-          {"x": 0,"y": 1100,"width": 100,"height": 100}
-        ]
-      }
+      "pieces": [
+        {"piece":"wp", "path":"/home/per/code/chessImager/test/data/wp.png"},
+        {"piece":"wb", "path":"/home/per/code/chessImager/test/data/wb.png"},
+        {"piece":"wn", "path":"/home/per/code/chessImager/test/data/wn.png"},
+        {"piece":"wr", "path":"/home/per/code/chessImager/test/data/wr.png"},
+        {"piece":"wq", "path":"/home/per/code/chessImager/test/data/wq.png"},
+        {"piece":"wk", "path":"/home/per/code/chessImager/test/data/wk.png"},
+        {"piece":"bp", "path":"/home/per/code/chessImager/test/data/bp.png"},
+        {"piece":"bb", "path":"/home/per/code/chessImager/test/data/bb.png"},
+        {"piece":"bn", "path":"/home/per/code/chessImager/test/data/bn.png"},
+        {"piece":"br", "path":"/home/per/code/chessImager/test/data/br.png"},
+        {"piece":"bq", "path":"/home/per/code/chessImager/test/data/bq.png"},
+        {"piece":"bk", "path":"/home/per/code/chessImager/test/data/bk.png"}
+      ]
+    },
+    "image_map": {
+      "path": "/home/per/code/chessImager/test/data/pieces_colorful.png",
+      "pieces": [
+        {"piece":"WP","rect":{"x": 0,"y": 896,"width": 128,"height": 128}},
+        {"piece":"WN","rect":{"x": 128,"y": 896,"width": 128,"height": 128}},
+        {"piece":"WB","rect":{"x": 256,"y": 896,"width": 128,"height": 128}},
+        {"piece":"WR","rect":{"x": 384,"y": 896,"width": 128,"height": 128}},
+        {"piece":"WQ","rect":{"x": 512,"y": 896,"width": 128,"height": 128}},
+        {"piece":"WK","rect":{"x": 640,"y": 896,"width": 128,"height": 128}},
+        {"piece":"BP","rect":{"x": 0,"y": 640,"width": 128,"height": 128}},
+        {"piece":"BN","rect":{"x": 128,"y": 640,"width": 128,"height": 128}},
+        {"piece":"BB","rect":{"x": 256,"y": 640,"width": 128,"height": 128}},
+        {"piece":"BR","rect":{"x": 384,"y": 640,"width": 128,"height": 128}},
+        {"piece":"BQ","rect":{"x": 512,"y": 640,"width": 128,"height": 128}},
+        {"piece":"BK","rect":{"x": 640,"y": 640,"width": 128,"height": 128}}
+      ]
     }
   }
 }
