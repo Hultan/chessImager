@@ -43,8 +43,6 @@ func (r *rendererPiece) getImageAndPosition(piece chessPiece, x, y int) (image.I
 	return pieces[piece], border + x*square, border + y*square
 }
 
-// TODO : Replace with loadImageMapPieces
-
 func getEmbeddedRectangles() []PieceRectangle {
 	return []PieceRectangle{
 		{WhiteKing, Rectangle{0, 0, 333, 333}},
