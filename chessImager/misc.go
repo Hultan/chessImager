@@ -1,5 +1,11 @@
 package chessImager
 
+import (
+	"fmt"
+	"image/color"
+	"strings"
+)
+
 var pieceMap = map[string]chessPiece{
 	"WK": WhiteKing,
 	"WQ": WhiteQueen,
@@ -30,22 +36,38 @@ var embeddedPieces = []PieceRectangle{
 	{BlackPawn, Rectangle{1665, 333, 333, 333}},
 }
 
-type Rectangle struct {
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
-}
-
-func (r Rectangle) Coords() (float64, float64, float64, float64) {
-	return r.X, r.Y, r.Width, r.Height
-}
-
-func (r Rectangle) ToRect() (int, int, int, int) {
-	return int(r.X), int(r.Y), int(r.X + r.Width), int(r.Y + r.Height)
-}
-
 type PieceRectangle struct {
 	piece chessPiece
 	rect  Rectangle
+}
+
+// hexToRGBA converts a hex string (#rrggbbaa) to a color
+func hexToRGBA(hex string) (col color.RGBA) {
+	// Remove the '#' symbol if it exists
+	hex = strings.TrimPrefix(hex, "#")
+
+	// Parse the hex values for red, green, blue and alpha
+	// TODO : Handle error
+	fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
+
+	return col
+}
+
+func toRGBA(col ColorRGBA) (float64, float64, float64, float64) {
+	return float64(col.R) / 255, float64(col.G) / 255, float64(col.B) / 255, float64(col.A) / 255
+}
+
+func invert(x, y int) (int, int) {
+	return 7 - x, 7 - y
+}
+
+func createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
+	result := make([]PieceRectangle, len(mapPieces))
+	for _, piece := range mapPieces {
+		result = append(result, PieceRectangle{
+			piece: pieceMap[piece.Piece],
+			rect:  piece.Rect,
+		})
+	}
+	return result
 }

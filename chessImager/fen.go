@@ -5,9 +5,6 @@ import (
 	"strings"
 )
 
-const validFenPieces = "pbnrqkPBNRQK"
-const validFenEmpty = "12345678"
-
 func validateFen(fen string) bool {
 	fens := strings.Split(fen, " ")
 	if len(fens) < 6 {
@@ -29,19 +26,19 @@ func validateFen(fen string) bool {
 }
 
 func checkLength(item string) int {
-	l := 0
-	for _, c := range item {
-		i := strings.Index(validFenPieces, string(c))
-		if i >= 0 {
-			l++
-			continue
-		}
-		i = strings.Index(validFenEmpty, string(c))
-		if i >= 0 {
-			l += i + 1
+	length := 0
+
+	for _, char := range item {
+		if char >= '1' && char <= '8' {
+			// If the character is a digit (1-8), add its integer value to the length
+			length += int(char - '0')
+		} else if char != '/' {
+			// If the character is not a digit or '/', increment the length by 1
+			length++
 		}
 	}
-	return l
+
+	return length
 }
 
 func normalizeFEN(fen string) string {
