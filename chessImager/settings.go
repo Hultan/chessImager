@@ -175,3 +175,7 @@ type Move struct {
 	color color.Color
 	Type  ArrowType `json:"type"`
 }
+
+func (s *Settings) AddHighlight(square string, color string, typ HighlightedSquareType) {
+	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: color, Type: typ})
+}
