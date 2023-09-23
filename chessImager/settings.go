@@ -1,6 +1,6 @@
 package chessImager
 
-// TODO : Renderer order
+// TODO : Renderer order, string "BRHPAT"
 // TODO : Board should be base of a rectangle, even if Board.Type = Default
 // This to make the implementation of BoardImage easier.
 
@@ -15,13 +15,14 @@ import "image/color"
 // Pieces : Piece settings
 // Highlight:List of highlighted squares
 type Settings struct {
-	Border      Border              `json:"border"`
-	Board       Board               `json:"board"`
-	RankAndFile RankAndFile         `json:"rank_and_file"`
-	Pieces      Pieces              `json:"pieces"`
-	Highlight   []HighlightedSquare `json:"highlight"`
-	Moves       []Move              `json:"moves"`
-	Annotations []Annotation        `json:"annotations"`
+	Border          Border              `json:"border"`
+	Board           Board               `json:"board"`
+	RankAndFile     RankAndFile         `json:"rank_and_file"`
+	Pieces          Pieces              `json:"pieces"`
+	Highlight       []HighlightedSquare `json:"highlight"`
+	Moves           []Move              `json:"moves"`
+	Annotations     []Annotation        `json:"annotations"`
+	AnnotationStyle AnnotationStyle     `json:"annotation_style"`
 }
 
 // Border settings for the chessboard
@@ -30,6 +31,7 @@ type Settings struct {
 type Border struct {
 	Width int    `json:"width"`
 	Color string `json:"color"`
+
 	color color.Color
 }
 
@@ -52,9 +54,10 @@ type BoardDefault struct {
 	Inverted bool   `json:"inverted"`
 	Size     int    `json:"size"`
 	White    string `json:"white"`
-	white    color.Color
 	Black    string `json:"black"`
-	black    color.Color
+
+	white color.Color
+	black color.Color
 }
 
 // BoardImage represents settings for rendering the background image of a chessboard (Board.Type=1)
@@ -78,8 +81,9 @@ type BoardImage struct {
 type RankAndFile struct {
 	Type  RankAndFileType `json:"type"`
 	Color string          `json:"color"`
+	Size  int             `json:"size"`
+
 	color color.Color
-	Size  int `json:"size"`
 }
 
 // HighlightedSquare defines how highlighted squares should be drawn.
@@ -88,11 +92,11 @@ type RankAndFile struct {
 // Type: 0 = Full square is highlighted, 1 = Only a border around the square is highlighted
 // Width : Width of the border (if Type = 1)
 type HighlightedSquare struct {
-	Square string `json:"square"`
-	Color  string `json:"color"`
-	color  color.RGBA
+	Square string                `json:"square"`
+	Color  string                `json:"color"`
 	Type   HighlightedSquareType `json:"type"`
 	Width  int                   `json:"width"`
+	color  color.RGBA
 }
 
 // Pieces represents settings of how to draw pieces
@@ -137,6 +141,20 @@ type ImageMapPiece struct {
 	Rect  Rectangle `json:"rect"`
 }
 
+// Move represents a single move arrow on the chessboard.
+// From : The from position of the move
+// To : The to position of the move
+// Color : The color of the arrow
+// Type : The arrow type, 0=arrow, 1=dotted
+type Move struct {
+	From  string    `json:"from"`
+	To    string    `json:"to"`
+	Color string    `json:"color"`
+	Type  ArrowType `json:"type"`
+
+	color color.Color
+}
+
 // Annotation represents the settings for one annotation
 // Square : The square to annotate, ex "f4"
 // Text : Extremely short annotation text (usually !,!!,?,??,#...)
@@ -157,25 +175,30 @@ type Annotation struct {
 type AnnotationStyle struct {
 	Position        PositionType `json:"position"`
 	Size            int          `json:"size"`
-	BackgroundColor color.Color  `json:"background_color"`
-	ForegroundColor color.Color  `json:"foreground_color"`
-	BorderColor     color.Color  `json:"border_color"`
+	BackgroundColor string       `json:"background_color"`
+	ForegroundColor string       `json:"foreground_color"`
+	BorderColor     string       `json:"border_color"`
 	BorderWidth     int          `json:"border_width"`
-}
 
-// Move represents a single move arrow on the chessboard.
-// From : The from position of the move
-// To : The to position of the move
-// Color : The color of the arrow
-// Type : The arrow type, 0=arrow, 1=dotted
-type Move struct {
-	From  string `json:"from"`
-	To    string `json:"to"`
-	Color string `json:"color"`
-	color color.Color
-	Type  ArrowType `json:"type"`
+	backgroundColor color.Color
+	foregroundColor color.Color
+	borderColor     color.Color
 }
 
 func (s *Settings) AddHighlight(square string, color string, typ HighlightedSquareType) {
 	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: color, Type: typ})
+}
+
+func (s *Settings) AddMove(from, to, color string, typ ArrowType) {
+	s.Moves = append(s.Moves, Move{From: from, To: to, Color: color, Type: typ})
+}
+
+func (s *Settings) AddAnnotation(square, text string) {
+	s.Annotations = append(s.Annotations, Annotation{Square: square, Text: text})
+}
+
+func (s *Settings) SetAnnotationStyle(position PositionType, size, borderWidth int,
+	backgroundColor, foregroundColor, borderColor string, style *AnnotationStyle) {
+	// TODO : How to do this?
+	// If style == nil, go with the default settings
 }

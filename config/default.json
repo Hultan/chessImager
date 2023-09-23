@@ -53,5 +53,13 @@
         {"piece":"BK","rect":{"x": 640,"y": 640,"width": 128,"height": 128}}
       ]
     }
+  },
+  "annotation_style": {
+    "position": 0,
+    "size": 15,
+    "background_color":"#FF000080",
+    "foreground_color":"#FFFFFFFF",
+    "border_color":"#000000FF",
+    "border_width":1
   }
 }
