@@ -1,6 +1,8 @@
 package chessImager
 
 // TODO : Renderer order
+// TODO : Board should be base of a rectangle, even if Board.Type = Default
+// This to make the implementation of BoardImage easier.
 
 import "image/color"
 
@@ -94,7 +96,7 @@ type HighlightedSquare struct {
 }
 
 // Pieces represents settings of how to draw pieces
-// Factor : Resize factor for pieces, default = 1 (=100%)
+// Factor : Resize factor for pieces, default = 1 (=100%), pieces will be scaled up or down by factor
 // Type: 0 = Embedded pieces, 1 = Images, 2 ImageMap
 // Images : Only used if Type=1
 // ImageMap : Only used if Type=2

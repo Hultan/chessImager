@@ -23,7 +23,7 @@ func main() {
 		panic(err)
 	}
 	settings.Highlight = append(settings.Highlight, chessImager.HighlightedSquare{
-		Square: "F2",
+		Square: "F3",
 		Color:  "#8844ff80",
 		Type:   0,
 	})

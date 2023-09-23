@@ -36,34 +36,16 @@ func (r *rendererPiece) draw(c *gg.Context) {
 	}
 }
 
-func getEmbeddedRectangles() []PieceRectangle {
-	return []PieceRectangle{
-		{WhiteKing, Rectangle{0, 0, 333, 333}},
-		{WhiteQueen, Rectangle{333, 0, 333, 333}},
-		{WhiteBishop, Rectangle{666, 0, 333, 333}},
-		{WhiteKnight, Rectangle{999, 0, 333, 333}},
-		{WhiteRook, Rectangle{1332, 0, 333, 333}},
-		{WhitePawn, Rectangle{1665, 0, 333, 333}},
-		{BlackKing, Rectangle{0, 333, 333, 333}},
-		{BlackQueen, Rectangle{333, 333, 333, 333}},
-		{BlackBishop, Rectangle{666, 333, 333, 333}},
-		{BlackKnight, Rectangle{999, 333, 333, 333}},
-		{BlackRook, Rectangle{1332, 333, 333, 333}},
-		{BlackPawn, Rectangle{1665, 333, 333, 333}},
-	}
-}
-
 func (r *rendererPiece) loadPieces() {
 	pieces = make(map[chessPiece]image.Image, 12)
 
 	switch r.settings.Pieces.Type {
 	case PiecesTypeDefault:
-		pr := getEmbeddedRectangles()
 		imageMap, _, err := image.Decode(bytes.NewReader(defaultPieces))
 		if err != nil {
 			panic(err)
 		}
-		r.loadImageMapPieces(imageMap, pr)
+		r.loadImageMapPieces(imageMap, embeddedPieces)
 	case PiecesTypeImages:
 		for _, piece := range r.settings.Pieces.Images.Pieces {
 			f, err := os.Open(piece.Path)
@@ -75,7 +57,7 @@ func (r *rendererPiece) loadPieces() {
 				panic(err)
 			}
 
-			pieces[stringToChessPiece(piece.Piece)] = r.resize(img)
+			pieces[pieceMap[piece.Piece]] = r.resize(img)
 		}
 	case PiecesTypeImageMap:
 		f, err := os.Open(r.settings.Pieces.ImageMap.Path)
@@ -86,20 +68,9 @@ func (r *rendererPiece) loadPieces() {
 		if err != nil {
 			panic(err)
 		}
-		pr := imageMapPieceToPieceRectangle(r.settings.Pieces.ImageMap.Pieces)
+		pr := createPieceRectangleSlice(r.settings.Pieces.ImageMap.Pieces)
 		r.loadImageMapPieces(imageMap, pr)
 	}
-}
-
-func imageMapPieceToPieceRectangle(mapPieces [12]ImageMapPiece) []PieceRectangle {
-	var result []PieceRectangle
-	for _, piece := range mapPieces {
-		result = append(result, PieceRectangle{
-			piece: stringToChessPiece(piece.Piece),
-			rect:  piece.Rect,
-		})
-	}
-	return result
 }
 
 func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRectangle) {

@@ -7,15 +7,15 @@ import (
 )
 
 // hexToRGBA converts a hex string (#rrggbbaa) to a color
-func hexToRGBA(hex string) color.RGBA {
+func hexToRGBA(hex string) (col color.RGBA) {
 	// Remove the '#' symbol if it exists
 	hex = strings.TrimPrefix(hex, "#")
 
 	// Parse the hex values for red, green, blue and alpha
-	var r, g, b, a uint8
-	fmt.Sscanf(hex, "%02x%02x%02x%02x", &r, &g, &b, &a)
+	// TODO : Handle error
+	fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
 
-	return color.RGBA{R: r, G: g, B: b, A: a}
+	return col
 }
 
 // convertColors converts all color strings "#FF00BBFF" to color.RGBA
@@ -38,33 +38,13 @@ func invert(x, y int) (int, int) {
 	return 7 - x, 7 - y
 }
 
-func stringToChessPiece(piece string) chessPiece {
-	switch strings.ToUpper(piece) {
-	case "WK":
-		return WhiteKing
-	case "WQ":
-		return WhiteQueen
-	case "WR":
-		return WhiteRook
-	case "WN":
-		return WhiteKnight
-	case "WB":
-		return WhiteBishop
-	case "WP":
-		return WhitePawn
-	case "BK":
-		return BlackKing
-	case "BQ":
-		return BlackQueen
-	case "BR":
-		return BlackRook
-	case "BN":
-		return BlackKnight
-	case "BB":
-		return BlackBishop
-	case "BP":
-		return BlackPawn
-	default:
-		panic(fmt.Errorf("invalid piece : %v", piece))
+func createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
+	result := make([]PieceRectangle, len(mapPieces))
+	for _, piece := range mapPieces {
+		result = append(result, PieceRectangle{
+			piece: pieceMap[piece.Piece],
+			rect:  piece.Rect,
+		})
 	}
+	return result
 }
