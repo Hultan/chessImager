@@ -13,11 +13,11 @@ func (r *rendererBoard) draw(c *gg.Context) {
 	size := r.settings.Board.Default.Size
 
 	// Set background to black color
-	c.SetRGBA(toRGBA(r.settings.Board.Default.black))
+	c.SetRGBA(toRGBA(r.settings.Board.Default.Black))
 	c.DrawRectangle(border, border, float64(size), float64(size))
 	c.Fill()
 
-	c.SetRGBA(toRGBA(r.settings.Board.Default.white))
+	c.SetRGBA(toRGBA(r.settings.Board.Default.White))
 
 	// Draw light squares
 	for y := 0; y < 8; y++ {

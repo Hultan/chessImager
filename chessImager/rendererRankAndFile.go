@@ -38,7 +38,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 		dx, dy = (square-border)/2, -border
 	}
 
-	c.SetRGBA(toRGBA(r.settings.RankAndFile.color))
+	c.SetRGBA(toRGBA(r.settings.RankAndFile.Color))
 	r.setFontFace(c, size)
 	r.drawRanksAndFiles(c, dx, dy)
 }

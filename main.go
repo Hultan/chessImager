@@ -22,7 +22,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	s.AddHighlight("F6", "#8844ff80", 0)
+	//s.AddHighlight("F6", "#8844ff80", 0)
 	img2 := imager.GetImageEx(fen, s)
 	f2, err := os.Create("/home/per/temp/img2.png")
 	if err != nil {

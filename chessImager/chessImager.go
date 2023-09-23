@@ -52,7 +52,7 @@ func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
 		settings = s
 	}
 
-	convertColors(settings)
+	//convertColors(settings)
 	i.settings = settings
 
 	c := gg.NewContextForImage(image.NewRGBA(i.getBoardSize()))
@@ -157,7 +157,7 @@ func GetSettings() (*Settings, error) {
 		return nil, err
 	}
 
-	convertColors(settings)
+	//convertColors(settings)
 
 	return settings, nil
 }

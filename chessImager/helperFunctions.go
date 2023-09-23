@@ -19,19 +19,18 @@ func hexToRGBA(hex string) (col color.RGBA) {
 }
 
 // convertColors converts all color strings "#FF00BBFF" to color.RGBA
-func convertColors(settings *Settings) {
-	settings.Board.Default.white = hexToRGBA(settings.Board.Default.White)
-	settings.Board.Default.black = hexToRGBA(settings.Board.Default.Black)
-	settings.Border.color = hexToRGBA(settings.Border.Color)
-	settings.RankAndFile.color = hexToRGBA(settings.RankAndFile.Color)
-	for i := range settings.Highlight {
-		settings.Highlight[i].color = hexToRGBA(settings.Highlight[i].Color)
-	}
-}
+//func convertColors(settings *Settings) {
+//	settings.Board.Default.white = hexToRGBA(settings.Board.Default.White)
+//	settings.Board.Default.black = hexToRGBA(settings.Board.Default.Black)
+//	settings.Border.color = hexToRGBA(settings.Border.Color)
+//	settings.RankAndFile.color = hexToRGBA(settings.RankAndFile.Color)
+//	for i := range settings.Highlight {
+//		settings.Highlight[i].color = hexToRGBA(settings.Highlight[i].Color)
+//	}
+//}
 
-func toRGBA(col color.Color) (float64, float64, float64, float64) {
-	r, g, b, a := col.RGBA()
-	return float64(r) / 65535, float64(g) / 65535, float64(b) / 65535, float64(a) / 65535
+func toRGBA(col ColorRGBA) (float64, float64, float64, float64) {
+	return float64(col.R) / 255, float64(col.G) / 255, float64(col.B) / 255, float64(col.A) / 255
 }
 
 func invert(x, y int) (int, int) {

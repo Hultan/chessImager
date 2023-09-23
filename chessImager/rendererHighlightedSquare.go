@@ -11,7 +11,7 @@ type rendererHighlightedSquare struct {
 func (r *rendererHighlightedSquare) draw(c *gg.Context) {
 	for _, high := range r.settings.Highlight {
 		x, y, w, h := r.getSquareBox(r.algToCoords(high.Square)).Coords()
-		c.SetRGBA(toRGBA(high.color))
+		c.SetRGBA(toRGBA(high.Color))
 		switch high.Type {
 		case HighlightedSquareFull:
 			c.DrawRectangle(x, y, w, h)

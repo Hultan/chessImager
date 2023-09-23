@@ -1,10 +1,10 @@
 package chessImager
 
+import "image/color"
+
 // TODO : Renderer order, string "BRHPAT"
 // TODO : Board should be base of a rectangle, even if Board.Type = Default
 // This to make the implementation of BoardImage easier.
-
-import "image/color"
 
 // Settings represents general settings for the ChessImager.
 // These settings can be applied once, before generating
@@ -29,10 +29,8 @@ type Settings struct {
 // Width: Width of the border around the chessboard
 // Color: Color of the border around the chessboard
 type Border struct {
-	Width int    `json:"width"`
-	Color string `json:"color"`
-
-	color color.Color
+	Width int       `json:"width"`
+	Color ColorRGBA `json:"color"`
 }
 
 // Board settings
@@ -51,13 +49,10 @@ type Board struct {
 // White : The color of the light squares
 // Black : The color of the dark squares
 type BoardDefault struct {
-	Inverted bool   `json:"inverted"`
-	Size     int    `json:"size"`
-	White    string `json:"white"`
-	Black    string `json:"black"`
-
-	white color.Color
-	black color.Color
+	Inverted bool      `json:"inverted"`
+	Size     int       `json:"size"`
+	White    ColorRGBA `json:"white"`
+	Black    ColorRGBA `json:"black"`
 }
 
 // BoardImage represents settings for rendering the background image of a chessboard (Board.Type=1)
@@ -80,10 +75,8 @@ type BoardImage struct {
 // Size : Font size to use
 type RankAndFile struct {
 	Type  RankAndFileType `json:"type"`
-	Color string          `json:"color"`
+	Color ColorRGBA       `json:"color"`
 	Size  int             `json:"size"`
-
-	color color.Color
 }
 
 // HighlightedSquare defines how highlighted squares should be drawn.
@@ -93,10 +86,9 @@ type RankAndFile struct {
 // Width : Width of the border (if Type = 1)
 type HighlightedSquare struct {
 	Square string                `json:"square"`
-	Color  string                `json:"color"`
+	Color  ColorRGBA             `json:"color"`
 	Type   HighlightedSquareType `json:"type"`
 	Width  int                   `json:"width"`
-	color  color.RGBA
 }
 
 // Pieces represents settings of how to draw pieces
@@ -149,10 +141,8 @@ type ImageMapPiece struct {
 type Move struct {
 	From  string    `json:"from"`
 	To    string    `json:"to"`
-	Color string    `json:"color"`
+	Color ColorRGBA `json:"color"`
 	Type  ArrowType `json:"type"`
-
-	color color.Color
 }
 
 // Annotation represents the settings for one annotation
@@ -175,22 +165,18 @@ type Annotation struct {
 type AnnotationStyle struct {
 	Position        PositionType `json:"position"`
 	Size            int          `json:"size"`
-	BackgroundColor string       `json:"background_color"`
-	ForegroundColor string       `json:"foreground_color"`
-	BorderColor     string       `json:"border_color"`
+	BackgroundColor ColorRGBA    `json:"background_color"`
+	ForegroundColor ColorRGBA    `json:"foreground_color"`
+	BorderColor     ColorRGBA    `json:"border_color"`
 	BorderWidth     int          `json:"border_width"`
-
-	backgroundColor color.Color
-	foregroundColor color.Color
-	borderColor     color.Color
 }
 
-func (s *Settings) AddHighlight(square string, color string, typ HighlightedSquareType) {
-	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: color, Type: typ})
+func (s *Settings) AddHighlight(square string, color color.RGBA, typ HighlightedSquareType) {
+	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: ColorRGBA{color}, Type: typ})
 }
 
-func (s *Settings) AddMove(from, to, color string, typ ArrowType) {
-	s.Moves = append(s.Moves, Move{From: from, To: to, Color: color, Type: typ})
+func (s *Settings) AddMove(from, to string, color color.RGBA, typ ArrowType) {
+	s.Moves = append(s.Moves, Move{From: from, To: to, Color: ColorRGBA{color}, Type: typ})
 }
 
 func (s *Settings) AddAnnotation(square, text string) {
@@ -198,7 +184,7 @@ func (s *Settings) AddAnnotation(square, text string) {
 }
 
 func (s *Settings) SetAnnotationStyle(position PositionType, size, borderWidth int,
-	backgroundColor, foregroundColor, borderColor string, style *AnnotationStyle) {
+	backgroundColor, foregroundColor, borderColor color.RGBA, style *AnnotationStyle) {
 	// TODO : How to do this?
 	// If style == nil, go with the default settings
 }
