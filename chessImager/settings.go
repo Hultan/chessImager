@@ -1,10 +1,5 @@
 package chessImager
 
-// TODO : Renderer order, string "BRHPAT"
-// TODO : Board should be base of a rectangle, even if Board.Type = Default
-// This to make the implementation of BoardImage easier.
-// TODO : Move should have a MoveStyle (in AddMove() and in Settings)
-
 // Settings represents general settings for the ChessImager.
 // These settings can be applied once, before generating
 // images, or be overridden at any point.

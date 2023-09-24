@@ -132,6 +132,17 @@ func (i *Imager) getSquareBox(x, y int) Rectangle {
 	}
 }
 
+func (i *Imager) getDefaultBoardBox() Rectangle {
+	border := float64(i.settings.Border.Width)
+
+	return Rectangle{
+		X:      border,
+		Y:      border,
+		Width:  float64(i.settings.Board.Default.Size),
+		Height: float64(i.settings.Board.Default.Size),
+	}
+}
+
 func (i *Imager) setFontFace(c *gg.Context, size int) {
 	// Set font face
 	err := c.LoadFontFace("roboto.ttf", float64(size))

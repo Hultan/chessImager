@@ -9,17 +9,15 @@ type rendererBoard struct {
 }
 
 func (r *rendererBoard) draw(c *gg.Context) {
-	border := float64(r.settings.Border.Width)
-	size := r.settings.Board.Default.Size
+	board := r.getDefaultBoardBox()
 
 	// Set background to black color
 	c.SetRGBA(toRGBA(r.settings.Board.Default.Black))
-	c.DrawRectangle(border, border, float64(size), float64(size))
+	c.DrawRectangle(board.Coords())
 	c.Fill()
 
-	c.SetRGBA(toRGBA(r.settings.Board.Default.White))
-
 	// Draw light squares
+	c.SetRGBA(toRGBA(r.settings.Board.Default.White))
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {

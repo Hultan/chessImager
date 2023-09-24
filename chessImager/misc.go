@@ -47,7 +47,6 @@ func hexToRGBA(hex string) (col color.RGBA) {
 	hex = strings.TrimPrefix(hex, "#")
 
 	// Parse the hex values for red, green, blue and alpha
-	// TODO : Handle error
 	fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
 
 	return col
