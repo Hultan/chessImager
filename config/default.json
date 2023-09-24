@@ -55,8 +55,9 @@
     }
   },
   "annotation_style": {
-    "position": 0,
-    "size": 15,
+    "position": 4,
+    "size": 16,
+    "font_size": 13,
     "background_color":"#FF000080",
     "foreground_color":"#FFFFFFFF",
     "border_color":"#000000FF",

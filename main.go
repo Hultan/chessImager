@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"image/png"
 	"os"
 
@@ -22,7 +23,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//s.AddHighlight("F6", "#8844ff80", 0)
+	s.AddHighlight("g3", "#4488FF88", 0)
+	s.AddHighlightEx("F6", color.RGBA{R: 128, G: 64, B: 255, A: 128}, 0)
+	s.AddAnnotation("c4", "#")
+	style := &chessImager.AnnotationStyle{
+		Position:        3,
+		Size:            16,
+		FontSize:        12,
+		BackgroundColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 255, G: 255, B: 255, A: 255}},
+		ForegroundColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 0, B: 0, A: 255}},
+		BorderColor:     chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 0, B: 0, A: 255}},
+		BorderWidth:     1,
+	}
+	s.AddAnnotationEx("a1", "!!", style)
 	img2 := imager.GetImageEx(fen, s)
 	f2, err := os.Create("/home/per/temp/img2.png")
 	if err != nil {

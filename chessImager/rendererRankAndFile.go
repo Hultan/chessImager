@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/fogleman/gg"
-	"github.com/golang/freetype/truetype"
-	"golang.org/x/image/font/gofont/goregular"
 )
 
 type rendererRankAndFile struct {
@@ -85,16 +83,4 @@ func (r *rendererRankAndFile) getFileText(n int) string {
 	} else {
 		return fmt.Sprintf("%c", 'h'-n)
 	}
-}
-
-func (r *rendererRankAndFile) setFontFace(c *gg.Context, size int) {
-	// Set font face
-	font, err := truetype.Parse(goregular.TTF)
-	if err != nil {
-		panic("")
-	}
-	face := truetype.NewFace(font, &truetype.Options{
-		Size: float64(size),
-	})
-	c.SetFontFace(face)
 }

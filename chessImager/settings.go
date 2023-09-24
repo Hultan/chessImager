@@ -5,6 +5,7 @@ import "image/color"
 // TODO : Renderer order, string "BRHPAT"
 // TODO : Board should be base of a rectangle, even if Board.Type = Default
 // This to make the implementation of BoardImage easier.
+// TODO : Move should have a MoveStyle (in AddMove() and in Settings)
 
 // Settings represents general settings for the ChessImager.
 // These settings can be applied once, before generating
@@ -142,7 +143,7 @@ type Move struct {
 	From  string    `json:"from"`
 	To    string    `json:"to"`
 	Color ColorRGBA `json:"color"`
-	Type  ArrowType `json:"type"`
+	Type  MoveType  `json:"type"`
 }
 
 // Annotation represents the settings for one annotation
@@ -150,14 +151,15 @@ type Move struct {
 // Text : Extremely short annotation text (usually !,!!,?,??,#...)
 // Style : The annotation style
 type Annotation struct {
-	Square string          `json:"square"`
-	Text   string          `json:"text"`
-	Style  AnnotationStyle `json:"style"`
+	Square string           `json:"square"`
+	Text   string           `json:"text"`
+	Style  *AnnotationStyle `json:"style"`
 }
 
 // AnnotationStyle represents the style for one annotation
 // Position : 0=TopRight, 1=BottomRight, 2=BottomLeft, 3=TopLeft, 4=Middle
-// Size : Size of annotation
+// Size : Size of annotation circle
+// FontSize : Size of font
 // BackgroundColor : The background color (RGBA, ex "#FF0000FF"
 // ForegroundColor : The foreground color (RGBA, ex "#FF0000FF"
 // BorderColor : The border color (RGBA, ex "#FF0000FF"
@@ -165,22 +167,31 @@ type Annotation struct {
 type AnnotationStyle struct {
 	Position        PositionType `json:"position"`
 	Size            int          `json:"size"`
+	FontSize        int          `json:"font_size"`
 	BackgroundColor ColorRGBA    `json:"background_color"`
 	ForegroundColor ColorRGBA    `json:"foreground_color"`
 	BorderColor     ColorRGBA    `json:"border_color"`
 	BorderWidth     int          `json:"border_width"`
 }
 
-func (s *Settings) AddHighlight(square string, color color.RGBA, typ HighlightedSquareType) {
-	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: ColorRGBA{color}, Type: typ})
+func (s *Settings) AddHighlight(square string, color string, typ HighlightedSquareType) {
+	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: ColorRGBA{hexToRGBA(color)}, Type: typ})
 }
 
-func (s *Settings) AddMove(from, to string, color color.RGBA, typ ArrowType) {
-	s.Moves = append(s.Moves, Move{From: from, To: to, Color: ColorRGBA{color}, Type: typ})
+func (s *Settings) AddHighlightEx(square string, color color.RGBA, typ HighlightedSquareType) {
+	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Color: ColorRGBA{color}, Type: typ})
 }
 
 func (s *Settings) AddAnnotation(square, text string) {
 	s.Annotations = append(s.Annotations, Annotation{Square: square, Text: text})
+}
+
+func (s *Settings) AddAnnotationEx(square, text string, style *AnnotationStyle) {
+	s.Annotations = append(s.Annotations, Annotation{Square: square, Text: text, Style: style})
+}
+
+func (s *Settings) AddMove(from, to string, color color.RGBA, typ MoveType) {
+	s.Moves = append(s.Moves, Move{From: from, To: to, Color: ColorRGBA{color}, Type: typ})
 }
 
 func (s *Settings) SetAnnotationStyle(position PositionType, size, borderWidth int,

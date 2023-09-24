@@ -7,3 +7,4 @@ Colorful chess pieces (Brian Provan) : Public Domain. See: https://opengameart.o
 ## Future todo 
 
 * Implement PGN : White player, Black player, move count etc
+* Implement HighlightedSquareCircle

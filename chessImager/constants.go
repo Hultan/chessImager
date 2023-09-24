@@ -44,17 +44,18 @@ const (
 type PositionType int
 
 const (
-	TopRight PositionType = iota
+	TopLeft PositionType = iota
+	TopRight
 	BottomRight
 	BottomLeft
-	TopLeft
 	Middle
 )
 
-type ArrowType int
+type MoveType int
 
 const (
-	MoveTypeArrow ArrowType = iota
+	MoveTypeArrow MoveType = iota
+	MoveTypeLine
 	MoveTypeDots
 )
 
@@ -63,4 +64,5 @@ type HighlightedSquareType int
 const (
 	HighlightedSquareFull HighlightedSquareType = iota
 	HighlightedSquareBorder
+	HighlightedSquareCircle
 )
