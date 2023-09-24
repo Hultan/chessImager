@@ -62,5 +62,10 @@
     "foreground_color":"#FFFFFFFF",
     "border_color":"#000000FF",
     "border_width":1
+  },
+  "highlighted_square_style": {
+    "type": 0,
+    "color": "#EEEE4480",
+    "width": 3
   }
 }
