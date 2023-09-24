@@ -41,6 +41,12 @@ func main() {
 		BorderWidth:     1,
 	}
 	s.AddAnnotationEx("a1", "!!", styleAnn)
+	s.AddMove("c4", "d6")
+	styleMove := &chessImager.MoveStyle{
+		Color: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 255, B: 128, A: 255}},
+		Type:  0,
+	}
+	s.AddMoveEx("a1", "c3", styleMove)
 	img2 := imager.GetImageEx(fen, s)
 	f2, err := os.Create("/home/per/temp/img2.png")
 	if err != nil {

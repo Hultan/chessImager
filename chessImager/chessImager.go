@@ -157,6 +157,7 @@ func getRenderers(i *Imager, fen string) []renderer {
 		&rendererHighlightedSquare{i},
 		&rendererPiece{i, fen},
 		&rendererAnnotation{i},
+		&rendererMoves{i},
 	}
 }
 

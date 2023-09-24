@@ -140,24 +140,6 @@ type ImageMapPiece struct {
 	Rect  Rectangle `json:"rect"`
 }
 
-// Move represents a single move arrow on the chessboard.
-// From : The from position of the move
-// To : The to position of the move
-// Style : The move style (if different from the default style
-type Move struct {
-	From  string     `json:"from"`
-	To    string     `json:"to"`
-	Style *MoveStyle `json:"style"`
-}
-
-// MoveStyle represents a single move arrow on the chessboard.
-// Color : The color of the arrow
-// Type : The arrow type, 0=arrow, 1=dotted
-type MoveStyle struct {
-	Color ColorRGBA `json:"color"`
-	Type  MoveType  `json:"type"`
-}
-
 // Annotation represents the settings for one annotation
 // Square : The square to annotate, ex "f4"
 // Text : Extremely short annotation text (usually !,!!,?,??,#...)
@@ -184,6 +166,24 @@ type AnnotationStyle struct {
 	ForegroundColor ColorRGBA    `json:"foreground_color"`
 	BorderColor     ColorRGBA    `json:"border_color"`
 	BorderWidth     int          `json:"border_width"`
+}
+
+// Move represents a single move arrow on the chessboard.
+// From : The from position of the move
+// To : The to position of the move
+// Style : The move style (if different from the default style
+type Move struct {
+	From  string     `json:"from"`
+	To    string     `json:"to"`
+	Style *MoveStyle `json:"style"`
+}
+
+// MoveStyle represents a single move arrow on the chessboard.
+// Color : The color of the arrow
+// Type : The arrow type, 0=arrow, 1=dotted
+type MoveStyle struct {
+	Color ColorRGBA `json:"color"`
+	Type  MoveType  `json:"type"`
 }
 
 func (s *Settings) AddHighlight(square string) {
