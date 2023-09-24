@@ -13,21 +13,20 @@ func (r *rendererAnnotation) draw(c *gg.Context) {
 		rect := r.getAnnotationRectangle(annotation)
 
 		// Draw annotation circle
+
 		style := r.getStyle(annotation)
+		x, y := rect.Center()
 		c.SetRGBA(toRGBA(style.BorderColor))
-		c.DrawCircle(rect.X+rect.Width/2, rect.Y+rect.Height/2, rect.Width/2)
+		c.DrawCircle(x, y, rect.Width/2)
 		c.Fill()
 		c.SetRGBA(toRGBA(style.BackgroundColor))
-		c.DrawCircle(rect.X+rect.Width/2, rect.Y+rect.Height/2, rect.Width/2-float64(r.getStyle(annotation).BorderWidth))
+		c.DrawCircle(x, y, rect.Width/2-float64(r.getStyle(annotation).BorderWidth))
 		c.Fill()
 
 		// Draw annotation text
 		c.SetRGBA(toRGBA(style.ForegroundColor))
 		r.setFontFace(c, r.getStyle(annotation).FontSize)
-		tw, th := c.MeasureString(annotation.Text)
-		x := rect.X + (rect.Width-tw)/2
-		y := rect.Y + (rect.Height-th)/2 + th - 1
-		c.DrawString(annotation.Text, x, y)
+		c.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
 	}
 }
 

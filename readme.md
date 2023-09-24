@@ -8,3 +8,4 @@ Colorful chess pieces (Brian Provan) : Public Domain. See: https://opengameart.o
 
 * Implement PGN : White player, Black player, move count etc
 * Implement HighlightedSquareCircle
+* Implement Font : Default, or path to TTF file

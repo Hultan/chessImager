@@ -14,3 +14,7 @@ func (r Rectangle) Coords() (float64, float64, float64, float64) {
 func (r Rectangle) ToRect() (int, int, int, int) {
 	return int(r.X), int(r.Y), int(r.X + r.Width), int(r.Y + r.Height)
 }
+
+func (r Rectangle) Center() (float64, float64) {
+	return r.X + r.Width/2, r.Y + r.Height/2
+}

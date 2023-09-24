@@ -8,8 +8,6 @@ import (
 	"strings"
 
 	"github.com/fogleman/gg"
-	"github.com/golang/freetype/truetype"
-	"golang.org/x/image/font/gofont/goregular"
 )
 
 type SubImager interface {
@@ -118,7 +116,7 @@ func (i *Imager) getFileBox(file int) Rectangle {
 		X:      border + float64(7-file)*square,
 		Y:      border + 8*square,
 		Width:  square,
-		Height: border - 4, // Adjustment for letter g
+		Height: border - 3, // Vertical adjustment for letter g
 	}
 }
 
@@ -136,14 +134,18 @@ func (i *Imager) getSquareBox(x, y int) Rectangle {
 
 func (i *Imager) setFontFace(c *gg.Context, size int) {
 	// Set font face
-	font, err := truetype.Parse(goregular.TTF)
+	err := c.LoadFontFace("roboto.ttf", float64(size))
 	if err != nil {
 		panic("")
 	}
-	face := truetype.NewFace(font, &truetype.Options{
-		Size: float64(size),
-	})
-	c.SetFontFace(face)
+	//font, err := truetype.Parse(goregular.TTF)
+	//if err != nil {
+	//	panic("")
+	//}
+	//face := truetype.NewFace(font, &truetype.Options{
+	//	Size: float64(size),
+	//})
+	//c.SetFontFace(face)
 }
 
 // getRenderers returns a slice of all the renderers (in order of their importance).

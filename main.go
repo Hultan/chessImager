@@ -32,7 +32,7 @@ func main() {
 	s.AddHighlightEx("F6", styleHigh)
 	s.AddAnnotation("c4", "#")
 	styleAnn := &chessImager.AnnotationStyle{
-		Position:        3,
+		Position:        1,
 		Size:            16,
 		FontSize:        12,
 		BackgroundColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 255, G: 255, B: 255, A: 255}},
