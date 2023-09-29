@@ -20,6 +20,7 @@ type renderer interface {
 
 type Imager struct {
 	settings *Settings
+	fen      string
 }
 
 func NewImager() (*Imager, error) {
@@ -27,7 +28,7 @@ func NewImager() (*Imager, error) {
 	if err != nil {
 		panic(err)
 	}
-	i := &Imager{settings}
+	i := &Imager{settings: settings}
 	return i, nil
 }
 
@@ -54,10 +55,11 @@ func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
 
 	//convertColors(settings)
 	i.settings = settings
+	i.fen = fen
 
 	c := gg.NewContextForImage(image.NewRGBA(i.getBoardSize()))
 
-	r := getRenderers(i, fen)
+	r := getRenderers(i)
 	for _, rend := range r {
 		rend.draw(c)
 	}
@@ -160,13 +162,13 @@ func (i *Imager) setFontFace(c *gg.Context, size int) {
 }
 
 // getRenderers returns a slice of all the renderers (in order of their importance).
-func getRenderers(i *Imager, fen string) []renderer {
+func getRenderers(i *Imager) []renderer {
 	return []renderer{
 		&rendererBorder{i},
 		&rendererBoard{i},
 		&rendererRankAndFile{i},
 		&rendererHighlightedSquare{i},
-		&rendererPiece{i, fen},
+		&rendererPiece{i},
 		&rendererAnnotation{i},
 		&rendererMoves{i},
 	}

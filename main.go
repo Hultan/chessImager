@@ -23,13 +23,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	s.AddHighlight("g3")
+	s.AddHighlight("g1")
+	s.AddHighlight("d8")
 	styleHigh := &chessImager.HighlightedSquareStyle{
 		Color: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 255, A: 80}},
 		Type:  0,
 		Width: 3,
 	}
-	s.AddHighlightEx("F6", styleHigh)
+	s.AddHighlightEx("h2", styleHigh)
 	s.AddAnnotation("c4", "#")
 	styleAnn := &chessImager.AnnotationStyle{
 		Position:        1,
@@ -41,12 +42,13 @@ func main() {
 		BorderWidth:     1,
 	}
 	s.AddAnnotationEx("a1", "!!", styleAnn)
-	s.AddMove("c4", "d6")
+	s.AddMove("e5", "h2")
+	s.AddMove("a8", "d8")
 	styleMove := &chessImager.MoveStyle{
-		Color: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 255, B: 128, A: 255}},
+		Color: chessImager.ColorRGBA{RGBA: color.RGBA{R: 68, G: 68, B: 68, A: 192}},
 		Type:  0,
 	}
-	s.AddMoveEx("a1", "c3", styleMove)
+	s.AddMoveEx("e2", "g1", styleMove)
 	img2 := imager.GetImageEx(fen, s)
 	f2, err := os.Create("/home/per/temp/img2.png")
 	if err != nil {

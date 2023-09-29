@@ -7,7 +7,7 @@
     "type": 0,
     "default": {
       "inverted": false,
-      "size": 400,
+      "size": 600,
       "white": "#FAF3DCFF",
       "black": "#E1DBB5FF"
     }
@@ -70,6 +70,7 @@
   },
   "move_style": {
     "type": 0,
-    "color": "#EE444480"
+    "color": "#00DDDDAA",
+    "factor": 0.5
   }
 }

@@ -176,9 +176,11 @@ type Move struct {
 // MoveStyle represents a single move arrow on the chessboard.
 // Color : The color of the arrow
 // Type : The arrow type, 0=arrow, 1=dotted
+// Factor: Percent of the square size (arrow width, circle size, default = 0.15)
 type MoveStyle struct {
-	Color ColorRGBA `json:"color"`
-	Type  MoveType  `json:"type"`
+	Color  ColorRGBA `json:"color"`
+	Type   MoveType  `json:"type"`
+	Factor float64   `json:"factor"`
 }
 
 func (s *Settings) AddHighlight(square string) {

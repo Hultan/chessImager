@@ -18,7 +18,6 @@ var pieces map[chessPiece]image.Image
 
 type rendererPiece struct {
 	*Imager
-	fen string
 }
 
 func (r *rendererPiece) draw(c *gg.Context) {

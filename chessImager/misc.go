@@ -70,3 +70,20 @@ func createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
 	}
 	return result
 }
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
+func sgn(dx int) int {
+	if dx < 0 {
+		return -1
+	}
+	if dx == 0 {
+		return 0
+	}
+	return 1
+}
