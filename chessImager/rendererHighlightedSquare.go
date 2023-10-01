@@ -9,9 +9,9 @@ type rendererHighlightedSquare struct {
 }
 
 func (r *rendererHighlightedSquare) draw(c *gg.Context) {
-	for _, high := range r.settings.Highlight {
+	for _, high := range settings.Highlight {
 		style := r.getStyle(high)
-		b := r.getSquareBox(r.algToCoords(high.Square))
+		b := getSquareBox(algToCoords(high.Square))
 		c.SetRGBA(toRGBA(style.Color))
 		switch style.Type {
 		case HighlightedSquareFull:
@@ -37,7 +37,7 @@ func (r *rendererHighlightedSquare) draw(c *gg.Context) {
 
 func (r *rendererHighlightedSquare) getStyle(high HighlightedSquare) *HighlightedSquareStyle {
 	if high.Style == nil {
-		return &r.settings.HighlightedSquareStyle
+		return &settings.HighlightedSquareStyle
 	} else {
 		return high.Style
 	}

@@ -9,7 +9,7 @@ type rendererAnnotation struct {
 }
 
 func (r *rendererAnnotation) draw(c *gg.Context) {
-	for _, annotation := range r.settings.Annotations {
+	for _, annotation := range settings.Annotations {
 		rect := r.getAnnotationRectangle(annotation)
 
 		// Draw annotation circle
@@ -25,13 +25,13 @@ func (r *rendererAnnotation) draw(c *gg.Context) {
 
 		// Draw annotation text
 		c.SetRGBA(toRGBA(style.FontColor))
-		r.setFontFace(c, r.getStyle(annotation).FontSize)
+		setFontFace(c, r.getStyle(annotation).FontSize)
 		c.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
 	}
 }
 
 func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) Rectangle {
-	rect := r.getSquareBox(r.algToCoords(annotation.Square))
+	rect := getSquareBox(algToCoords(annotation.Square))
 
 	size := float64(r.getStyle(annotation).Size)
 	space := 2.0
@@ -78,7 +78,7 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) Recta
 
 func (r *rendererAnnotation) getStyle(annotation Annotation) *AnnotationStyle {
 	if annotation.Style == nil {
-		return &r.settings.AnnotationStyle
+		return &settings.AnnotationStyle
 	} else {
 		return annotation.Style
 	}

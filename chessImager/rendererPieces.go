@@ -38,7 +38,7 @@ func (r *rendererPiece) draw(c *gg.Context) {
 func (r *rendererPiece) loadPieces() {
 	pieces = make(map[chessPiece]image.Image, 12)
 
-	switch r.settings.Pieces.Type {
+	switch settings.Pieces.Type {
 	case PiecesTypeDefault:
 		imageMap, _, err := image.Decode(bytes.NewReader(defaultPieces))
 		if err != nil {
@@ -46,7 +46,7 @@ func (r *rendererPiece) loadPieces() {
 		}
 		r.loadImageMapPieces(imageMap, embeddedPieces)
 	case PiecesTypeImages:
-		for _, piece := range r.settings.Pieces.Images.Pieces {
+		for _, piece := range settings.Pieces.Images.Pieces {
 			f, err := os.Open(piece.Path)
 			if err != nil {
 				panic(err)
@@ -59,7 +59,7 @@ func (r *rendererPiece) loadPieces() {
 			pieces[pieceMap[piece.Piece]] = r.resize(img)
 		}
 	case PiecesTypeImageMap:
-		f, err := os.Open(r.settings.Pieces.ImageMap.Path)
+		f, err := os.Open(settings.Pieces.ImageMap.Path)
 		if err != nil {
 			panic(err)
 		}
@@ -67,7 +67,7 @@ func (r *rendererPiece) loadPieces() {
 		if err != nil {
 			panic(err)
 		}
-		pr := createPieceRectangleSlice(r.settings.Pieces.ImageMap.Pieces)
+		pr := createPieceRectangleSlice(settings.Pieces.ImageMap.Pieces)
 		r.loadImageMapPieces(imageMap, pr)
 	}
 }
@@ -85,9 +85,9 @@ func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRe
 func (r *rendererPiece) resize(img image.Image) image.Image {
 	var square uint
 
-	switch r.settings.Board.Type {
+	switch settings.Board.Type {
 	case BoardTypeDefault:
-		square = uint(float64(r.settings.Board.Default.Size/8) * r.settings.Pieces.Factor)
+		square = uint(float64(settings.Board.Default.Size/8) * settings.Pieces.Factor)
 	case BoardTypeImage:
 		panic("Not implemented!")
 	}
@@ -95,8 +95,8 @@ func (r *rendererPiece) resize(img image.Image) image.Image {
 }
 
 func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Image, int, int) {
-	square := r.settings.Board.Default.Size / 8
-	border := r.settings.Border.Width
+	square := settings.Board.Default.Size / 8
+	border := settings.Border.Width
 	diff := (square - img.Bounds().Size().Y) / 2
 
 	return img, border + x*square + diff, border + y*square + diff

@@ -12,13 +12,10 @@ const (
 )
 
 func main() {
-	imager, err := chessImager.NewImager()
-	if err != nil {
-		panic(err)
-	}
+	imager := chessImager.NewImager()
 
 	// Advanced call
-	s, err := chessImager.GetSettings()
+	s, err := chessImager.GetSettings("")
 	if err != nil {
 		panic(err)
 	}

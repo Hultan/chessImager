@@ -1,9 +1,14 @@
 package chessImager
 
 import (
+	"encoding/json"
 	"fmt"
+	"image"
 	"image/color"
+	"os"
 	"strings"
+
+	"github.com/fogleman/gg"
 )
 
 var pieceMap = map[string]chessPiece{
@@ -56,8 +61,8 @@ func toRGBA(col ColorRGBA) (float64, float64, float64, float64) {
 	return float64(col.R) / 255, float64(col.G) / 255, float64(col.B) / 255, float64(col.A) / 255
 }
 
-func invert(x, y int) (int, int) {
-	return 7 - x, 7 - y
+func invert(x int) int {
+	return 7 - x
 }
 
 func createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
@@ -86,4 +91,118 @@ func sgn(dx int) int {
 		return 0
 	}
 	return 1
+}
+
+// getBoardSize returns a rectangle with the size of the board
+// plus the border surrounding it.
+func getBoardSize() image.Rectangle {
+	size := settings.Board.Default.Size + settings.Border.Width*2
+
+	return image.Rectangle{
+		Max: image.Point{
+			X: size,
+			Y: size,
+		},
+	}
+}
+
+func algToCoords(alg string) (int, int) {
+	alg = strings.ToLower(alg)
+	if len(alg) != 2 {
+		panic("invalid length of alg")
+	}
+	if alg[0] < 'a' || alg[0] > 'h' {
+		panic("invalid character in alg : " + string(alg[0]))
+	}
+	if alg[1] < '1' || alg[1] > '8' {
+		panic("invalid character in alg : " + string(alg[1]))
+	}
+	x, y := int(alg[0]-'a'), int(alg[1]-'1')
+	if settings.Board.Default.Inverted {
+		return invert(x), invert(y)
+	}
+	return x, y
+}
+
+func getRankBox(rank int) Rectangle {
+	square := float64(settings.Board.Default.Size) / 8
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      0,
+		Y:      border + float64(invert(rank))*square,
+		Width:  border,
+		Height: square,
+	}
+}
+
+func getFileBox(file int) Rectangle {
+	square := float64(settings.Board.Default.Size) / 8
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      border + float64(invert(file))*square,
+		Y:      border + 8*square,
+		Width:  square,
+		Height: border - 3, // Vertical adjustment for letter g
+	}
+}
+
+func getSquareBox(x, y int) Rectangle {
+	square := float64(settings.Board.Default.Size) / 8
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      border + float64(x)*square,
+		Y:      border + float64(invert(y))*square,
+		Width:  square,
+		Height: square,
+	}
+}
+
+func getBoardBox() Rectangle {
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      border,
+		Y:      border,
+		Width:  float64(settings.Board.Default.Size),
+		Height: float64(settings.Board.Default.Size),
+	}
+}
+
+func setFontFace(c *gg.Context, size int) {
+	path := "roboto.ttf"
+	if settings.FontStyle.Path != "" {
+		path = settings.FontStyle.Path
+	}
+
+	err := c.LoadFontFace(path, float64(size))
+	if err != nil {
+		panic(fmt.Errorf("failed to load font face : %v", err))
+	}
+}
+
+// GetSettings loads the default settings from a json file
+// Path : The path to load the settings from. Leave empty
+// for the default settings (config/default.json).
+func GetSettings(path string) (*Settings, error) {
+	p := "config/default.json"
+	if path != "" {
+		p = path
+	}
+
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	settings := &Settings{}
+	err = json.NewDecoder(f).Decode(settings)
+	if err != nil {
+		return nil, err
+	}
+
+	return settings, nil
 }
