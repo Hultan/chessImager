@@ -16,7 +16,9 @@ Colorful chess pieces (Brian Provan) : Public Domain. See: https://opengameart.o
 * Renderer order, string "BRHPAT"
 * Implement PGN : White player, Black player, move count etc
 * Settings should be a global variable, might simplify things 
+* rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 
 ## Possible future todo:s
-* ? Implement Possible Moves For/to square - show moves that a piece can do, or show pieces that can move to a square.
-* ? Validation of settings file? CHeck if font file exists, size out of square boundary, etc
+* Implement Possible Moves For/to square - show moves that a piece can do, or show pieces that can move to a square.
+* Validation of settings file? CHeck if font file exists, size out of square boundary, etc
+* Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc

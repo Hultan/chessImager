@@ -6,6 +6,8 @@ import (
 	"github.com/fogleman/gg"
 )
 
+const borderLimit = 10
+
 type rendererRankAndFile struct {
 	*Imager
 }
@@ -26,11 +28,13 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 	case RankAndFileNone:
 		return
 	case RankAndFileInBorder:
-		if border < 10 {
+		// Don't bother drawing ranks and files when to border is too thin
+		if border < borderLimit {
 			return
 		}
 	case RankAndFileInSquares:
-		if border < 10 {
+		// Don't bother drawing ranks and files when to border is too thin
+		if border < borderLimit {
 			return
 		}
 		dx, dy = (square-border)/2, -border
@@ -42,13 +46,13 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 }
 
 func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
-	rf := r.getRFBoxes()
+	rfBoxes := r.getRFBoxes()
 
-	for _, r := range rf {
-		tw, th := c.MeasureString(r.text)
-		x := r.box.X + (r.box.Width-tw)/2
-		y := r.box.Y + (r.box.Height-th)/2 + th
-		c.DrawString(r.text, x+dx, y+dy)
+	for _, rfBox := range rfBoxes {
+		tw, th := c.MeasureString(rfBox.text)
+		x := rfBox.box.X + (rfBox.box.Width-tw)/2
+		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th
+		c.DrawString(rfBox.text, x+dx, y+dy)
 	}
 }
 
@@ -64,6 +68,7 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 		// Files
 		text = r.getFileText(i)
 		box = getFileBox(i)
+		box.Height -= 3 // Adjust the height a little to handle the letter g
 		rf = append(rf, RankFile{box: box, text: text})
 	}
 	return rf

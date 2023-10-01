@@ -1,6 +1,6 @@
 {
   "border": {
-    "width": 18,
+    "width": 20,
     "color": "#70663EFF"
   },
   "board": {
@@ -15,7 +15,7 @@
   "rank_and_file": {
     "type": 1,
     "font_color": "#FAF3DCFF",
-    "font_size": 14
+    "font_size":16
   },
   "pieces": {
     "factor" : 1.0,

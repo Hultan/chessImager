@@ -144,7 +144,7 @@ func getFileBox(file int) Rectangle {
 		X:      border + float64(invert(file))*square,
 		Y:      border + 8*square,
 		Width:  square,
-		Height: border - 3, // Vertical adjustment for letter g
+		Height: border,
 	}
 }
 
