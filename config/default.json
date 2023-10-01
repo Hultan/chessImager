@@ -64,9 +64,9 @@
     "border_width":1
   },
   "highlighted_square_style": {
-    "type": 0,
+    "type": 2,
     "color": "#EEEE4480",
-    "width": 3
+    "width": 35
   },
   "move_style": {
     "type": 0,

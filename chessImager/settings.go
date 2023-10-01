@@ -85,8 +85,13 @@ type HighlightedSquare struct {
 
 // HighlightedSquareStyle defines how highlighted squares should be drawn.
 // Color : The highlight color
-// Type: 0 = Full square is highlighted, 1 = Only a border around the square is highlighted
-// Width : Width of the border (if Type = 1)
+// Type: Highlight a square by painting:
+//
+//	0 = the full square
+//	1 = a border around the square
+//	2 = a circle in the center of the square
+//
+// Width : Width of the border (Type = 1), or radius of the circle (Type=2)
 type HighlightedSquareStyle struct {
 	Color ColorRGBA             `json:"color"`
 	Type  HighlightedSquareType `json:"type"`

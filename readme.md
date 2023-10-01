@@ -9,7 +9,7 @@ Colorful chess pieces (Brian Provan) : Public Domain. See: https://opengameart.o
 ## Todo 
 
 * Create a CLI tool?
-* Highlighted square circles and x:s : https://elzr.com/blag/img/2018/chess-pieces/chess-moves.png
+* Highlighted square x:s : https://elzr.com/blag/img/2018/chess-pieces/chess-moves.png
 * Fix BoardImage (not implemented yet)
 * Fix Move (foundations implemented)
 * Handle error in hexToRGBA
