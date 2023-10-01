@@ -3,12 +3,24 @@ package chessImager
 // Settings represents general settings for the ChessImager.
 // These settings can be applied once, before generating
 // images, or be overridden at any point.
+// Order : Render order. Leave empty for default order. Renderer indexes:
+//
+//	0 - Border : Renders the border around the chess board
+//	1 - Board : Renders the chess board
+//	2 - Rank and file : Renders the rank numbers and file letters
+//	3 - Highlighted squares : Renders the highlight squares
+//	4 - Pieces : Renders the chess pieces
+//	5 - Annotations : Renders the annotation(s)
+//	6 - Moves : Renders the move(s)
+//
 // Border: Settings for the border around the chessboard
 // Board : Settings for the board
 // RankAndFile: If and how the rank and file should be drawn
 // Pieces : Piece settings
 // Highlight:List of highlighted squares
 type Settings struct {
+	Order []int `json:"order"`
+
 	Border      Border              `json:"border"`
 	Board       Board               `json:"board"`
 	RankAndFile RankAndFile         `json:"rank_and_file"`
