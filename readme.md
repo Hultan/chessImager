@@ -15,5 +15,8 @@ Colorful chess pieces (Brian Provan) : Public Domain. See: https://opengameart.o
 * Handle error in hexToRGBA
 * Renderer order, string "BRHPAT"
 * Implement PGN : White player, Black player, move count etc
-* Implement Font : Default, or path to TTF file
+* Settings should be a global variable, might simplify things 
+
+## Possible future todo:s
 * ? Implement Possible Moves For/to square - show moves that a piece can do, or show pieces that can move to a square.
+* ? Validation of settings file? CHeck if font file exists, size out of square boundary, etc

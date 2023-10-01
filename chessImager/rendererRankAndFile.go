@@ -20,7 +20,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 
 	square := float64(r.settings.Board.Default.Size) / 8
 	border := float64(r.settings.Border.Width)
-	size := r.settings.RankAndFile.Size
+	size := r.settings.RankAndFile.FontSize
 
 	switch r.settings.RankAndFile.Type {
 	case RankAndFileNone:
@@ -36,7 +36,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 		dx, dy = (square-border)/2, -border
 	}
 
-	c.SetRGBA(toRGBA(r.settings.RankAndFile.Color))
+	c.SetRGBA(toRGBA(r.settings.RankAndFile.FontColor))
 	r.setFontFace(c, size)
 	r.drawRanksAndFiles(c, dx, dy)
 }

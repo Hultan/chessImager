@@ -17,6 +17,7 @@ type Settings struct {
 	Moves       []Move              `json:"moves"`
 	Annotations []Annotation        `json:"annotations"`
 
+	FontStyle              FontStyle              `json:"font_style"`
 	AnnotationStyle        AnnotationStyle        `json:"annotation_style"`
 	MoveStyle              MoveStyle              `json:"move_style"`
 	HighlightedSquareStyle HighlightedSquareStyle `json:"highlighted_square_style"`
@@ -68,12 +69,12 @@ type BoardImage struct {
 // RankAndFile defines how the rank and file indicators should be drawn.
 // Important: Only used when Board.Type = Default
 // Type : 0 = None, 1 = InSquares, 2 = InBorder
-// Color : Font color to use
-// Size : Font size to use
+// FontColor : Font color to use
+// FontSize : Font size to use
 type RankAndFile struct {
-	Type  RankAndFileType `json:"type"`
-	Color ColorRGBA       `json:"color"`
-	Size  int             `json:"size"`
+	Type      RankAndFileType `json:"type"`
+	FontColor ColorRGBA       `json:"font_color"`
+	FontSize  int             `json:"font_size"`
 }
 
 // HighlightedSquare defines how highlighted squares should be drawn.
@@ -153,17 +154,17 @@ type Annotation struct {
 // AnnotationStyle represents the style for one annotation
 // Position : 0=TopRight, 1=BottomRight, 2=BottomLeft, 3=TopLeft, 4=Middle
 // Size : Size of annotation circle
+// FontColor : The foreground color (RGBA, ex "#FF0000FF"
 // FontSize : Size of font
 // BackgroundColor : The background color (RGBA, ex "#FF0000FF"
-// ForegroundColor : The foreground color (RGBA, ex "#FF0000FF"
 // BorderColor : The border color (RGBA, ex "#FF0000FF"
 // BorderWidth : The border width
 type AnnotationStyle struct {
 	Position        PositionType `json:"position"`
 	Size            int          `json:"size"`
+	FontColor       ColorRGBA    `json:"font_color"`
 	FontSize        int          `json:"font_size"`
 	BackgroundColor ColorRGBA    `json:"background_color"`
-	ForegroundColor ColorRGBA    `json:"foreground_color"`
 	BorderColor     ColorRGBA    `json:"border_color"`
 	BorderWidth     int          `json:"border_width"`
 }
@@ -186,6 +187,13 @@ type MoveStyle struct {
 	Color  ColorRGBA `json:"color"`
 	Type   MoveType  `json:"type"`
 	Factor float64   `json:"factor"`
+}
+
+// FontStyle : Font to use, if path is not specified (or does not exist),
+// Roboto will be used. (https://fonts.google.com/specimen/Roboto)
+// Path : A path to a ttf-font file
+type FontStyle struct {
+	Path string `json:"path"`
 }
 
 func (s *Settings) AddHighlight(square string) {

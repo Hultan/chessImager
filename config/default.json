@@ -14,8 +14,8 @@
   },
   "rank_and_file": {
     "type": 1,
-    "color": "#FAF3DCFF",
-    "size": 14
+    "font_color": "#FAF3DCFF",
+    "font_size": 14
   },
   "pieces": {
     "factor" : 1.0,
@@ -57,9 +57,9 @@
   "annotation_style": {
     "position": 1,
     "size": 16,
+    "font_color":"#FFFFFFFF",
     "font_size": 13,
     "background_color":"#FF000080",
-    "foreground_color":"#FFFFFFFF",
     "border_color":"#000000FF",
     "border_width":1
   },
@@ -72,5 +72,8 @@
     "type": 0,
     "color": "#00DDDDAA",
     "factor": 0.5
+  },
+  "font_style": {
+    "path" : ""
   }
 }

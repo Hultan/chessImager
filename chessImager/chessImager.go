@@ -146,19 +146,15 @@ func (i *Imager) getDefaultBoardBox() Rectangle {
 }
 
 func (i *Imager) setFontFace(c *gg.Context, size int) {
-	// Set font face
-	err := c.LoadFontFace("roboto.ttf", float64(size))
-	if err != nil {
-		panic("")
+	path := "roboto.ttf"
+	if i.settings.FontStyle.Path != "" {
+		path = i.settings.FontStyle.Path
 	}
-	//font, err := truetype.Parse(goregular.TTF)
-	//if err != nil {
-	//	panic("")
-	//}
-	//face := truetype.NewFace(font, &truetype.Options{
-	//	Size: float64(size),
-	//})
-	//c.SetFontFace(face)
+
+	err := c.LoadFontFace(path, float64(size))
+	if err != nil {
+		panic(fmt.Errorf("failed to load font face : %v", err))
+	}
 }
 
 // getRenderers returns a slice of all the renderers (in order of their importance).

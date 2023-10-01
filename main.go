@@ -25,7 +25,7 @@ func main() {
 	s.AddHighlight("g1")
 	s.AddHighlight("d8")
 	//styleHigh := &chessImager.HighlightedSquareStyle{
-	//	Color: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 255, A: 80}},
+	//	FontColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 255, A: 80}},
 	//	Type:  0,
 	//	Width: 3,
 	//}
@@ -33,10 +33,10 @@ func main() {
 	//s.AddAnnotation("c4", "#")
 	//styleAnn := &chessImager.AnnotationStyle{
 	//	Position:        1,
-	//	Size:            16,
+	//	FontSize:            16,
 	//	FontSize:        12,
 	//	BackgroundColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 255, G: 255, B: 255, A: 255}},
-	//	ForegroundColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 0, B: 0, A: 255}},
+	//	FontColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 0, B: 0, A: 255}},
 	//	BorderColor:     chessImager.ColorRGBA{RGBA: color.RGBA{R: 0, G: 0, B: 0, A: 255}},
 	//	BorderWidth:     1,
 	//}
@@ -44,7 +44,7 @@ func main() {
 	//s.AddMove("e5", "h2")
 	//s.AddMove("a8", "d8")
 	//styleMove := &chessImager.MoveStyle{
-	//	Color: chessImager.ColorRGBA{RGBA: color.RGBA{R: 68, G: 68, B: 68, A: 192}},
+	//	FontColor: chessImager.ColorRGBA{RGBA: color.RGBA{R: 68, G: 68, B: 68, A: 192}},
 	//	Type:  0,
 	//}
 	//s.AddMoveEx("e2", "g1", styleMove)

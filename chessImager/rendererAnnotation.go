@@ -24,7 +24,7 @@ func (r *rendererAnnotation) draw(c *gg.Context) {
 		c.Fill()
 
 		// Draw annotation text
-		c.SetRGBA(toRGBA(style.ForegroundColor))
+		c.SetRGBA(toRGBA(style.FontColor))
 		r.setFontFace(c, r.getStyle(annotation).FontSize)
 		c.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
 	}
