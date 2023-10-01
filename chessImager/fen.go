@@ -5,23 +5,41 @@ import (
 	"strings"
 )
 
+const validChars = "pbnrqkPBNRQK12345678"
+
 func validateFen(fen string) bool {
 	fens := strings.Split(fen, " ")
 	if len(fens) < 6 {
 		return false
 	}
+
+	// We only care about the first section (board section) of the fen string.
 	items := strings.Split(fens[0], "/")
 	if len(items) != 8 {
 		return false
 	}
+
 	for _, item := range items {
-		if len(item) < 1 || len(item) > 8 {
+		// Check valid characters
+		if !checkValidChars(item) {
 			return false
 		}
+
+		// Check valid length (after normalization)
 		if checkLength(item) != 8 {
 			return false
 		}
 	}
+	return true
+}
+
+func checkValidChars(item string) bool {
+	for _, c := range item {
+		if strings.Index(validChars, string(c)) == -1 {
+			return false
+		}
+	}
+
 	return true
 }
 
