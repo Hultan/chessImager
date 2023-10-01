@@ -83,15 +83,15 @@ func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRe
 }
 
 func (r *rendererPiece) resize(img image.Image) image.Image {
-	var square uint
+	var pieceSize uint
 
 	switch settings.Board.Type {
 	case BoardTypeDefault:
-		square = uint(float64(settings.Board.Default.Size/8) * settings.Pieces.Factor)
+		pieceSize = uint(float64(settings.Board.Default.Size/8) * settings.Pieces.Factor)
 	case BoardTypeImage:
 		panic("Not implemented!")
 	}
-	return resize.Resize(square, square, img, resize.Lanczos3)
+	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }
 
 func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Image, int, int) {
