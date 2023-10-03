@@ -278,7 +278,6 @@ following image (the image has been significantly shrunk).
 * Fix Move (foundations implemented)
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
-* Context should have a SetOrder method to change the render order
 * 
 ## Possible future todo:s
 * Implement PGN : White player, Black player, move count etc

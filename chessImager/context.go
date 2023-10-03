@@ -1,5 +1,7 @@
 package chessImager
 
+import "errors"
+
 //
 // Context is used for advanced chess images
 // (images that includes highlighted squares,
@@ -20,6 +22,15 @@ func NewContextFromPath(path string) (*Context, error) {
 		return nil, err
 	}
 	return &Context{settings: s}, nil
+}
+
+func (c *Context) SetOrder(order []int) error {
+	if len(order) != 7 {
+		return errors.New("len(order) must be 7")
+	}
+
+	c.settings.Order = order
+	return nil
 }
 
 func (c *Context) AddHighlight(square string) {

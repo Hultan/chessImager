@@ -32,6 +32,11 @@ func main() {
 		panic(err)
 	}
 
+	err = ctx.SetOrder([]int{0, 1, 2, 5, 4, 3, 7})
+	if err != nil {
+		panic(err)
+	}
+
 	hs, err := ctx.NewHighlightStyle(0, "#88008888", 0)
 	if err != nil {
 		panic(err)
