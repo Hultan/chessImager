@@ -49,7 +49,7 @@ settings in the embedded **default.json** file.
 
 <img src="img.png" alt="drawing" width="350"/>
 
-If you want to do more advanced stuff, like loading you own settings file, you can do that by creating a 
+If you want to do more advanced stuff, for example loading you own settings file, you can do that by creating a 
 **chessImager.Context** object, like this:
 
 ```go
@@ -61,6 +61,17 @@ or if you don't need to use your own JSON file, you could just do this:
 ```
 Once you have your context, you can add one or more **highlighted squares**, **moves**, or **annotations**  to the 
 board. You can also change the rendering order using the **context** object, if your use case is more advanced.
+
+Then, when you are ready to generate an image, you can call the **chessImager.Render()** method:
+```go
+imager := chessImager.NewImager()
+const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+ctx, _ := chessImager.NewContextFromPath("/home/me/mySettings.json")
+
+// You can add moves, highlighted squares, annotations or change the render order here.
+
+image := imager.RenderEx(fen,ctx)
+```
 
 ## Render order
 ChessImager is split up into seven different renderers, that are each responsible for drawing parts of
@@ -77,8 +88,8 @@ the chess board. The renderers, and their indexes, are:
 |   5   | Annotations        | Renders the annotation(s)                 |
 |   6   | Moves              | Renders the move(s)                       |
 
-The first two renderers, Border and Board, have to be at place 0 and 1, otherwise
-you won't get very interesting images. All the others can be moved around to improve your image.
+You will not get very interesting images if you change the order of renderer 0 and 1. All the others can be moved 
+around to fit your use case.
 
 In the JSON file, you can set the order of the renderers by changing the **order** list. The default order
 is the order above.  
@@ -113,13 +124,14 @@ Maybe not as pretty as the first example, but you have the option to change the 
 
 Every new context created automatically loads the settings from the JSON file, so if you need a
 different order for
-your next image, then just create a new **context** object and work with that. Creating a new context resets the
+your next image, then just create a new **context** object and work with that. In fact, creating a new context 
+resets the
 Moves, Annotations and Highlights lists, so it is generally a good idea to create a new context for each new image
 that you want to generate.
 
 ## Border renderer
 The border renderer is usually the first renderer. It clears the image with the Color specified in the JSON file, 
-and therefore will remove everything else that is rendered so far.
+and therefore will remove everything else that has been rendered so far.
 
 The settings for the border renderer can be found in the **border** section of the json file.
 
@@ -127,6 +139,17 @@ The settings for the border renderer can be found in the **border** section of t
 |-------|---------|-----------------------------------|
 | Width | integer | The width of the border in pixels |
 | Color | string  | The color of the border           |
+
+```json
+{
+   ...
+   "border": {
+      "width": 20,
+      "color": "#70663EFF"
+   },
+   ...
+}
+```
 
 ## Board renderer
 The board renderer is usually the second renderer. It has a type that specifies how the renderer should draw the board.
@@ -157,7 +180,6 @@ The settings under **board.default** are the following:
 | black    | string  | The color for the black squares                                                 |
 
 
-Example of the **board** section:
 ```JSON
   "board": {
     "type": 0,
@@ -182,8 +204,6 @@ The rank and file renderer draws the letters A to H and the numbers 1 to 8 on th
 | font_color | string  | The color of the font for the rank and file indicators |
 | font_size  | integer | The size of the font for the rank and file indicators  |
 
-Example of the **rank_and_file** section:
-
 ```JSON
   "rank_and_file": {
     "type": 1,
@@ -192,44 +212,40 @@ Example of the **rank_and_file** section:
   }
 ```
 
-## Highlight square renderer
-The highlight square renderer highlights certain squares in whatever color you want. You can highlight the square by 
+## Highlight renderer
+The highlight renderer highlights certain squares in whatever color you want. You can highlight the square by 
 giving it a certain color, or a border of a certain color. You can also highlight the square by drawing a circle in 
 the square, all depending on the Type field.
 
 The style of the highlighted square is determined by the default highlight style provided in the `default.json` file.
 
-| Name  | Type    | Description                        |
-|-------|---------|------------------------------------|
-| type  | integer | 0 = square, 1 = border, 2 = circle |
-| color | string  | The highlight color                |
-| width | integer | The width of the border or circle  |
+| Name  | Type    | Description                                |
+|-------|---------|--------------------------------------------|
+| type  | integer | 0 = square, 1 = border, 2 = circle         |
+| color | string  | The highlight color                        |
+| width | integer | The width of the border or circle (type=2) |
 
 
-You can add a highlighted square by using the method `AddHighlight()` (using the default styling):
+You can add a highlighted square by using the method `AddHighlight()` on the **context** object:
 
 ```go
-	s, _ := chessImager.LoadSettings("") // Load the default settings
-	s.AddHighlight("e7")
-	img := imager.GetImageEx(fen, s)
+    ctx, _ := chessImager.NewContext()
+    ctx.AddHighlight("e7")
+    image := imager.RenderEx(fen, ctx)
 ```
 
-Or you can use the method `AddHighlightEx()`, if you also want to provide some special styling to this specific 
-square. You do that by providing an extra style parameter of the type `chessImager.HightlightStyle`
+Another alternative is to use the method `AddHighlightEx()`, that allows you to provide some special 
+styling to this specific square:
 
 ```go
-	s, _ := chessImager.LoadSettings("") // Load the default settings
-    style := &chessImager.HighlightedSquareStyle{
-		Type:  0,
-        Color: chessImager.ColorRGBA{color.RGBA{128, 128, 128, 128}},
-    }
-    s.AddHighlightEx("e7", style)
-	img := imager.GetImageEx(fen, s)
+    ctx, _ := chessImager.NewContext()
+    hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0)
+    ctx.AddHighlightEx("e7", hs)
+    image := imager.RenderEx(fen, ctx)
 ```
 
 ## Piece renderer
-The piece renderer are responsible for drawing the pieces on the board, as specified in the FEN you provide when 
-asking for an image.
+The piece renderer are responsible for drawing the pieces on the board (as specified in the FEN string).
 
 | Name      | Type    | Description                                                                                      |
 |-----------|---------|--------------------------------------------------------------------------------------------------|
@@ -287,8 +303,7 @@ Example of the **pieces** section where type=1:
 To use an image map containing all 12 pieces, you will have to provide a path to the image, and 12 rectangle that 
 specifies where in the image the pieces can be found.
 
-Example of the **pieces** section where type=2. This JSON will pick out the red and yellow pieces out of the 
-following image (the image has been significantly shrunk).
+This JSON will pick out the red and yellow pieces out of the following image.
 
 <img src="test/data/pieces_colorful.png" alt="drawing" width="150"/>
 
