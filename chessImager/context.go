@@ -10,6 +10,10 @@ import "errors"
 
 type Context struct {
 	settings *Settings
+
+	Highlight   []HighlightedSquare
+	Moves       []Move
+	Annotations []Annotation
 }
 
 func NewContext() (*Context, error) {
@@ -34,27 +38,27 @@ func (c *Context) SetOrder(order []int) error {
 }
 
 func (c *Context) AddHighlight(square string) {
-	c.settings.Highlight = append(c.settings.Highlight, HighlightedSquare{Square: square})
+	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square})
 }
 
 func (c *Context) AddHighlightEx(square string, style *HighlightStyle) {
-	c.settings.Highlight = append(c.settings.Highlight, HighlightedSquare{Square: square, Style: style})
+	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square, Style: style})
 }
 
 func (c *Context) AddAnnotation(square, text string) {
-	c.settings.Annotations = append(c.settings.Annotations, Annotation{Square: square, Text: text})
+	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text})
 }
 
 func (c *Context) AddAnnotationEx(square, text string, style *AnnotationStyle) {
-	c.settings.Annotations = append(c.settings.Annotations, Annotation{Square: square, Text: text, Style: style})
+	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text, Style: style})
 }
 
 func (c *Context) AddMove(from, to string) {
-	c.settings.Moves = append(c.settings.Moves, Move{From: from, To: to})
+	c.Moves = append(c.Moves, Move{From: from, To: to})
 }
 
 func (c *Context) AddMoveEx(from, to string, style *MoveStyle) {
-	c.settings.Moves = append(c.settings.Moves, Move{From: from, To: to, Style: style})
+	c.Moves = append(c.Moves, Move{From: from, To: to, Style: style})
 }
 
 func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int) (*HighlightStyle, error) {

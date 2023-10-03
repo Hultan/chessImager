@@ -9,7 +9,10 @@ type rendererMoves struct {
 }
 
 func (r *rendererMoves) draw(c *gg.Context) {
-	for _, move := range settings.Moves {
+	if r.ctx == nil {
+		return
+	}
+	for _, move := range r.ctx.Moves {
 		factor := r.getStyle(move).Factor / 2
 		if factor == 0 {
 			factor = 0.15

@@ -9,7 +9,10 @@ type rendererAnnotation struct {
 }
 
 func (r *rendererAnnotation) draw(c *gg.Context) {
-	for _, annotation := range settings.Annotations {
+	if r.ctx == nil {
+		return
+	}
+	for _, annotation := range r.ctx.Annotations {
 		rect := r.getAnnotationRectangle(annotation)
 
 		// Draw annotation circle

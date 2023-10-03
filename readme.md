@@ -279,7 +279,6 @@ following image (the image has been significantly shrunk).
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * include simple example, advanced example, and SetOrder example
-* 
 ## Possible future todo:s
 * Implement PGN : White player, Black player, move count etc
 * Implement Possible Moves For/to square - show moves that a piece can do, or show pieces that can move to a square.

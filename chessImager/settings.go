@@ -21,13 +21,10 @@ package chessImager
 type Settings struct {
 	Order []int `json:"order"`
 
-	Border      Border              `json:"border"`
-	Board       Board               `json:"board"`
-	RankAndFile RankAndFile         `json:"rank_and_file"`
-	Pieces      Pieces              `json:"pieces"`
-	Highlight   []HighlightedSquare `json:"highlight"`
-	Moves       []Move              `json:"moves"`
-	Annotations []Annotation        `json:"annotations"`
+	Border      Border      `json:"border"`
+	Board       Board       `json:"board"`
+	RankAndFile RankAndFile `json:"rank_and_file"`
+	Pieces      Pieces      `json:"pieces"`
 
 	FontStyle              FontStyle       `json:"font_style"`
 	AnnotationStyle        AnnotationStyle `json:"annotation_style"`

@@ -9,7 +9,10 @@ type rendererHighlight struct {
 }
 
 func (r *rendererHighlight) draw(c *gg.Context) {
-	for _, high := range settings.Highlight {
+	if r.ctx == nil {
+		return
+	}
+	for _, high := range r.ctx.Highlight {
 		style := r.getStyle(high)
 		b := getSquareBox(algToCoords(high.Square))
 		c.SetRGBA(toRGBA(style.Color))

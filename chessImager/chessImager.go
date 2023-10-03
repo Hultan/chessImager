@@ -19,6 +19,7 @@ type renderer interface {
 
 type Imager struct {
 	fen string
+	ctx *Context
 }
 
 var settings *Settings
@@ -49,6 +50,7 @@ func (i *Imager) RenderEx(fen string, ctx *Context) image.Image {
 	}
 
 	i.fen = fen
+	i.ctx = ctx
 	c := gg.NewContextForImage(image.NewRGBA(getBoardSize()))
 
 	r := getRenderers(i, settings.Order)
@@ -74,15 +76,23 @@ func getRenderers(i *Imager, order []int) []renderer {
 	}
 	if order == nil {
 		for i := 0; i < len(renderers); i++ {
-			result = append(result, renderers[i])
+			result = append(result, getRenderer(renderers, i))
 		}
 	} else {
 		for _, o := range order {
-			result = append(result, renderers[o])
+			result = append(result, getRenderer(renderers, o))
 		}
 	}
 
 	return result
+}
+
+func getRenderer(renderers map[int]renderer, i int) renderer {
+	r := renderers[i]
+	if r == nil {
+		panic(fmt.Errorf("no renderer with index : %d", i))
+	}
+	return r
 }
 
 // loadSettings loads the default settings from a json file

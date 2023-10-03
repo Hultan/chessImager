@@ -32,7 +32,7 @@ func main() {
 		panic(err)
 	}
 
-	err = ctx.SetOrder([]int{0, 1, 2, 5, 4, 3, 7})
+	err = ctx.SetOrder([]int{0, 1, 2, 5, 4, 3, 6})
 	if err != nil {
 		panic(err)
 	}
