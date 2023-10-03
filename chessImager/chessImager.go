@@ -28,24 +28,24 @@ func NewImager() *Imager {
 	return &Imager{}
 }
 
-func (i *Imager) GetImage(fen string) image.Image {
-	return i.GetImageEx(fen, nil)
+func (i *Imager) Render(fen string) image.Image {
+	return i.RenderEx(fen, nil)
 }
 
-func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
+func (i *Imager) RenderEx(fen string, ctx *Context) image.Image {
 	if !validateFen(fen) {
 		panic(fmt.Errorf("invalid fen : %v", fen))
 	}
 
 	// Handle settings
 	var err error
-	if s == nil {
-		settings, err = LoadSettings("")
+	if ctx == nil {
+		settings, err = loadSettings("")
 		if err != nil {
 			panic(err)
 		}
 	} else {
-		settings = s
+		settings = ctx.settings
 	}
 
 	i.fen = fen
@@ -85,10 +85,10 @@ func getRenderers(i *Imager, order []int) []renderer {
 	return result
 }
 
-// LoadSettings loads the default settings from a json file
+// loadSettings loads the default settings from a json file
 // Path : The path to load the settings from. Leave empty
 // for the default settings (config/default.json).
-func LoadSettings(path string) (*Settings, error) {
+func loadSettings(path string) (*Settings, error) {
 	p := "config/default.json"
 	if path != "" {
 		p = path
@@ -107,32 +107,4 @@ func LoadSettings(path string) (*Settings, error) {
 	}
 
 	return settings, nil
-}
-
-func NewHighlightStyle(typ HighlightType, color string, width int) *HighlightStyle {
-	return &HighlightStyle{
-		Type:  typ,
-		Color: ColorRGBA{hexToRGBA(color)},
-		Width: width,
-	}
-}
-
-func NewAnnotationStyle(pos PositionType, size, fontSize, borderWidth int, bgc, fc, bc string) *AnnotationStyle {
-	return &AnnotationStyle{
-		Position:        pos,
-		Size:            size,
-		FontColor:       ColorRGBA{hexToRGBA(fc)},
-		FontSize:        fontSize,
-		BackgroundColor: ColorRGBA{hexToRGBA(bgc)},
-		BorderColor:     ColorRGBA{hexToRGBA(bc)},
-		BorderWidth:     borderWidth,
-	}
-}
-
-func NewMoveStyle(typ MoveType, color string, Factor float64) *MoveStyle {
-	return &MoveStyle{
-		Color:  ColorRGBA{hexToRGBA(color)},
-		Type:   typ,
-		Factor: Factor,
-	}
 }

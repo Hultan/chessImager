@@ -14,48 +14,45 @@ const (
 func main() {
 	imager := chessImager.NewImager()
 
-	// Advanced call
-	s, err := chessImager.LoadSettings("")
-	if err != nil {
-		panic(err)
-	}
-
-	// Highlight square
-	hs := chessImager.NewHighlightStyle(0, "88008888", 0)
-	s.AddHighlightEx("e7", hs)
-
-	// Annotate square
-	as := chessImager.NewAnnotationStyle(
-		chessImager.PositionTopRight,
-		20, 15, 1,
-		"BBBBBBFF", "000000FF", "000000FF",
-	)
-	s.AddAnnotationEx("e7", "!!", as)
-
-	// Add move
-	ms := chessImager.NewMoveStyle(chessImager.MoveTypeDots, "80008080", 0.3)
-	s.AddMoveEx("e1", "e7", ms)
-
-	img2 := imager.GetImageEx(fen, s)
-	f2, err := os.Create("/home/per/temp/img2.png")
-	if err != nil {
-		panic(err)
-	}
-	defer f2.Close()
-	err = png.Encode(f2, img2)
-	if err != nil {
-		panic(err)
-	}
-
 	// Simple call
-	//img := imager.GetImage(fen)
-	//f, err := os.Create("/home/per/temp/example.png")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//defer f.Close()
-	//err = png.Encode(f, img)
-	//if err != nil {
-	//	panic(err)
-	//}
+	imgSimple := imager.Render(fen)
+	fileSimple, err := os.Create("/home/per/temp/img.png")
+	if err != nil {
+		panic(err)
+	}
+	defer fileSimple.Close()
+	err = png.Encode(fileSimple, imgSimple)
+	if err != nil {
+		panic(err)
+	}
+
+	// Advanced call
+	ctx, err := chessImager.NewContext()
+	if err != nil {
+		panic(err)
+	}
+
+	hs, _ := ctx.NewHighlightStyle(0, "88008888", 0)
+	ctx.AddHighlightEx("e7", hs)
+
+	as, _ := ctx.NewAnnotationStyle(
+		chessImager.PositionTopRight,
+		18, 15, 1,
+		"EEEEEEFF", "000000FF", "000000FF",
+	)
+	ctx.AddAnnotationEx("e7", "!!", as)
+
+	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "80008080", 0.3)
+	ctx.AddMoveEx("e1", "e7", ms)
+
+	imgAdv := imager.RenderEx(fen, ctx)
+	fileAdv, err := os.Create("/home/per/temp/img2.png")
+	if err != nil {
+		panic(err)
+	}
+	defer fileAdv.Close()
+	err = png.Encode(fileAdv, imgAdv)
+	if err != nil {
+		panic(err)
+	}
 }

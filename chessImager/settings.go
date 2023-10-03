@@ -207,27 +207,3 @@ type MoveStyle struct {
 type FontStyle struct {
 	Path string `json:"path"`
 }
-
-func (s *Settings) AddHighlight(square string) {
-	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square})
-}
-
-func (s *Settings) AddHighlightEx(square string, style *HighlightStyle) {
-	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Style: style})
-}
-
-func (s *Settings) AddAnnotation(square, text string) {
-	s.Annotations = append(s.Annotations, Annotation{Square: square, Text: text})
-}
-
-func (s *Settings) AddAnnotationEx(square, text string, style *AnnotationStyle) {
-	s.Annotations = append(s.Annotations, Annotation{Square: square, Text: text, Style: style})
-}
-
-func (s *Settings) AddMove(from, to string) {
-	s.Moves = append(s.Moves, Move{From: from, To: to})
-}
-
-func (s *Settings) AddMoveEx(from, to string, style *MoveStyle) {
-	s.Moves = append(s.Moves, Move{From: from, To: to, Style: style})
-}

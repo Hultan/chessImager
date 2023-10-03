@@ -45,14 +45,17 @@ type PieceRectangle struct {
 }
 
 // hexToRGBA converts a hex string (#rrggbbaa) to a color
-func hexToRGBA(hex string) (col color.RGBA) {
+func hexToRGBA(hex string) (col color.RGBA, err error) {
 	// Remove the '#' symbol if it exists
 	hex = strings.TrimPrefix(hex, "#")
 
 	// Parse the hex values for red, green, blue and alpha
-	fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
+	_, err = fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
+	if err != nil {
+		return col, err
+	}
 
-	return col
+	return col, nil
 }
 
 func toRGBA(col ColorRGBA) (float64, float64, float64, float64) {
