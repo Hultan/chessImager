@@ -1,13 +1,28 @@
 package chessImager
 
 import (
+	"encoding/json"
 	"fmt"
 	"image"
 	"image/color"
+	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
 )
+
+type SubImager interface {
+	SubImage(r image.Rectangle) image.Image
+}
+
+type renderer interface {
+	draw(*gg.Context)
+}
+
+type PieceRectangle struct {
+	piece chessPiece
+	rect  Rectangle
+}
 
 var pieceMap = map[string]chessPiece{
 	"WK": WhiteKing,
@@ -37,11 +52,6 @@ var embeddedPieces = []PieceRectangle{
 	{BlackKnight, Rectangle{999, 333, 333, 333}},
 	{BlackRook, Rectangle{1332, 333, 333, 333}},
 	{BlackPawn, Rectangle{1665, 333, 333, 333}},
-}
-
-type PieceRectangle struct {
-	piece chessPiece
-	rect  Rectangle
 }
 
 // hexToRGBA converts a hex string (#rrggbbaa) to a color
@@ -182,4 +192,28 @@ func setFontFace(c *gg.Context, size int) {
 	if err != nil {
 		panic(fmt.Errorf("failed to load font face : %v", err))
 	}
+}
+
+// loadSettings loads the default settings from a json file
+// Path : The path to load the settings from. Leave empty
+// for the default settings (config/default.json).
+func loadSettings(path string) (*Settings, error) {
+	p := "config/default.json"
+	if path != "" {
+		p = path
+	}
+
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	s := &Settings{}
+	err = json.NewDecoder(f).Decode(s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s, nil
 }
