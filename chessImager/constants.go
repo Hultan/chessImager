@@ -44,11 +44,11 @@ const (
 type PositionType int
 
 const (
-	TopLeft PositionType = iota
-	TopRight
-	BottomRight
-	BottomLeft
-	Middle
+	PositionTopLeft PositionType = iota
+	PositionTopRight
+	PositionBottomRight
+	PositionBottomLeft
+	PositionMiddle
 )
 
 type MoveType int
@@ -60,10 +60,10 @@ const (
 	MoveTypeDotsEx                 // Dots from -> to
 )
 
-type HighlightedSquareType int
+type HighlightType int
 
 const (
-	HighlightedSquareFull HighlightedSquareType = iota
-	HighlightedSquareBorder
-	HighlightedSquareCircle
+	HighlightFull HighlightType = iota
+	HighlightBorder
+	HighlightCircle
 )

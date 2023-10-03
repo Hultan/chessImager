@@ -57,22 +57,22 @@
   },
   "annotation_style": {
     "position": 1,
-    "size": 16,
-    "font_color":"#FFFFFFFF",
-    "font_size": 13,
-    "background_color":"#FF000080",
-    "border_color":"#000000FF",
+    "size": 15,
+    "font_color":"#000000FF",
+    "font_size": 12,
+    "background_color":"#E8E57CFF",
+    "border_color":"#E8E57CFF",
     "border_width":1
   },
-  "highlighted_square_style": {
-    "type": 2,
+  "highlight_style": {
+    "type": 0,
     "color": "#EEEE4480",
-    "width": 35
+    "width": 0
   },
   "move_style": {
     "type": 0,
-    "color": "#00DDDDAA",
-    "factor": 0.5
+    "color": "#333333AA",
+    "factor": 0.3
   },
   "font_style": {
     "path" : ""

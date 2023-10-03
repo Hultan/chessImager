@@ -1,8 +1,10 @@
 package chessImager
 
 import (
+	"encoding/json"
 	"fmt"
 	"image"
+	"os"
 
 	"github.com/fogleman/gg"
 )
@@ -38,7 +40,7 @@ func (i *Imager) GetImageEx(fen string, s *Settings) image.Image {
 	// Handle settings
 	var err error
 	if s == nil {
-		settings, err = GetSettings("")
+		settings, err = LoadSettings("")
 		if err != nil {
 			panic(err)
 		}
@@ -65,7 +67,7 @@ func getRenderers(i *Imager, order []int) []renderer {
 		0: &rendererBorder{i},
 		1: &rendererBoard{i},
 		2: &rendererRankAndFile{i},
-		3: &rendererHighlightedSquare{i},
+		3: &rendererHighlight{i},
 		4: &rendererPiece{i},
 		5: &rendererAnnotation{i},
 		6: &rendererMoves{i},
@@ -81,4 +83,56 @@ func getRenderers(i *Imager, order []int) []renderer {
 	}
 
 	return result
+}
+
+// LoadSettings loads the default settings from a json file
+// Path : The path to load the settings from. Leave empty
+// for the default settings (config/default.json).
+func LoadSettings(path string) (*Settings, error) {
+	p := "config/default.json"
+	if path != "" {
+		p = path
+	}
+
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	settings := &Settings{}
+	err = json.NewDecoder(f).Decode(settings)
+	if err != nil {
+		return nil, err
+	}
+
+	return settings, nil
+}
+
+func NewHighlightStyle(typ HighlightType, color string, width int) *HighlightStyle {
+	return &HighlightStyle{
+		Type:  typ,
+		Color: ColorRGBA{hexToRGBA(color)},
+		Width: width,
+	}
+}
+
+func NewAnnotationStyle(pos PositionType, size, fontSize, borderWidth int, bgc, fc, bc string) *AnnotationStyle {
+	return &AnnotationStyle{
+		Position:        pos,
+		Size:            size,
+		FontColor:       ColorRGBA{hexToRGBA(fc)},
+		FontSize:        fontSize,
+		BackgroundColor: ColorRGBA{hexToRGBA(bgc)},
+		BorderColor:     ColorRGBA{hexToRGBA(bc)},
+		BorderWidth:     borderWidth,
+	}
+}
+
+func NewMoveStyle(typ MoveType, color string, Factor float64) *MoveStyle {
+	return &MoveStyle{
+		Color:  ColorRGBA{hexToRGBA(color)},
+		Type:   typ,
+		Factor: Factor,
+	}
 }

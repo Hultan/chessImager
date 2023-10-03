@@ -1,11 +1,9 @@
 package chessImager
 
 import (
-	"encoding/json"
 	"fmt"
 	"image"
 	"image/color"
-	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -181,28 +179,4 @@ func setFontFace(c *gg.Context, size int) {
 	if err != nil {
 		panic(fmt.Errorf("failed to load font face : %v", err))
 	}
-}
-
-// GetSettings loads the default settings from a json file
-// Path : The path to load the settings from. Leave empty
-// for the default settings (config/default.json).
-func GetSettings(path string) (*Settings, error) {
-	p := "config/default.json"
-	if path != "" {
-		p = path
-	}
-
-	f, err := os.Open(p)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	settings := &Settings{}
-	err = json.NewDecoder(f).Decode(settings)
-	if err != nil {
-		return nil, err
-	}
-
-	return settings, nil
 }

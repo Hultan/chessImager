@@ -29,10 +29,10 @@ type Settings struct {
 	Moves       []Move              `json:"moves"`
 	Annotations []Annotation        `json:"annotations"`
 
-	FontStyle              FontStyle              `json:"font_style"`
-	AnnotationStyle        AnnotationStyle        `json:"annotation_style"`
-	MoveStyle              MoveStyle              `json:"move_style"`
-	HighlightedSquareStyle HighlightedSquareStyle `json:"highlighted_square_style"`
+	FontStyle              FontStyle       `json:"font_style"`
+	AnnotationStyle        AnnotationStyle `json:"annotation_style"`
+	MoveStyle              MoveStyle       `json:"move_style"`
+	HighlightedSquareStyle HighlightStyle  `json:"highlight_style"`
 }
 
 // Border settings for the chessboard
@@ -80,7 +80,7 @@ type BoardImage struct {
 
 // RankAndFile defines how the rank and file indicators should be drawn.
 // Important: Only used when Board.Type = Default
-// Type : 0 = None, 1 = InSquares, 2 = InBorder
+// Type : 0 = None, 1 = InBorder, 2 = InSquares
 // FontColor : Font color to use
 // FontSize : Font size to use
 type RankAndFile struct {
@@ -92,23 +92,23 @@ type RankAndFile struct {
 // HighlightedSquare defines how highlighted squares should be drawn.
 // Square : The square to be highlighted (ex "f3")
 type HighlightedSquare struct {
-	Square string                  `json:"square"`
-	Style  *HighlightedSquareStyle `json:"style"`
+	Square string          `json:"square"`
+	Style  *HighlightStyle `json:"style"`
 }
 
-// HighlightedSquareStyle defines how highlighted squares should be drawn.
-// Color : The highlight color
+// HighlightStyle defines how highlighted squares should be drawn.
 // Type: Highlight a square by painting:
 //
 //	0 = the full square
 //	1 = a border around the square
 //	2 = a circle in the center of the square
 //
+// Color : The highlight color
 // Width : Width of the border (Type = 1), or radius of the circle (Type=2)
-type HighlightedSquareStyle struct {
-	Color ColorRGBA             `json:"color"`
-	Type  HighlightedSquareType `json:"type"`
-	Width int                   `json:"width"`
+type HighlightStyle struct {
+	Type  HighlightType `json:"type"`
+	Color ColorRGBA     `json:"color"`
+	Width int           `json:"width"`
 }
 
 // Pieces represents settings of how to draw pieces
@@ -212,7 +212,7 @@ func (s *Settings) AddHighlight(square string) {
 	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square})
 }
 
-func (s *Settings) AddHighlightEx(square string, style *HighlightedSquareStyle) {
+func (s *Settings) AddHighlightEx(square string, style *HighlightStyle) {
 	s.Highlight = append(s.Highlight, HighlightedSquare{Square: square, Style: style})
 }
 

@@ -36,35 +36,35 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) Recta
 	size := float64(r.getStyle(annotation).Size)
 	space := 2.0
 	switch r.getStyle(annotation).Position {
-	case TopLeft:
+	case PositionTopLeft:
 		return Rectangle{
 			X:      rect.X + space,
 			Y:      rect.Y + space,
 			Width:  size,
 			Height: size,
 		}
-	case TopRight:
+	case PositionTopRight:
 		return Rectangle{
 			X:      rect.X + rect.Width - size - space,
 			Y:      rect.Y + space,
 			Width:  size,
 			Height: size,
 		}
-	case BottomLeft:
+	case PositionBottomLeft:
 		return Rectangle{
 			X:      rect.X + space,
 			Y:      rect.Y + rect.Height - size - space,
 			Width:  size,
 			Height: size,
 		}
-	case BottomRight:
+	case PositionBottomRight:
 		return Rectangle{
 			X:      rect.X + rect.Width - size - space,
 			Y:      rect.Y + rect.Height - size - space,
 			Width:  size,
 			Height: size,
 		}
-	case Middle:
+	case PositionMiddle:
 		return Rectangle{
 			X:      rect.X + (rect.Width-size)/2,
 			Y:      rect.Y + (rect.Height-size)/2,

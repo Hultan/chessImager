@@ -4,38 +4,38 @@ import (
 	"github.com/fogleman/gg"
 )
 
-type rendererHighlightedSquare struct {
+type rendererHighlight struct {
 	*Imager
 }
 
-func (r *rendererHighlightedSquare) draw(c *gg.Context) {
+func (r *rendererHighlight) draw(c *gg.Context) {
 	for _, high := range settings.Highlight {
 		style := r.getStyle(high)
 		b := getSquareBox(algToCoords(high.Square))
 		c.SetRGBA(toRGBA(style.Color))
 		switch style.Type {
-		case HighlightedSquareFull:
+		case HighlightFull:
 			x, y, w, h := b.Coords()
 			c.DrawRectangle(x, y, w, h)
 			c.Fill()
-		case HighlightedSquareBorder:
+		case HighlightBorder:
 			x, y, w, h := b.Coords()
 			bw := float64(style.Width)
 			c.SetLineWidth(bw)
 			c.DrawRectangle(x+bw/2, y+bw/2, w-bw, h-bw)
 			c.Stroke()
-		case HighlightedSquareCircle:
+		case HighlightCircle:
 			x, y := b.Center()
 			w := float64(style.Width)
 			c.DrawCircle(x, y, w)
 			c.Fill()
 		default:
-			panic("rendererHighlightedSquare : oops, why are we here?")
+			panic("rendererHighlight : oops, why are we here?")
 		}
 	}
 }
 
-func (r *rendererHighlightedSquare) getStyle(high HighlightedSquare) *HighlightedSquareStyle {
+func (r *rendererHighlight) getStyle(high HighlightedSquare) *HighlightStyle {
 	if high.Style == nil {
 		return &settings.HighlightedSquareStyle
 	} else {
