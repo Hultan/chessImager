@@ -52,7 +52,7 @@ func hexToRGBA(hex string) (col color.RGBA, err error) {
 	// Parse the hex values for red, green, blue and alpha
 	_, err = fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
 	if err != nil {
-		return col, err
+		return col, fmt.Errorf("invalid color (%s) : %v", hex, err)
 	}
 
 	return col, nil

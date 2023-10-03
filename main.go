@@ -32,7 +32,10 @@ func main() {
 		panic(err)
 	}
 
-	hs, _ := ctx.NewHighlightStyle(0, "88008888", 0)
+	hs, err := ctx.NewHighlightStyle(0, "#88008888", 0)
+	if err != nil {
+		panic(err)
+	}
 	ctx.AddHighlightEx("e7", hs)
 
 	as, _ := ctx.NewAnnotationStyle(
