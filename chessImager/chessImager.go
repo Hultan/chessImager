@@ -64,23 +64,18 @@ func getRenderers(i *Imager, order []int) []renderer {
 		5: &rendererAnnotation{i},
 		6: &rendererMoves{i},
 	}
+
 	if order == nil {
-		for i := 0; i < len(renderers); i++ {
-			result = append(result, getRenderer(renderers, i))
+		order = []int{0, 1, 2, 3, 4, 5, 6}
+	}
+
+	for _, i := range order {
+		r := renderers[i]
+		if r == nil {
+			panic(fmt.Errorf("no renderer with index : %d", i))
 		}
-	} else {
-		for _, o := range order {
-			result = append(result, getRenderer(renderers, o))
-		}
+		result = append(result, r)
 	}
 
 	return result
-}
-
-func getRenderer(renderers map[int]renderer, i int) renderer {
-	r := renderers[i]
-	if r == nil {
-		panic(fmt.Errorf("no renderer with index : %d", i))
-	}
-	return r
 }

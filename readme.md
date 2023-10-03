@@ -12,29 +12,55 @@
 
 ## Description
 
-ChessImages is a **Go** package that creates images of chess boards based on a FEN string. It is highly configurable,
-so 
-that you can create images that look the way you want. 
+**ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly 
+configurable,
+so that you can create chess board images that look exactly the way you want them to look. 
 
 If you are happy with the default look, you can use that, but do note that the default embedded chess pieces are free for personal use only (See : https://clipart-library.com/clip-art/chess-pieces-silhouette-14.htm).
+
+ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s repository 
+[chessimage](https://github.com/cjsaylor/chessimage).
 
 ## Example:
 Move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), 1999.
 
-![example.png](example.png)
+<img src="example.png" alt="drawing" width="350"/>
 
 **Kasparov Garry** (RUS) vs. **Topalov Veselin** (BUL)
 
 ## Settings
 
-ChessImager uses a configuration JSON file, that is called default.json. You can edit that file, or you can create 
-your own settings file and load that instead. 
+ChessImager uses a configuration JSON file, to define the size of the board and colors etc. You can either use the 
+embedded default.json or you can create your own configuration file. Read more about this below in
 
-Use chessImager.LoadSettings(path string) to load the settings file you want. Leave the path blank to load the 
-default settings file.
+
 
 The default.json file contains settings for the render order, settings for each renderer, and also some extra style 
 settings for the last four renderers. Let's go through all of these section, one by one!
+
+## Context
+The simplest way to use **ChessImager** is to use it in this way:
+```go
+const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+image := chessImager.NewImager().Render(fen)
+```
+This will generate the image below, using the position in the **fen** string, and the 
+settings in the embedded **default.json** file. 
+
+<img src="img.png" alt="drawing" width="350"/>
+
+If you want to do more advanced stuff, like loading you own settings file, you can do that by creating a 
+**chessImager.Context** object, like this:
+
+```go
+	ctx, _ := chessImager.NewContextFromPath("/home/me/mySettings.json")
+```
+or if you don't need to use your own JSON file, you could just do this: 
+```go
+	ctx, _ := chessImager.NewContext()
+```
+Once you have your context, you can add one or more **highlighted squares**, **moves**, or **annotations**  to the 
+board. You can also change the rendering order using the **context** object, if your use case is more advanced.
 
 ## Render order
 ChessImager is split up into seven different renderers, that are each responsible for drawing parts of
@@ -54,7 +80,7 @@ the chess board. The renderers, and their indexes, are:
 The first two renderers, Border and Board, have to be at place 0 and 1, otherwise
 you won't get very interesting images. All the others can be moved around to improve your image.
 
-In the default.json file, you can set the order of the renderers by changing the **order** list. The default order
+In the JSON file, you can set the order of the renderers by changing the **order** list. The default order
 is the order above.  
 
 | Name  | Type         | Description                         |
@@ -62,15 +88,34 @@ is the order above.
 | order | integer list | The digits 0 through 6 in any order |
 
 
-An example would be if you want the pieces to be highlighted as well, not just the square. Then you could set the 
-order to be : 
-**0,1,2,4,3,5,6**. 
+An example would be if you want the pieces to be rendered **before** the highlighted squares, then you could set the 
+order to be **0,1,2,4,3,5,6** by setting:
+```json
+{
+   ...
+  "order" : [0,1,2,4,3,5,6],
+   ...
+}
+
+```
+in the JSON file.
+
+If you don't want to edit the JSON file, you could just specify it with code, like this:
+```go
+	_ = ctx.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
+```
 
 That would give you the following image:
-![order.png](order.png)
 
-Maybe not as pretty as the first example, but you have the option to change the order in case there are scenarios I 
-have not thought of.
+<img src="order.png" alt="drawing" width="350"/>
+
+Maybe not as pretty as the first example, but you have the option to change the order in case you need it.
+
+Every new context created automatically loads the settings from the JSON file, so if you need a
+different order for
+your next image, then just create a new **context** object and work with that. Creating a new context resets the
+Moves, Annotations and Highlights lists, so it is generally a good idea to create a new context for each new image
+that you want to generate.
 
 ## Border renderer
 The border renderer is usually the first renderer. It clears the image with the Color specified in the JSON file, 
@@ -279,6 +324,7 @@ following image (the image has been significantly shrunk).
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * include simple example, advanced example, and SetOrder example
+* embed default.json
 ## Possible future todo:s
 * Implement PGN : White player, Black player, move count etc
 * Implement Possible Moves For/to square - show moves that a piece can do, or show pieces that can move to a square.

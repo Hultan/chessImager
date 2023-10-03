@@ -17,7 +17,10 @@ package chessImager
 // Board : Settings for the board
 // RankAndFile: If and how the rank and file should be drawn
 // Pieces : Piece settings
-// Highlight:List of highlighted squares
+// FontStyle: Defines what font to use.
+// HighlightStyle : Defines how a highlighted square should be rendered
+// AnnotationStyle : Defines how an annotation should be rendered
+// MoveStyle : Defines how a move should be rendered
 type Settings struct {
 	Order []int `json:"order"`
 
@@ -26,10 +29,10 @@ type Settings struct {
 	RankAndFile RankAndFile `json:"rank_and_file"`
 	Pieces      Pieces      `json:"pieces"`
 
-	FontStyle              FontStyle       `json:"font_style"`
-	AnnotationStyle        AnnotationStyle `json:"annotation_style"`
-	MoveStyle              MoveStyle       `json:"move_style"`
-	HighlightedSquareStyle HighlightStyle  `json:"highlight_style"`
+	FontStyle       FontStyle       `json:"font_style"`
+	HighlightStyle  HighlightStyle  `json:"highlight_style"`
+	AnnotationStyle AnnotationStyle `json:"annotation_style"`
+	MoveStyle       MoveStyle       `json:"move_style"`
 }
 
 // Border settings for the chessboard

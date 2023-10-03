@@ -40,7 +40,7 @@ func (r *rendererHighlight) draw(c *gg.Context) {
 
 func (r *rendererHighlight) getStyle(high HighlightedSquare) *HighlightStyle {
 	if high.Style == nil {
-		return &settings.HighlightedSquareStyle
+		return &settings.HighlightStyle
 	} else {
 		return high.Style
 	}
