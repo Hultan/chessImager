@@ -100,11 +100,11 @@ func loadSettings(path string) (*Settings, error) {
 	}
 	defer f.Close()
 
-	settings := &Settings{}
-	err = json.NewDecoder(f).Decode(settings)
+	s := &Settings{}
+	err = json.NewDecoder(f).Decode(s)
 	if err != nil {
 		return nil, err
 	}
 
-	return settings, nil
+	return s, nil
 }
