@@ -32,7 +32,7 @@ func main() {
 		panic(err)
 	}
 
-	err = ctx.SetOrder([]int{0, 1, 2, 5, 4, 3, 6})
+	err = ctx.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func main() {
 
 	as, _ := ctx.NewAnnotationStyle(
 		chessImager.PositionTopRight,
-		18, 15, 1,
+		20, 15, 1,
 		"EEEEEEFF", "000000FF", "000000FF",
 	)
 	ctx.AddAnnotationEx("e7", "!!", as)
