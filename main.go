@@ -10,22 +10,13 @@ import (
 const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
 
 func main() {
-	imager := chessImager.NewImager()
+	renderSimple("/home/per/temp/simple.png")
+	renderKasparov("/home/per/temp/kasparov.png")
+	renderAdvanced("/home/per/temp/advanced.png")
+}
 
-	// Simple call
-	imgSimple, err := imager.Render(fen)
-	if err != nil {
-		panic(err)
-	}
-	fileSimple, err := os.Create("/home/per/temp/img.png")
-	if err != nil {
-		panic(err)
-	}
-	defer fileSimple.Close()
-	err = png.Encode(fileSimple, imgSimple)
-	if err != nil {
-		panic(err)
-	}
+func renderAdvanced(fileName string) {
+	imager := chessImager.NewImager()
 
 	// Advanced call
 	ctx, err := chessImager.NewContext()
@@ -59,7 +50,7 @@ func main() {
 		panic(err)
 	}
 
-	fileAdv, err := os.Create("/home/per/temp/img2.png")
+	fileAdv, err := os.Create(fileName)
 	if err != nil {
 		panic(err)
 	}
@@ -68,9 +59,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 }
 
-func generateSample() {
+func renderKasparov(fileName string) {
 	imager := chessImager.NewImager()
 	ctx, _ := chessImager.NewContext()
 
@@ -95,7 +87,26 @@ func generateSample() {
 	if err != nil {
 		panic(err)
 	}
-	file, _ := os.Create("/home/per/temp/img2.png")
+	file, _ := os.Create(fileName)
 	defer file.Close()
 	_ = png.Encode(file, img)
+}
+
+func renderSimple(fileName string) {
+	imager := chessImager.NewImager()
+
+	// Simple call
+	imgSimple, err := imager.Render(fen)
+	if err != nil {
+		panic(err)
+	}
+	fileSimple, err := os.Create(fileName)
+	if err != nil {
+		panic(err)
+	}
+	defer fileSimple.Close()
+	err = png.Encode(fileSimple, imgSimple)
+	if err != nil {
+		panic(err)
+	}
 }
