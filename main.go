@@ -29,20 +29,20 @@ func renderAdvanced(fileName string) {
 		panic(err)
 	}
 
-	hs, err := ctx.NewHighlightStyle(0, "#E8E57C", 0)
+	hs, err := ctx.NewHighlightStyle(chessImager.HighlightCircle, "#88E57C", 35)
 	if err != nil {
 		panic(err)
 	}
 	ctx.AddHighlightEx("e7", hs)
 
 	as, _ := ctx.NewAnnotationStyle(
-		chessImager.PositionTopRight,
-		17, 14, 1,
-		"E8E57C", "000000", "E8E57C",
+		chessImager.PositionTopLeft,
+		25, 20, 1,
+		"E8E57C", "000000", "FFFFFF",
 	)
 	ctx.AddAnnotationEx("e7", "!!", as)
 
-	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#6D6B5EFF", 0.3)
+	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#9D6B5EFF", 0.2)
 	ctx.AddMoveEx("e1", "e7", ms)
 
 	imgAdv, err := imager.RenderEx(fen, ctx)
@@ -66,21 +66,10 @@ func renderKasparov(fileName string) {
 	imager := chessImager.NewImager()
 	ctx, _ := chessImager.NewContext()
 
-	// Highlight yellow square
-	hs, _ := ctx.NewHighlightStyle(0, "#E8E57CFF", 0)
-	ctx.AddHighlightEx("e7", hs)
-
-	// Annotate square e7 with "!!"
-	as, _ := ctx.NewAnnotationStyle(
-		chessImager.PositionTopRight,
-		17, 14, 1,
-		"#E8E57CFF", "#000000FF", "#E8E57CFF",
-	)
-	ctx.AddAnnotationEx("e7", "!!", as)
-
+	// Highlight yellow square and
+	// Annotate square e7 with "!!" and
 	// Show move e1-e7
-	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#6D6B5EFF", 0.3)
-	ctx.AddMoveEx("e1", "e7", ms)
+	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
 	// Render the image and save it to a file
 	img, err := imager.RenderEx(fen, ctx)

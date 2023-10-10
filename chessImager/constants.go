@@ -54,8 +54,8 @@ const (
 type MoveType int
 
 const (
-	MoveTypeArrow MoveType = iota // Arrow from -> to
-	MoveTypeDots                  // Dots from and to
+	MoveTypeDots  MoveType = iota // Dots from and to
+	moveTypeArrow                 // Arrow from -> to, NOT IMPLEMENTED YET!
 )
 
 type HighlightType int

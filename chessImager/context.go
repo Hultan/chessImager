@@ -16,18 +16,6 @@ type Context struct {
 	Annotations []Annotation
 }
 
-func NewContext() (*Context, error) {
-	return NewContextFromPath("")
-}
-
-func NewContextFromPath(path string) (*Context, error) {
-	s, err := loadSettings(path)
-	if err != nil {
-		return nil, err
-	}
-	return &Context{settings: s}, nil
-}
-
 func (c *Context) SetOrder(order []int) error {
 	if len(order) != 7 {
 		return errors.New("len(order) must be 7")
@@ -37,28 +25,40 @@ func (c *Context) SetOrder(order []int) error {
 	return nil
 }
 
-func (c *Context) AddHighlight(square string) {
+func (c *Context) AddHighlight(square string) *Context {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square})
+
+	return c
 }
 
-func (c *Context) AddHighlightEx(square string, style *HighlightStyle) {
+func (c *Context) AddHighlightEx(square string, style *HighlightStyle) *Context {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square, Style: style})
+
+	return c
 }
 
-func (c *Context) AddAnnotation(square, text string) {
+func (c *Context) AddAnnotation(square, text string) *Context {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text})
+
+	return c
 }
 
-func (c *Context) AddAnnotationEx(square, text string, style *AnnotationStyle) {
+func (c *Context) AddAnnotationEx(square, text string, style *AnnotationStyle) *Context {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text, Style: style})
+
+	return c
 }
 
-func (c *Context) AddMove(from, to string) {
+func (c *Context) AddMove(from, to string) *Context {
 	c.Moves = append(c.Moves, Move{From: from, To: to})
+
+	return c
 }
 
-func (c *Context) AddMoveEx(from, to string, style *MoveStyle) {
+func (c *Context) AddMoveEx(from, to string, style *MoveStyle) *Context {
 	c.Moves = append(c.Moves, Move{From: from, To: to, Style: style})
+
+	return c
 }
 
 func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int) (*HighlightStyle, error) {

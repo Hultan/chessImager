@@ -51,6 +51,18 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	return c.Image(), nil
 }
 
+func NewContext() (*Context, error) {
+	return NewContextFromPath("")
+}
+
+func NewContextFromPath(path string) (*Context, error) {
+	s, err := loadSettings(path)
+	if err != nil {
+		return nil, err
+	}
+	return &Context{settings: s}, nil
+}
+
 // getRenderers returns a slice of all the renderers in the given order
 func getRenderers(i *Imager, order []int) []renderer {
 	var result []renderer
