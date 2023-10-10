@@ -33,17 +33,16 @@ func renderAdvanced(fileName string) {
 	if err != nil {
 		panic(err)
 	}
-	ctx.AddHighlightEx("e7", hs)
 
 	as, _ := ctx.NewAnnotationStyle(
 		chessImager.PositionTopLeft,
 		25, 20, 1,
 		"E8E57C", "000000", "FFFFFF",
 	)
-	ctx.AddAnnotationEx("e7", "!!", as)
 
 	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#9D6B5EFF", 0.2)
-	ctx.AddMoveEx("e1", "e7", ms)
+
+	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
 
 	imgAdv, err := imager.RenderEx(fen, ctx)
 	if err != nil {
