@@ -2,6 +2,7 @@ package chessImager
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
@@ -54,14 +55,26 @@ var embeddedPieces = []PieceRectangle{
 	{BlackPawn, Rectangle{1665, 333, 333, 333}},
 }
 
-// hexToRGBA converts a hex string (#rrggbbaa) to a color
+// hexToRGBA converts a hex string to a color
+// #RRGGBBAA or #RRGGBB or RRGGBBAA or RRGGBB
 func hexToRGBA(hex string) (col color.RGBA, err error) {
 	// Remove the '#' symbol if it exists
 	hex = strings.TrimPrefix(hex, "#")
 
 	// Parse the hex values for red, green, blue and alpha
-	_, err = fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
-	if err != nil {
+	if len(hex) == 8 {
+		_, err = fmt.Sscanf(hex, "%02x%02x%02x%02x", &col.R, &col.G, &col.B, &col.A)
+		if err != nil {
+			return col, fmt.Errorf("invalid color (%s) : %v", hex, err)
+		}
+	} else if len(hex) == 6 {
+		col.A = 255
+		_, err = fmt.Sscanf(hex, "%02x%02x%02x", &col.R, &col.G, &col.B)
+		if err != nil {
+			return col, fmt.Errorf("invalid color (%s) : %v", hex, err)
+		}
+	} else {
+		err := errors.New("valid formats : #RRGGBBAA or #RRGGBB or RRGGBBAA or RRGGBB")
 		return col, fmt.Errorf("invalid color (%s) : %v", hex, err)
 	}
 
@@ -74,17 +87,6 @@ func toRGBA(col ColorRGBA) (float64, float64, float64, float64) {
 
 func invert(x int) int {
 	return 7 - x
-}
-
-func createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
-	result := make([]PieceRectangle, len(mapPieces))
-	for _, piece := range mapPieces {
-		result = append(result, PieceRectangle{
-			piece: pieceMap[piece.Piece],
-			rect:  piece.Rect,
-		})
-	}
-	return result
 }
 
 func abs(x int) int {
@@ -135,30 +137,6 @@ func algToCoords(alg string) (int, int) {
 	return x, y
 }
 
-func getRankBox(rank int) Rectangle {
-	square := float64(settings.Board.Default.Size) / 8
-	border := float64(settings.Border.Width)
-
-	return Rectangle{
-		X:      0,
-		Y:      border + float64(invert(rank))*square,
-		Width:  border,
-		Height: square,
-	}
-}
-
-func getFileBox(file int) Rectangle {
-	square := float64(settings.Board.Default.Size) / 8
-	border := float64(settings.Border.Width)
-
-	return Rectangle{
-		X:      border + float64(invert(file))*square,
-		Y:      border + 8*square,
-		Width:  square,
-		Height: border,
-	}
-}
-
 func getSquareBox(x, y int) Rectangle {
 	square := float64(settings.Board.Default.Size) / 8
 	border := float64(settings.Border.Width)
@@ -168,17 +146,6 @@ func getSquareBox(x, y int) Rectangle {
 		Y:      border + float64(invert(y))*square,
 		Width:  square,
 		Height: square,
-	}
-}
-
-func getBoardBox() Rectangle {
-	border := float64(settings.Border.Width)
-
-	return Rectangle{
-		X:      border,
-		Y:      border,
-		Width:  float64(settings.Board.Default.Size),
-		Height: float64(settings.Board.Default.Size),
 	}
 }
 

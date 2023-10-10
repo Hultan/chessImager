@@ -67,7 +67,7 @@ func (r *rendererPiece) loadPieces() {
 		if err != nil {
 			panic(err)
 		}
-		pr := createPieceRectangleSlice(settings.Pieces.ImageMap.Pieces)
+		pr := r.createPieceRectangleSlice(settings.Pieces.ImageMap.Pieces)
 		r.loadImageMapPieces(imageMap, pr)
 	}
 }
@@ -80,6 +80,17 @@ func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRe
 	for _, item := range items {
 		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.ToRect())))
 	}
+}
+
+func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
+	result := make([]PieceRectangle, len(mapPieces))
+	for _, piece := range mapPieces {
+		result = append(result, PieceRectangle{
+			piece: pieceMap[piece.Piece],
+			rect:  piece.Rect,
+		})
+	}
+	return result
 }
 
 func (r *rendererPiece) resize(img image.Image) image.Image {

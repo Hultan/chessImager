@@ -19,13 +19,13 @@ func NewImager() *Imager {
 	return &Imager{}
 }
 
-func (i *Imager) Render(fen string) image.Image {
+func (i *Imager) Render(fen string) (image.Image, error) {
 	return i.RenderEx(fen, nil)
 }
 
-func (i *Imager) RenderEx(fen string, ctx *Context) image.Image {
+func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	if !validateFen(fen) {
-		panic(fmt.Errorf("invalid fen : %v", fen))
+		return nil, fmt.Errorf("invalid fen : %v", fen)
 	}
 
 	// Handle settings
@@ -33,7 +33,7 @@ func (i *Imager) RenderEx(fen string, ctx *Context) image.Image {
 	if ctx == nil {
 		settings, err = loadSettings("")
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 	} else {
 		settings = ctx.settings
@@ -48,7 +48,7 @@ func (i *Imager) RenderEx(fen string, ctx *Context) image.Image {
 		rend.draw(c)
 	}
 
-	return c.Image()
+	return c.Image(), nil
 }
 
 // getRenderers returns a slice of all the renderers in the given order

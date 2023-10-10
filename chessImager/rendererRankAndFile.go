@@ -62,12 +62,12 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 	for i := 0; i < 8; i++ {
 		// Ranks
 		text := r.getRankText(i)
-		box := getRankBox(i)
+		box := r.getRankBox(i)
 		rf = append(rf, RankFile{box: box, text: text})
 
 		// Files
 		text = r.getFileText(i)
-		box = getFileBox(i)
+		box = r.getFileBox(i)
 		box.Height -= 3 // Adjust the height a little to handle the letter g
 		rf = append(rf, RankFile{box: box, text: text})
 	}
@@ -87,5 +87,29 @@ func (r *rendererRankAndFile) getFileText(n int) string {
 		return fmt.Sprintf("%c", 'a'+n)
 	} else {
 		return fmt.Sprintf("%c", 'h'-n)
+	}
+}
+
+func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
+	square := float64(settings.Board.Default.Size) / 8
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      0,
+		Y:      border + float64(invert(rank))*square,
+		Width:  border,
+		Height: square,
+	}
+}
+
+func (r *rendererRankAndFile) getFileBox(file int) Rectangle {
+	square := float64(settings.Board.Default.Size) / 8
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      border + float64(invert(file))*square,
+		Y:      border + 8*square,
+		Width:  square,
+		Height: border,
 	}
 }

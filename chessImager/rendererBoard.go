@@ -9,7 +9,7 @@ type rendererBoard struct {
 }
 
 func (r *rendererBoard) draw(c *gg.Context) {
-	board := getBoardBox()
+	board := r.getBoardBox()
 
 	// Set background to black color
 	c.SetRGBA(toRGBA(settings.Board.Default.Black))
@@ -25,5 +25,16 @@ func (r *rendererBoard) draw(c *gg.Context) {
 				c.Fill()
 			}
 		}
+	}
+}
+
+func (r *rendererBoard) getBoardBox() Rectangle {
+	border := float64(settings.Border.Width)
+
+	return Rectangle{
+		X:      border,
+		Y:      border,
+		Width:  float64(settings.Board.Default.Size),
+		Height: float64(settings.Board.Default.Size),
 	}
 }
