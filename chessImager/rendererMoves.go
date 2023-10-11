@@ -40,11 +40,6 @@ func (r *rendererMoves) draw(c *gg.Context) {
 			}
 		} else {
 			// Horse type move (or other weird illegal move)
-			//x, y := fromX, fromY
-			//cX, cY := r.getSquareBox(x, y).Center()
-			//c.DrawCircle(cX, cY, square*factor)
-			//c.Fill()
-
 			x, y := fromX, fromY
 			for i := 0; i <= abs(dy); i++ {
 				cX, cY := getSquareBox(x, y).Center()

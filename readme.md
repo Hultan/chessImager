@@ -393,6 +393,45 @@ This JSON will pick out the red and yellow pieces out of the following image.
   },
 ```
 ## Annotations renderer
+The annotation renderer is responsible for rendering annotations, like !! or ??. You decide how big the annotation 
+circle should be and what text it should contain.
+
+The style of the annotation is normally determined by the default annotation style provided in the `default.
+json` file.
+
+| Name             | Type    | Description                                                            |
+|------------------|---------|------------------------------------------------------------------------|
+| position         | integer | 0 = TopLeft, 1 = TopRight, 2 = BottomRight, 3 = BottomLeft, 4 = Middle |
+| size             | integer | The size of the annotation circle                                      |
+| font_color       | string  | The font color                                                         |
+| font_size        | integer | The font size                                                          |
+| background_color | string  | The background color of the annotation circle                          |
+| border_color     | string  | The border color of the annotation circle                              |
+| border_width     | integer | The width of the border                                                |
+
+You can add an annotation by using the method `AddAnnotation()` on the **context** object:
+
+```go
+   imager := chessImager.NewImager()
+   ctx, _ := imager.NewContext()
+   ctx.AddAnnotation("e7", "!!")
+   image := imager.RenderEx(fen, ctx)
+```
+
+Another alternative is to use the method `AddAnnotationEx()`, that allows you to provide some special
+styling to this specific square:
+
+```go
+   imager := chessImager.NewImager()
+   ctx, _ := imager.NewContext()
+   as, _ := ctx.NewAnnotationStyle(
+      chessImager.PositionTopLeft,
+      25, 20, 1,
+      "E8E57C", "000000", "FFFFFF",
+   )
+   ctx.AddAnnotationEx("e7", "11", as)
+   image := imager.RenderEx(fen, ctx)
+```
 
 ## Moves renderer
 
