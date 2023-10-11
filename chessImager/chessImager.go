@@ -51,11 +51,11 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	return c.Image(), nil
 }
 
-func NewContext() (*Context, error) {
-	return NewContextFromPath("")
+func (i *Imager) NewContext() (*Context, error) {
+	return i.NewContextFromPath("")
 }
 
-func NewContextFromPath(path string) (*Context, error) {
+func (i *Imager) NewContextFromPath(path string) (*Context, error) {
 	s, err := loadSettings(path)
 	if err != nil {
 		return nil, err

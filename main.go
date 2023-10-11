@@ -19,7 +19,7 @@ func renderAdvanced(fileName string) {
 	imager := chessImager.NewImager()
 
 	// Advanced call
-	ctx, err := chessImager.NewContext()
+	ctx, err := imager.NewContext()
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +63,7 @@ func renderAdvanced(fileName string) {
 
 func renderKasparov(fileName string) {
 	imager := chessImager.NewImager()
-	ctx, _ := chessImager.NewContext()
+	ctx, _ := imager.NewContext()
 
 	// Highlight yellow square and
 	// Annotate square e7 with "!!" and
