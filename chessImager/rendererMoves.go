@@ -43,7 +43,7 @@ func (r *rendererMoves) draw(c *gg.Context) {
 			x, y := fromX, fromY
 			for i := 0; i <= abs(dy); i++ {
 				cX, cY := getSquareBox(x, y).Center()
-				c.DrawCircle(cX, cY, square*0.15)
+				c.DrawCircle(cX, cY, square*factor)
 				c.Fill()
 				y += sgn(dy)
 			}
@@ -51,7 +51,7 @@ func (r *rendererMoves) draw(c *gg.Context) {
 			for i := 0; i < abs(dx)-1; i++ {
 				x += sgn(dx)
 				cX, cY := getSquareBox(x, y).Center()
-				c.DrawCircle(cX, cY, square*0.15)
+				c.DrawCircle(cX, cY, square*factor)
 				c.Fill()
 			}
 		}

@@ -437,19 +437,11 @@ styling to this specific square:
 
 ## Todo 
 
-* Create a CLI tool?
 * Highlighted square x:s : https://elzr.com/blag/img/2018/chess-pieces/chess-moves.png
 * Fix BoardImage (not implemented yet)
 * Fix Move (foundations implemented)
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
-* include simple example, advanced example, and SetOrder example
 * embed default.json
-* Validation of settings file? CHeck if font file exists, size out of square boundary, etc
-* DX > DY (move renderer)
-~~~~* Should settings not be a global var?
-
-## Possible future todo:s
-* Implement PGN : White player, Black player, move count etc
-* Implement Possible Moves For/to square - show moves that a piece can do, or show pieces that can move to a square.
+* Should settings not be a global var?
 * Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
