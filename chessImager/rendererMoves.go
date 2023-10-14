@@ -39,14 +39,27 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 		}
 	} else {
 		// Horse type move (or other weird illegal move)
-		for i := 0; i <= abs(dy); i++ {
-			r.highlightBox(c, x, y, style)
-			y += sgn(dy)
-		}
-		y -= sgn(dy)
-		for i := 0; i < abs(dx)-1; i++ {
-			x += sgn(dx)
-			r.highlightBox(c, x, y, style)
+		up := r.getPreferredDirection(dx, dy)
+		if up {
+			for i := 0; i <= abs(dy); i++ {
+				r.highlightBox(c, x, y, style)
+				y += sgn(dy)
+			}
+			y -= sgn(dy)
+			for i := 0; i < abs(dx)-1; i++ {
+				x += sgn(dx)
+				r.highlightBox(c, x, y, style)
+			}
+		} else {
+			for i := 0; i <= abs(dx)-1; i++ {
+				r.highlightBox(c, x, y, style)
+				x += sgn(dx)
+			}
+			y -= sgn(dy)
+			for i := 0; i < abs(dy); i++ {
+				y += sgn(dy)
+				r.highlightBox(c, x, y, style)
+			}
 		}
 	}
 }
@@ -64,4 +77,12 @@ func (r *rendererMoves) getStyle(move Move) *MoveStyle {
 	} else {
 		return move.Style
 	}
+}
+
+func (r *rendererMoves) getPreferredDirection(dx, dy int) bool {
+	if abs(dx) <= abs(dy) {
+		return false
+	}
+
+	return true
 }
