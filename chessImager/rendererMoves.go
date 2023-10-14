@@ -22,6 +22,7 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 	fromX, fromY := algToCoords(move.From)
 	toX, toY := algToCoords(move.To)
 	dx, dy := toX-fromX, toY-fromY
+	x, y := fromX, fromY
 
 	if dx == 0 && dy == 0 {
 		return // Ignore no move
@@ -31,7 +32,6 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
 		// Rook type move or bishop type move
 		d := max(abs(dx), abs(dy))
-		x, y := fromX, fromY
 		for i := 0; i < d; i++ {
 			r.highlightBox(c, x, y, style)
 			x += sgn(dx)
@@ -39,12 +39,11 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 		}
 	} else {
 		// Horse type move (or other weird illegal move)
-		x, y := fromX, fromY
 		for i := 0; i <= abs(dy); i++ {
 			r.highlightBox(c, x, y, style)
 			y += sgn(dy)
 		}
-		y++
+		y -= sgn(dy)
 		for i := 0; i < abs(dx)-1; i++ {
 			x += sgn(dx)
 			r.highlightBox(c, x, y, style)
