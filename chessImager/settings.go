@@ -99,16 +99,19 @@ type HighlightedSquare struct {
 // HighlightStyle defines how highlighted squares should be drawn.
 // Type: Highlight a square by painting:
 //
-//	0 = the full square
-//	1 = a border around the square
-//	2 = a circle in the center of the square
+//		0 = the full square
+//		1 = a border around the square
+//		2 = a circle in the center of the square
+//	 	3 = a cross in the center of the square
 //
 // Color : The highlight color
-// Width : Width of the border (Type = 1), or radius of the circle (Type=2)
+// Width : Width of the border (Type = 1), radius of the circle (Type=2) or the line width of the cross (Type=3)
+// Factor : The size of the cross (0.5 = 50% of the square width)
 type HighlightStyle struct {
-	Type  HighlightType `json:"type"`
-	Color ColorRGBA     `json:"color"`
-	Width int           `json:"width"`
+	Type   HighlightType `json:"type"`
+	Color  ColorRGBA     `json:"color"`
+	Width  int           `json:"width"`
+	Factor float64       `json:"factor"`
 }
 
 // Pieces represents settings of how to draw pieces

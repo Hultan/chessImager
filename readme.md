@@ -88,6 +88,7 @@ And for fun, lets change the render order too...
 		chessImager.HighlightCircle,        // Highlight type 
 		"#88E57C",                          // Highlight color
 		35,                                 // Highlight cirle radius
+		0                                   // Highlight factor (not used for this Type)        
 	)
 
 	// Create an annotation style, for the square e7
@@ -273,18 +274,20 @@ The rank and file renderer draws the file letters A to H and the rank numbers 1 
 
 ## Highlight renderer
 The highlight renderer highlights certain squares in whatever color you want. You can highlight the square by 
-giving it a certain color, or a border of a certain color. You can also highlight the square by drawing a circle in 
-the square, all depending on the type field.
+giving it a certain color, or a border of a certain color. You can also highlight the square by drawing a circle or 
+a cross in the square, all depending on the type field.
 
 The style of the highlighted square is normally determined by the default highlight style provided in the `default.
 json` file.
 
-| Name  | Type    | Description                                |
-|-------|---------|--------------------------------------------|
-| type  | integer | 0 = square, 1 = border, 2 = circle         |
-| color | string  | The highlight color                        |
-| width | integer | The width of the border or circle (type=2) |
+| Name   | Type    | Description                                                      |
+|--------|---------|------------------------------------------------------------------|
+| type   | integer | 0 = square, 1 = border, 2 = circle, 3 = filled circle, 4 = cross |
+| color  | string  | The highlight color                                              |
+| width  | integer | The width of the border, circle or cross (type=1, 2 or 4)        |
+| factor | float64 | The size of the circle or cross (type=2, 3 or 4)                 |
 
+The factor 0.5 means that the circle or cross should be 50% och the width of the square.
 
 You can add a highlighted square by using the method `AddHighlight()` on the **context** object:
 
@@ -301,7 +304,7 @@ styling to this specific square:
 ```go
    imager := chessImager.NewImager()
    ctx, _ := imager.NewContext()
-   hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0)
+   hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0, 0)
    ctx.AddHighlightEx("e7", hs)
    image := imager.RenderEx(fen, ctx)
 ```

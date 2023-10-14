@@ -61,15 +61,16 @@ func (c *Context) AddMoveEx(from, to string, style *MoveStyle) *Context {
 	return c
 }
 
-func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int) (*HighlightStyle, error) {
+func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int, factor float64) (*HighlightStyle, error) {
 	col, err := hexToRGBA(color)
 	if err != nil {
 		return nil, err
 	}
 	return &HighlightStyle{
-		Type:  typ,
-		Color: ColorRGBA{col},
-		Width: width,
+		Type:   typ,
+		Color:  ColorRGBA{col},
+		Width:  width,
+		Factor: factor,
 	}, nil
 }
 

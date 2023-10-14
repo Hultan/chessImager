@@ -64,4 +64,6 @@ const (
 	HighlightFull HighlightType = iota
 	HighlightBorder
 	HighlightCircle
+	HighlightFilledCircle
+	HighlightX
 )

@@ -28,10 +28,23 @@ func (r *rendererHighlight) draw(c *gg.Context) {
 			c.DrawRectangle(x+bw/2, y+bw/2, w-bw, h-bw)
 			c.Stroke()
 		case HighlightCircle:
-			x, y := b.Center()
-			w := float64(style.Width)
-			c.DrawCircle(x, y, w)
+			bb := b.Shrink(style.Factor)
+			x, y := bb.Center()
+			c.SetLineWidth(float64(style.Width))
+			c.DrawCircle(x, y, bb.Width/2)
+			c.Stroke()
+		case HighlightFilledCircle:
+			bb := b.Shrink(style.Factor)
+			x, y := bb.Center()
+			c.DrawCircle(x, y, bb.Width/2)
 			c.Fill()
+		case HighlightX:
+			bb := b.Shrink(style.Factor)
+			x, y, w, h := bb.Coords()
+			c.SetLineWidth(float64(style.Width))
+			c.DrawLine(x, y, x+w, y+h)
+			c.DrawLine(x+w, y, x, y+h)
+			c.Stroke()
 		default:
 			panic("rendererHighlight : oops, why are we here?")
 		}
