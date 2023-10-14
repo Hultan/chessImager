@@ -110,5 +110,9 @@ func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Im
 	border := settings.Border.Width
 	diff := (square - img.Bounds().Size().Y) / 2
 
+	if settings.Board.Default.Inverted {
+		return img, border + invert(x)*square + diff, border + invert(y)*square + diff
+	}
+
 	return img, border + x*square + diff, border + y*square + diff
 }
