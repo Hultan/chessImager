@@ -6,8 +6,7 @@ so that you can create chess board images that look exactly the way you want the
 
 If you are happy with the default look, you can use that, but do note that the default embedded chess pieces are free for personal use only (See : https://clipart-library.com/clip-art/chess-pieces-silhouette-14.htm).
 
-ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s repository
-[chessimage](https://github.com/cjsaylor/chessimage).
+ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s repository [chessimage](https://github.com/cjsaylor/chessimage).
 
 ## Table of Contents
 1. [Example](#examples)
