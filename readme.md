@@ -31,7 +31,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 
 ## Examples:
 ### Simple:
-Rendering a chess board image, based on a FEN string, is basically of line of code. Add a few more lines of code to 
+Rendering a chess board image, based on a FEN string, is basically one line of code. Add a few more lines of code to 
 save the image to disk, and you have this code:
 
 ```go
@@ -44,20 +44,20 @@ save the image to disk, and you have this code:
    defer fileSimple.Close()
    _ = png.Encode(file, img)
 ```
-This code will generate the following image:
+This code will generate the following image, using the default styling in `default.json`:
 
-<img src="simple.png" alt="simple example" width="350"/>
+<img src="examples/simple.png" alt="simple example" width="350"/>
 
 ### Medium:
-A slightly more advanced example, that uses the styles that are defined in the default.json files, would be:
+A slightly more advanced example, that also uses the styles that are defined in the `default.json` files, would be:
 
-<img src="example.png" alt="drawing" width="350"/>
+<img src="examples/medium.png" alt="drawing" width="350"/>
 
 ```go
    imager := chessImager.NewImager()
    ctx, _ := imager.NewContext()
    
-   // Highlight yellow square, annotate square e7 with "!!" and
+   // Highlight square e7, annotate square e7 with "!!" and
    // show move e1-e7 using the styles specified in default.json.
    ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
     
@@ -84,7 +84,7 @@ And for fun, lets change the render order too...
 
 	// Create a highlight style, for the square e7
 	hs, _ := ctx.NewHighlightStyle(
-		chessImager.HighlightCircle,        // Highlight type 
+		chessImager.HighlightFull,          // Highlight type 
 		"#88E57C",                          // Highlight color
 		35,                                 // Highlight cirle radius
 		0                                   // Highlight factor (not used for this Type)        
@@ -114,9 +114,9 @@ And for fun, lets change the render order too...
 	img := imager.RenderEx(fen, ctx)
 ```
 
-<img src="advanced.png" alt="drawing" width="350"/>
+<img src="examples/advanced.png" alt="drawing" width="350"/>
 
-As you can see, the pieces are now rendered **after** annotations.
+As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
 
 All the examples above comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
 
@@ -439,11 +439,13 @@ styling to this specific square:
 
 ## Todo 
 
-* Highlighted square x:s : https://elzr.com/blag/img/2018/chess-pieces/chess-moves.png
+* Tests
+* New example for other.json (using NewContextFromPath())
 * Fix BoardImage (not implemented yet)
-* Fix Move (foundations implemented)
+* Fix Move arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * embed default.json
 * Should settings not be a global var?
 * Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
+* rendererMove should use the rendererHighlight to highlight 

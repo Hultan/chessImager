@@ -65,7 +65,7 @@
     "border_width":1
   },
   "highlight_style": {
-    "type": 3,
+    "type": 0,
     "color": "#EEEE4480",
     "width": 4,
     "factor": 0.5
