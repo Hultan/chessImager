@@ -40,7 +40,7 @@ func renderAdvanced(fileName string) {
 		"E8E57C", "000000", "FFFFFF",
 	)
 
-	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#9D6B5EFF", 0.2)
+	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#9D6B5EFF", 0.3)
 
 	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
 
