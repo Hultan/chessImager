@@ -196,8 +196,8 @@ type Move struct {
 
 // MoveStyle represents a single move arrow on the chessboard.
 // Color : The color of the arrow
-// Type : The arrow type, 0=arrow, 1=dotted
-// Factor: Percent of the square size (arrow width, circle size, default = 0.15)
+// Type : The arrow type, 0=dotted, 1=arrow
+// Factor: The size of the square to use (0.5 equals 50% of square size)
 type MoveStyle struct {
 	Color  ColorRGBA `json:"color"`
 	Type   MoveType  `json:"type"`

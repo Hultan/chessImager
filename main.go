@@ -29,7 +29,7 @@ func renderAdvanced(fileName string) {
 		panic(err)
 	}
 
-	hs, err := ctx.NewHighlightStyle(chessImager.HighlightX, "#88E57C", 5, 0.2)
+	hs, err := ctx.NewHighlightStyle(chessImager.HighlightX, "#88E57C", 5, 0.95)
 	if err != nil {
 		panic(err)
 	}
@@ -42,7 +42,7 @@ func renderAdvanced(fileName string) {
 
 	ms, _ := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#9D6B5EFF", 0.2)
 
-	ctx.AddHighlightEx("d1", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
+	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
 
 	imgAdv, err := imager.RenderEx(fen, ctx)
 	if err != nil {
