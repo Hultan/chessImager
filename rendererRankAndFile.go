@@ -25,14 +25,14 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 	size := settings.RankAndFile.FontSize
 
 	switch settings.RankAndFile.Type {
-	case RankAndFileNone:
+	case RankAndFileTypeNone:
 		return
-	case RankAndFileInBorder:
+	case RankAndFileTypeInBorder:
 		// Don't bother drawing ranks and files when to border is too thin
 		if border < borderLimit {
 			return
 		}
-	case RankAndFileInSquares:
+	case RankAndFileTypeInSquares:
 		// Don't bother drawing ranks and files when to border is too thin
 		if border < borderLimit {
 			return

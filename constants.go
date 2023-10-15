@@ -1,20 +1,5 @@
 package chessImager
 
-type BoardType int
-
-const (
-	BoardTypeDefault BoardType = iota
-	BoardTypeImage
-)
-
-type PiecesType int
-
-const (
-	PiecesTypeDefault PiecesType = iota
-	PiecesTypeImages
-	PiecesTypeImageMap
-)
-
 type chessPiece int
 
 const (
@@ -33,22 +18,37 @@ const (
 	NoPiece
 )
 
+type BoardType int
+
+const (
+	BoardTypeDefault BoardType = iota
+	BoardTypeImage
+)
+
+type PiecesType int
+
+const (
+	PiecesTypeDefault PiecesType = iota
+	PiecesTypeImages
+	PiecesTypeImageMap
+)
+
 type RankAndFileType int
 
 const (
-	RankAndFileNone RankAndFileType = iota
-	RankAndFileInBorder
-	RankAndFileInSquares
+	RankAndFileTypeNone RankAndFileType = iota
+	RankAndFileTypeInBorder
+	RankAndFileTypeInSquares
 )
 
 type PositionType int
 
 const (
-	PositionTopLeft PositionType = iota
-	PositionTopRight
-	PositionBottomRight
-	PositionBottomLeft
-	PositionMiddle
+	PositionTypeTopLeft PositionType = iota
+	PositionTypeTopRight
+	PositionTypeBottomRight
+	PositionTypeBottomLeft
+	PositionTypeMiddle
 )
 
 type MoveType int
@@ -61,9 +61,9 @@ const (
 type HighlightType int
 
 const (
-	HighlightFull HighlightType = iota
-	HighlightBorder
-	HighlightCircle
-	HighlightFilledCircle
-	HighlightX
+	HighlightTypeFull HighlightType = iota
+	HighlightTypeBorder
+	HighlightTypeCircle
+	HighlightTypeFilledCircle
+	HighlightTypeX
 )

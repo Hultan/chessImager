@@ -16,16 +16,16 @@ func main() {
 
 	// Create a highlight style, for the square e7
 	hs, _ := ctx.NewHighlightStyle(
-		chessImager.HighlightFull, // Highlight type
-		"#88E57C",                 // Highlight color
-		35,                        // Highlight circle radius
-		0,                         // Highlight factor (not used for this Type)
+		chessImager.HighlightTypeFull, // Highlight type
+		"#88E57C",                     // Highlight color
+		35,                            // Highlight circle radius
+		0,                             // Highlight factor (not used for this Type)
 	)
 
 	// Create an annotation style, for the square e7
 	as, _ := ctx.NewAnnotationStyle(
-		chessImager.PositionTopLeft, // Position
-		25, 20, 1,                   // Size, font size, border width
+		chessImager.PositionTypeTopLeft, // Position
+		25, 20, 1,                       // Size, font size, border width
 		"#E8E57C", "#000000", "#FFFFFF", // Background, font, border color
 	)
 

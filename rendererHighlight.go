@@ -17,28 +17,28 @@ func (r *rendererHighlight) draw(c *gg.Context) {
 		b := getSquareBox(algToCoords(high.Square))
 		c.SetRGBA(toRGBA(style.Color))
 		switch style.Type {
-		case HighlightFull:
+		case HighlightTypeFull:
 			x, y, w, h := b.Coords()
 			c.DrawRectangle(x, y, w, h)
 			c.Fill()
-		case HighlightBorder:
+		case HighlightTypeBorder:
 			x, y, w, h := b.Coords()
 			bw := float64(style.Width)
 			c.SetLineWidth(bw)
 			c.DrawRectangle(x+bw/2, y+bw/2, w-bw, h-bw)
 			c.Stroke()
-		case HighlightCircle:
+		case HighlightTypeCircle:
 			bb := b.Shrink(style.Factor)
 			x, y := bb.Center()
 			c.SetLineWidth(float64(style.Width))
 			c.DrawCircle(x, y, bb.Width/2)
 			c.Stroke()
-		case HighlightFilledCircle:
+		case HighlightTypeFilledCircle:
 			bb := b.Shrink(style.Factor)
 			x, y := bb.Center()
 			c.DrawCircle(x, y, bb.Width/2)
 			c.Fill()
-		case HighlightX:
+		case HighlightTypeX:
 			bb := b.Shrink(style.Factor)
 			x, y, w, h := bb.Coords()
 			c.SetLineWidth(float64(style.Width))
