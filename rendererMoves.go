@@ -30,37 +30,66 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 
 	c.SetRGBA(toRGBA(style.Color))
 	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
-		// Rook type move or bishop type move
-		d := max(abs(dx), abs(dy))
-		r.renderMoves(c, &x, &y, style, d, sgn(dx), sgn(dy))
+		// Render pawn, rook, bishop, king and queen moves
+		r.renderStraightMoves(c, dx, dy, x, y, style)
 	} else {
-		r.renderHorseMove(c, dx, dy, x, y, style)
+		// Render knight moves (and illegal moves)
+		r.renderOtherMoves(c, dx, dy, x, y, style)
 	}
 }
 
-func (r *rendererMoves) renderHorseMove(c *gg.Context, dx int, dy int, x int, y int, style *MoveStyle) {
+func (r *rendererMoves) renderStraightMoves(c *gg.Context, dx int, dy int, x int, y int, style *MoveStyle) {
+	// Rook type move or bishop type move
+	d := max(abs(dx), abs(dy))
+	r.renderDottedMove(c, &x, &y, style, d, sgn(dx), sgn(dy))
+}
+
+func (r *rendererMoves) renderOtherMoves(c *gg.Context, dx int, dy int, x int, y int, style *MoveStyle) {
+	switch style.Type {
+	case MoveTypeDots:
+		r.renderOtherMovesDotted(c, dx, dy, x, y, style)
+	case moveTypeArrow:
+		r.renderOtherMovesArrow(c, dx, dy, x, y, style)
+	}
+}
+
+func (r *rendererMoves) renderOtherMovesArrow(c *gg.Context, dx int, dy int, x int, y int, style *MoveStyle) {
 	// Horse type move (or other weird illegal move)
 	dir := r.getPreferredDirection(dx, dy)
 	if dir {
 		// abs(dx) > abs(dy) ; vertically first, horizontally second
-		r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
-		r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
+		r.renderDottedMove(c, &x, &y, style, abs(dy), 0, sgn(dy))
+		r.renderDottedMove(c, &x, &y, style, abs(dx), sgn(dx), 0)
 	} else {
 		// abs(dx) <= abs(dy) ; horizontally first, vertically second
-		r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
-		r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
+		r.renderDottedMove(c, &x, &y, style, abs(dx), sgn(dx), 0)
+		r.renderDottedMove(c, &x, &y, style, abs(dy), 0, sgn(dy))
 	}
 }
 
-func (r *rendererMoves) renderMoves(c *gg.Context, x, y *int, style *MoveStyle, moves, dx, dy int) {
+func (r *rendererMoves) renderOtherMovesDotted(c *gg.Context, dx int, dy int, x int, y int, style *MoveStyle) {
+	// Horse type move (or other weird illegal move)
+	dir := r.getPreferredDirection(dx, dy)
+	if dir {
+		// abs(dx) > abs(dy) ; vertically first, horizontally second
+		r.renderDottedMove(c, &x, &y, style, abs(dy), 0, sgn(dy))
+		r.renderDottedMove(c, &x, &y, style, abs(dx), sgn(dx), 0)
+	} else {
+		// abs(dx) <= abs(dy) ; horizontally first, vertically second
+		r.renderDottedMove(c, &x, &y, style, abs(dx), sgn(dx), 0)
+		r.renderDottedMove(c, &x, &y, style, abs(dy), 0, sgn(dy))
+	}
+}
+
+func (r *rendererMoves) renderDottedMove(c *gg.Context, x, y *int, style *MoveStyle, moves, dx, dy int) {
 	for i := 0; i < moves; i++ {
-		r.highlightBox(c, *x, *y, style)
+		r.renderDot(c, *x, *y, style)
 		*x += dx
 		*y += dy
 	}
 }
 
-func (r *rendererMoves) highlightBox(c *gg.Context, x, y int, style *MoveStyle) {
+func (r *rendererMoves) renderDot(c *gg.Context, x, y int, style *MoveStyle) {
 	bb := getSquareBox(x, y).Shrink(style.Factor)
 	cX, cY := bb.Center()
 	c.DrawCircle(cX, cY, bb.Width/2)
