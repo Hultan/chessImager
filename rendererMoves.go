@@ -32,35 +32,27 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
 		// Rook type move or bishop type move
 		d := max(abs(dx), abs(dy))
-		for i := 0; i < d; i++ {
-			r.highlightBox(c, x, y, style)
-			x += sgn(dx)
-			y += sgn(dy)
-		}
+		r.renderMoves(c, &x, &y, style, d, sgn(dx), sgn(dy))
 	} else {
 		// Horse type move (or other weird illegal move)
-		up := r.getPreferredDirection(dx, dy)
-		if up {
-			for i := 0; i <= abs(dy); i++ {
-				r.highlightBox(c, x, y, style)
-				y += sgn(dy)
-			}
-			y -= sgn(dy)
-			for i := 0; i < abs(dx)-1; i++ {
-				x += sgn(dx)
-				r.highlightBox(c, x, y, style)
-			}
+		dir := r.getPreferredDirection(dx, dy)
+		if dir {
+			// abs(dx) > abs(dy) ; vertically first, horizontally second
+			r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
+			r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
 		} else {
-			for i := 0; i <= abs(dx)-1; i++ {
-				r.highlightBox(c, x, y, style)
-				x += sgn(dx)
-			}
-			y -= sgn(dy)
-			for i := 0; i < abs(dy); i++ {
-				y += sgn(dy)
-				r.highlightBox(c, x, y, style)
-			}
+			// abs(dx) <= abs(dy) ; horizontally first, vertically second
+			r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
+			r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
 		}
+	}
+}
+
+func (r *rendererMoves) renderMoves(c *gg.Context, x, y *int, style *MoveStyle, moves, dx, dy int) {
+	for i := 0; i < moves; i++ {
+		r.highlightBox(c, *x, *y, style)
+		*x += dx
+		*y += dy
 	}
 }
 
