@@ -34,17 +34,21 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 		d := max(abs(dx), abs(dy))
 		r.renderMoves(c, &x, &y, style, d, sgn(dx), sgn(dy))
 	} else {
-		// Horse type move (or other weird illegal move)
-		dir := r.getPreferredDirection(dx, dy)
-		if dir {
-			// abs(dx) > abs(dy) ; vertically first, horizontally second
-			r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
-			r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
-		} else {
-			// abs(dx) <= abs(dy) ; horizontally first, vertically second
-			r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
-			r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
-		}
+		r.renderHorseMove(c, dx, dy, x, y, style)
+	}
+}
+
+func (r *rendererMoves) renderHorseMove(c *gg.Context, dx int, dy int, x int, y int, style *MoveStyle) {
+	// Horse type move (or other weird illegal move)
+	dir := r.getPreferredDirection(dx, dy)
+	if dir {
+		// abs(dx) > abs(dy) ; vertically first, horizontally second
+		r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
+		r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
+	} else {
+		// abs(dx) <= abs(dy) ; horizontally first, vertically second
+		r.renderMoves(c, &x, &y, style, abs(dx), sgn(dx), 0)
+		r.renderMoves(c, &x, &y, style, abs(dy), 0, sgn(dy))
 	}
 }
 
