@@ -440,12 +440,10 @@ styling to this specific square:
 ## Todo 
 
 * Tests
-* New example for other.json (using NewContextFromPath())
-* Fix BoardImage (not implemented yet)
-* Fix Move arrows
+* Implement BoardImage
+* Implement MoveTypeArrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * embed default.json
 * Should settings not be a global var?
 * Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
-* rendererMove should use the rendererHighlight to highlight 
