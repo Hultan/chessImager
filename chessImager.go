@@ -81,10 +81,10 @@ func getRenderers(i *Imager, order []int) []renderer {
 		order = []int{0, 1, 2, 3, 4, 5, 6}
 	}
 
-	for _, i := range order {
-		r := renderers[i]
+	for _, idx := range order {
+		r := renderers[idx]
 		if r == nil {
-			panic(fmt.Errorf("no renderer with index : %d", i))
+			panic(fmt.Errorf("no renderer with index : %d", idx))
 		}
 		result = append(result, r)
 	}
