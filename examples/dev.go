@@ -38,7 +38,7 @@ func main() {
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
 	// show move e1-e7.
-	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
+	ctx.AddHighlightEx("a5", hs).AddAnnotationEx("a5", "!!", as).AddMoveEx("b7", "a5", ms)
 
 	// Render the image
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"

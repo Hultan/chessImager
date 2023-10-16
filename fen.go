@@ -7,6 +7,22 @@ import (
 
 const validChars = "pbnrqkPBNRQK12345678"
 
+var letter2Piece = map[rune]chessPiece{
+	'p': BlackPawn,
+	'b': BlackBishop,
+	'n': BlackKnight,
+	'r': BlackRook,
+	'q': BlackQueen,
+	'k': BlackKing,
+	'P': WhitePawn,
+	'B': WhiteBishop,
+	'N': WhiteKnight,
+	'R': WhiteRook,
+	'Q': WhiteQueen,
+	'K': WhiteKing,
+	' ': NoPiece,
+}
+
 func validateFen(fen string) bool {
 	fens := strings.Split(fen, " ")
 	if len(fens) < 6 {
@@ -82,20 +98,4 @@ func normalizeFENRank(fenRank string) string {
 		}
 	}
 	return normalized
-}
-
-var letter2Piece = map[rune]chessPiece{
-	'p': BlackPawn,
-	'b': BlackBishop,
-	'n': BlackKnight,
-	'r': BlackRook,
-	'q': BlackQueen,
-	'k': BlackKing,
-	'P': WhitePawn,
-	'B': WhiteBishop,
-	'N': WhiteKnight,
-	'R': WhiteRook,
-	'Q': WhiteQueen,
-	'K': WhiteKing,
-	' ': NoPiece,
 }
