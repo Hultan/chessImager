@@ -1,6 +1,8 @@
 package chessImager
 
 import (
+	"errors"
+
 	"github.com/fogleman/gg"
 )
 
@@ -8,9 +10,9 @@ type rendererHighlight struct {
 	*Imager
 }
 
-func (r *rendererHighlight) draw(c *gg.Context) {
+func (r *rendererHighlight) draw(c *gg.Context) error {
 	if r.ctx == nil {
-		return
+		return nil
 	}
 	for _, high := range r.ctx.Highlight {
 		style := r.getStyle(high)
@@ -46,9 +48,11 @@ func (r *rendererHighlight) draw(c *gg.Context) {
 			c.DrawLine(x+w, y, x, y+h)
 			c.Stroke()
 		default:
-			panic("rendererHighlight : oops, why are we here?")
+			return errors.New("invalid highlight type")
 		}
 	}
+
+	return nil
 }
 
 func (r *rendererHighlight) getStyle(high HighlightedSquare) *HighlightStyle {

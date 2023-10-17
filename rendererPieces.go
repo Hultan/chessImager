@@ -3,6 +3,7 @@ package chessImager
 import (
 	"bytes"
 	_ "embed"
+	"errors"
 	"image"
 	"os"
 	"strings"
@@ -20,8 +21,11 @@ type rendererPiece struct {
 	*Imager
 }
 
-func (r *rendererPiece) draw(c *gg.Context) {
-	r.loadPieces()
+func (r *rendererPiece) draw(c *gg.Context) error {
+	err := r.loadPieces()
+	if err != nil {
+		return err
+	}
 
 	fen := normalizeFEN(r.fen)
 	fens := strings.Split(fen, "/")
@@ -33,27 +37,32 @@ func (r *rendererPiece) draw(c *gg.Context) {
 			}
 		}
 	}
+
+	return nil
 }
 
-func (r *rendererPiece) loadPieces() {
+func (r *rendererPiece) loadPieces() error {
 	pieces = make(map[chessPiece]image.Image, 12)
 
 	switch settings.Pieces.Type {
 	case PiecesTypeDefault:
 		imageMap, _, err := image.Decode(bytes.NewReader(defaultPieces))
 		if err != nil {
-			panic(err)
+			return err
 		}
-		r.loadImageMapPieces(imageMap, embeddedPieces)
+		err = r.loadImageMapPieces(imageMap, embeddedPieces)
+		if err != nil {
+			return err
+		}
 	case PiecesTypeImages:
 		for _, piece := range settings.Pieces.Images.Pieces {
 			f, err := os.Open(piece.Path)
 			if err != nil {
-				panic(err)
+				return err
 			}
 			img, _, err := image.Decode(f)
 			if err != nil {
-				panic(err)
+				return err
 			}
 
 			pieces[pieceMap[piece.Piece]] = r.resize(img)
@@ -61,25 +70,31 @@ func (r *rendererPiece) loadPieces() {
 	case PiecesTypeImageMap:
 		f, err := os.Open(settings.Pieces.ImageMap.Path)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		imageMap, _, err := image.Decode(f)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		pr := r.createPieceRectangleSlice(settings.Pieces.ImageMap.Pieces)
-		r.loadImageMapPieces(imageMap, pr)
+		err = r.loadImageMapPieces(imageMap, pr)
+		if err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
-func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRectangle) {
+func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRectangle) error {
 	sub, ok := imageMap.(SubImager)
 	if !ok {
-		panic("Failed to create SubImager")
+		return errors.New("failed to create SubImager. Wrong image type? Try PGN")
 	}
 	for _, item := range items {
 		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.ToRect())))
 	}
+	return nil
 }
 
 func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
@@ -100,6 +115,7 @@ func (r *rendererPiece) resize(img image.Image) image.Image {
 	case BoardTypeDefault:
 		pieceSize = uint(float64(settings.Board.Default.Size/8) * settings.Pieces.Factor)
 	case BoardTypeImage:
+		// Ok to panic here, not yet implemented
 		panic("Not implemented!")
 	}
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)

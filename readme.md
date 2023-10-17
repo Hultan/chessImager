@@ -84,7 +84,7 @@ And for fun, lets change the render order too...
    imager := chessImager.NewImager()
    
    // Set the rendering order
-   imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
+   _ = imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
    
    // Create a new context
    ctx := imager.NewContext()
@@ -190,7 +190,7 @@ in the JSON file.
 
 If you don't want to edit the JSON file, you could just specify it with code, like this:
 ```go
-	imager.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
+	_ = imager.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
 ```
 
 Each renderer has its own settings, which are described below.
@@ -452,4 +452,3 @@ styling to this specific square:
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
-* Remove panics

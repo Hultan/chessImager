@@ -12,7 +12,7 @@ func main() {
 	imager := chessImager.NewImager()
 
 	// Set the rendering order
-	imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
+	_ = imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
 
 	// Create a new context
 	ctx := imager.NewContext()

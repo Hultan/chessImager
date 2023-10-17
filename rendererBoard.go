@@ -8,7 +8,7 @@ type rendererBoard struct {
 	*Imager
 }
 
-func (r *rendererBoard) draw(c *gg.Context) {
+func (r *rendererBoard) draw(c *gg.Context) error {
 	board := r.getBoardBox()
 
 	// Set background to black color
@@ -26,6 +26,8 @@ func (r *rendererBoard) draw(c *gg.Context) {
 			}
 		}
 	}
+
+	return nil
 }
 
 func (r *rendererBoard) getBoardBox() Rectangle {

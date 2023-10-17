@@ -1,6 +1,7 @@
 package chessImager
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/fogleman/gg"
@@ -17,7 +18,7 @@ type RankFile struct {
 	text string
 }
 
-func (r *rendererRankAndFile) draw(c *gg.Context) {
+func (r *rendererRankAndFile) draw(c *gg.Context) error {
 	var dx, dy float64 // InSquare adjustments
 
 	square := float64(settings.Board.Default.Size) / 8
@@ -26,23 +27,30 @@ func (r *rendererRankAndFile) draw(c *gg.Context) {
 
 	switch settings.RankAndFile.Type {
 	case RankAndFileTypeNone:
-		return
+		return nil
 	case RankAndFileTypeInBorder:
 		// Don't bother drawing ranks and files when to border is too thin
 		if border < borderLimit {
-			return
+			return nil
 		}
 	case RankAndFileTypeInSquares:
 		// Don't bother drawing ranks and files when to border is too thin
 		if border < borderLimit {
-			return
+			return nil
 		}
 		dx, dy = (square-border)/2, -border
+	default:
+		return errors.New("invalid rank and file type")
 	}
 
 	c.SetRGBA(toRGBA(settings.RankAndFile.FontColor))
-	setFontFace(c, size)
+	err := setFontFace(c, size)
+	if err != nil {
+		return err
+	}
 	r.drawRanksAndFiles(c, dx, dy)
+
+	return nil
 }
 
 func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {

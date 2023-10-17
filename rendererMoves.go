@@ -8,13 +8,15 @@ type rendererMoves struct {
 	*Imager
 }
 
-func (r *rendererMoves) draw(c *gg.Context) {
+func (r *rendererMoves) draw(c *gg.Context) error {
 	if r.ctx == nil {
-		return
+		return nil
 	}
 	for _, move := range r.ctx.Moves {
 		r.renderMove(c, move)
 	}
+
+	return nil
 }
 
 func (r *rendererMoves) renderMove(c *gg.Context, move Move) {

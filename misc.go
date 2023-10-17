@@ -17,7 +17,7 @@ type SubImager interface {
 }
 
 type renderer interface {
-	draw(*gg.Context)
+	draw(*gg.Context) error
 }
 
 type PieceRectangle struct {
@@ -119,17 +119,21 @@ func getBoardSize() image.Rectangle {
 	}
 }
 
-func algToCoords(alg string) (int, int) {
+func validateAlg(alg string) error {
 	alg = strings.ToLower(alg)
 	if len(alg) != 2 {
-		panic("invalid length of alg")
+		return errors.New("invalid length of alg")
 	}
 	if alg[0] < 'a' || alg[0] > 'h' {
-		panic("invalid character in alg : " + string(alg[0]))
+		return errors.New("invalid character in alg : " + string(alg[0]))
 	}
 	if alg[1] < '1' || alg[1] > '8' {
-		panic("invalid character in alg : " + string(alg[1]))
+		return errors.New("invalid character in alg : " + string(alg[1]))
 	}
+	return nil
+}
+func algToCoords(alg string) (int, int) {
+	alg = strings.ToLower(alg)
 	x, y := int(alg[0]-'a'), int(alg[1]-'1')
 	if settings.Board.Default.Inverted {
 		return invert(x), invert(y)
@@ -149,7 +153,7 @@ func getSquareBox(x, y int) Rectangle {
 	}
 }
 
-func setFontFace(c *gg.Context, size int) {
+func setFontFace(c *gg.Context, size int) error {
 	path := "roboto.ttf"
 	if settings.FontStyle.Path != "" {
 		path = settings.FontStyle.Path
@@ -157,8 +161,10 @@ func setFontFace(c *gg.Context, size int) {
 
 	err := c.LoadFontFace(path, float64(size))
 	if err != nil {
-		panic(fmt.Errorf("failed to load font face : %v", err))
+		return fmt.Errorf("failed to load font face : %v", err)
 	}
+
+	return nil
 }
 
 // loadSettings loads the default settings from a json file
