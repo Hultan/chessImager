@@ -8,10 +8,11 @@ import (
 )
 
 func main() {
-	imager := chessImager.NewImager()
+	// Create a new imager using your custom JSON file
+	imager, _ := chessImager.NewImagerFromPath("examples/other.json")
 
-	// Create a context using your own JSON file
-	ctx, _ := imager.NewContextFromPath("examples/other.json")
+	// Create a new context
+	ctx := imager.NewContext()
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
 	// show move e1-e7.

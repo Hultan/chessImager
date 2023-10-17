@@ -1,11 +1,15 @@
 package chessImager
 
 import (
+	_ "embed"
 	"fmt"
 	"image"
 
 	"github.com/fogleman/gg"
 )
+
+//go:embed config/default.json
+var defaultSettings string
 
 type Imager struct {
 	fen string
@@ -16,7 +20,20 @@ var settings *Settings
 
 // NewImager creates a new Imager.
 func NewImager() *Imager {
+	settings = loadDefaultSettings()
 	return &Imager{}
+}
+
+// NewImagerFromPath creates a new Imager using a user-defined JSON file.
+func NewImagerFromPath(path string) (i *Imager, err error) {
+	settings, err = loadSettings(path)
+	if err != nil {
+		return nil, err
+	}
+
+	i = &Imager{}
+
+	return
 }
 
 func (i *Imager) Render(fen string) (image.Image, error) {
@@ -28,22 +45,11 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 		return nil, fmt.Errorf("invalid fen : %v", fen)
 	}
 
-	// Handle settings
-	var err error
-	if ctx == nil {
-		settings, err = loadSettings("")
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		settings = ctx.settings
-	}
-
 	i.fen = fen
 	i.ctx = ctx
 	c := gg.NewContextForImage(image.NewRGBA(getBoardSize()))
 
-	r := getRenderers(i, settings.Order)
+	r := i.getRenderers()
 	for _, rend := range r {
 		rend.draw(c)
 	}
@@ -51,20 +57,20 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	return c.Image(), nil
 }
 
-func (i *Imager) NewContext() (*Context, error) {
-	return i.NewContextFromPath("")
+func (i *Imager) NewContext() *Context {
+	return &Context{}
 }
 
-func (i *Imager) NewContextFromPath(path string) (*Context, error) {
-	s, err := loadSettings(path)
-	if err != nil {
-		return nil, err
+func (i *Imager) SetOrder(order []int) {
+	if len(order) != 7 {
+		panic("len(order) must be 7")
 	}
-	return &Context{settings: s}, nil
+
+	settings.Order = order
 }
 
 // getRenderers returns a slice of all the renderers in the given order
-func getRenderers(i *Imager, order []int) []renderer {
+func (i *Imager) getRenderers() []renderer {
 	var result []renderer
 
 	renderers := map[int]renderer{
@@ -77,11 +83,11 @@ func getRenderers(i *Imager, order []int) []renderer {
 		6: &rendererMoves{i},
 	}
 
-	if order == nil {
-		order = []int{0, 1, 2, 3, 4, 5, 6}
+	if len(settings.Order) != 7 {
+		panic("len(order) must be 7")
 	}
 
-	for _, idx := range order {
+	for _, idx := range settings.Order {
 		r := renderers[idx]
 		if r == nil {
 			panic(fmt.Errorf("no renderer with index : %d", idx))

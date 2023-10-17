@@ -35,9 +35,9 @@ Rendering a chess board image, based on a FEN string, is basically one line of c
 save the image to disk, and you have this code:
 
 ```go
-   // Render image
+   // Render simple image
    const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   img := chessImager.NewImager().Render(fen)
+   img, _ := chessImager.NewImager().Render(fen)
    
    // Save image
    file, _ := os.Create("/path/to/img.png")
@@ -54,16 +54,19 @@ A slightly more advanced example, that also uses the styles that are defined in 
 <img src="examples/medium.png" alt="drawing" width="350"/>
 
 ```go
+   // Create a new imager using embedded default.json settings
    imager := chessImager.NewImager()
-   ctx, _ := imager.NewContext()
    
+   // Create a new context
+   ctx := imager.NewContext()
+
    // Highlight square e7, annotate square e7 with "!!" and
    // show move e1-e7 using the styles specified in default.json.
    ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
     
    // Render image
    const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   img, _ := imager.RenderEx(fen, ctx)
+   image, _ := imager.RenderEx(fen, ctx)
 ```
 ### Advanced:
 If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in default.
@@ -77,41 +80,45 @@ For example, let's change a few things from the medium example:
 And for fun, lets change the render order too...
 
 ```go
-	imager := chessImager.NewImager()
-	ctx, _ := imager.NewContext() // New context using default.json settings
+   // Create a new imager using embedded default.json settings
+   imager := chessImager.NewImager()
+   
+   // Set the rendering order
+   imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
+   
+   // Create a new context
+   ctx := imager.NewContext()
 
-	_ = ctx.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})    // Set the rendering order
-
-	// Create a highlight style, for the square e7
-	hs, _ := ctx.NewHighlightStyle(
-		chessImager.HighlightFull,          // Highlight type 
-		"#88E57C",                          // Highlight color
-		35,                                 // Highlight cirle radius
-		0                                   // Highlight factor (not used for this Type)        
-	)
-
-	// Create an annotation style, for the square e7
-	as, _ := ctx.NewAnnotationStyle(
-		chessImager.PositionTopLeft,        // Position
-		25, 20, 1,                          // Size, font size, border width
-		"#E8E57C", "#000000", "#FFFFFF",    // Background, font, border color
-	)
-
-	// Create a move style, for the move e1-e7 
-	ms, _ := ctx.NewMoveStyle(
-		chessImager.MoveTypeDots,           // Move type 
-		"#9D6B5EFF",                        // Dot color
-		0.2,                                // Dot size
-	)
-        
-	
-	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
-	// show move e1-e7.
-	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
-
-	// Render the image 
-	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img := imager.RenderEx(fen, ctx)
+   // Create a highlight style, for the square e7
+   hs, _ := ctx.NewHighlightStyle(
+     chessImager.HighlightFull,          // Highlight type 
+     "#88E57C",                          // Highlight color
+     35,                                 // Highlight cirle radius
+     0                                   // Highlight factor (not used for this Type)        
+   )
+   
+   // Create an annotation style, for the square e7
+   as, _ := ctx.NewAnnotationStyle(
+     chessImager.PositionTopLeft,        // Position
+     25, 20, 1,                          // Size, font size, border width
+     "#E8E57C", "#000000", "#FFFFFF",    // Background, font, border color
+   )
+   
+   // Create a move style, for the move e1-e7 
+   ms, _ := ctx.NewMoveStyle(
+     chessImager.MoveTypeDots,           // Move type 
+     "#9D6B5EFF",                        // Dot color
+     0.2,                                // Dot size
+   )
+     
+   
+   // Highlight the e7 square, annotate e7 as a brilliant move (!!) and
+   // show move e1-e7.
+   ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
+   
+   // Render the image 
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   image, _ := imager.RenderEx(fen, ctx)
 ```
 
 <img src="examples/advanced.png" alt="drawing" width="350"/>
@@ -183,7 +190,7 @@ in the JSON file.
 
 If you don't want to edit the JSON file, you could just specify it with code, like this:
 ```go
-	_ = ctx.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
+	imager.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
 ```
 
 Each renderer has its own settings, which are described below.
@@ -292,7 +299,7 @@ You can add a highlighted square by using the method `AddHighlight()` on the **c
 
 ```go
    imager := chessImager.NewImager()
-   ctx, _ := imager.NewContext()
+   ctx := imager.NewContext()
    ctx.AddHighlight("e7")
    image := imager.RenderEx(fen, ctx)
 ```
@@ -302,7 +309,7 @@ styling to this specific square:
 
 ```go
    imager := chessImager.NewImager()
-   ctx, _ := imager.NewContext()
+   ctx := imager.NewContext()
    hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0, 0)
    ctx.AddHighlightEx("e7", hs)
    image := imager.RenderEx(fen, ctx)
@@ -415,9 +422,9 @@ You can add an annotation by using the method `AddAnnotation()` on the **context
 
 ```go
    imager := chessImager.NewImager()
-   ctx, _ := imager.NewContext()
+   ctx := imager.NewContext()
    ctx.AddAnnotation("e7", "!!")
-   image := imager.RenderEx(fen, ctx)
+   image, _ := imager.RenderEx(fen, ctx)
 ```
 
 Another alternative is to use the method `AddAnnotationEx()`, that allows you to provide some special
@@ -425,14 +432,14 @@ styling to this specific square:
 
 ```go
    imager := chessImager.NewImager()
-   ctx, _ := imager.NewContext()
+   ctx := imager.NewContext()
    as, _ := ctx.NewAnnotationStyle(
       chessImager.PositionTopLeft,
       25, 20, 1,
       "E8E57C", "000000", "FFFFFF",
    )
    ctx.AddAnnotationEx("e7", "11", as)
-   image := imager.RenderEx(fen, ctx)
+   image, _ := imager.RenderEx(fen, ctx)
 ```
 
 ## Moves renderer
@@ -444,6 +451,5 @@ styling to this specific square:
 * Implement MoveTypeArrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
-* embed default.json
-* Should settings not be a global var?
 * Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
+* Remove panics

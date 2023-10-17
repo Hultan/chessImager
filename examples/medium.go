@@ -8,8 +8,11 @@ import (
 )
 
 func main() {
+	// Create a new imager using embedded default.json settings
 	imager := chessImager.NewImager()
-	ctx, _ := imager.NewContext() // New context using default.json settings
+
+	// Create a new context
+	ctx := imager.NewContext()
 
 	// Highlight square e7
 	// Annotate square e7 with "!!"

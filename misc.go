@@ -165,16 +165,10 @@ func setFontFace(c *gg.Context, size int) {
 // Path : The path to load the settings from. Leave empty
 // for the default settings (config/default.json).
 func loadSettings(path string) (*Settings, error) {
-	p := "config/default.json"
-	if path != "" {
-		p = path
-	}
-
-	f, err := os.Open(p)
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
 
 	s := &Settings{}
 	err = json.NewDecoder(f).Decode(s)
@@ -183,4 +177,17 @@ func loadSettings(path string) (*Settings, error) {
 	}
 
 	return s, nil
+}
+
+func loadDefaultSettings() *Settings {
+	r := strings.NewReader(defaultSettings)
+
+	s := &Settings{}
+	// Ok to panic here, the embedded settings should always be correct
+	err := json.NewDecoder(r).Decode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return s
 }

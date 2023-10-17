@@ -8,11 +8,14 @@ import (
 )
 
 func main() {
+	// Create a new imager using embedded default.json settings
 	imager := chessImager.NewImager()
-	ctx, _ := imager.NewContext() // New context using default.json settings
 
 	// Set the rendering order
-	_ = ctx.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
+	imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
+
+	// Create a new context
+	ctx := imager.NewContext()
 
 	// Create a highlight style, for the square e7
 	hs, _ := ctx.NewHighlightStyle(
