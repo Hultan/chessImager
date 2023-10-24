@@ -1,4 +1,4 @@
-# ChessImager
+# ChessImager [WIP]
 
 **ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly
 configurable,
