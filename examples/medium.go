@@ -4,7 +4,7 @@ import (
 	"image/png"
 	"os"
 
-	"chessImager"
+	"github.com/Hultan/chessImager"
 )
 
 func main() {
