@@ -17,7 +17,8 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
     2. [Medium](#medium)
     3. [Advanced](#advanced)
 2. [Configuration](#configuration)
-    1. [Colors](#settings---colors)
+    1. [Colors](#configuration---colors)
+    2. [Fonts](#configuration---fonts)
 3. [Render order](#render-order)
 4. [Border renderer](#border-renderer)
 5. [Board renderer](#board-renderer)
@@ -56,9 +57,9 @@ This code will generate the following image, using the default styling in `defau
 
 ### Medium:
 
-A slightly more advanced example, that also uses the styles that are defined in the `default.json` files, would be:
+Here is a slightly more advanced example, that adds a highlighted square, an annotation and a move. 
 
-<img src="examples/medium.png" alt="drawing" width="350"/>
+This example also uses the styles that are defined in the `default.json` files, would be:
 
 ```go
    // Create a new imager using embedded default.json settings
@@ -75,11 +76,14 @@ A slightly more advanced example, that also uses the styles that are defined in 
    const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
    image, _ := imager.RenderEx(fen, ctx)
 ```
+This would generate the following image:
+
+<img src="examples/medium.png" alt="drawing" width="350"/>
 
 ### Advanced:
 
 If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in default.
-json, you can do that by either manually edit the default.json, or by providing the styles objects manually.
+json you can do that by providing the styles objects manually.
 
 For example, let's change a few things from the medium example:
 
@@ -130,6 +134,8 @@ And for fun, lets change the render order too...
    image, _ := imager.RenderEx(fen, ctx)
 ```
 
+This code will generate the following image:
+
 <img src="examples/advanced.png" alt="drawing" width="350"/>
 
 As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
@@ -141,15 +147,15 @@ https://www.chess.com/games/view/969971
 
 ## Configuration
 
-ChessImager uses a configuration JSON file to define the size of the board and colors etc. You can
+**ChessImager** uses a configuration JSON file to define the size of the board and colors etc. You can
 either use the embedded default.json or you can create your own configuration file. If you want to use your own
-configuration file, you will need to use the function `chessImager.NewImagerFromPath(path)`.
+configuration file, you will need to use the function `chessImager.NewImagerFromPath(path)`. See `examples/other.go` 
+for an example of how to do this.
 
 ### Configuration - colors
 
 All colors in the settings file can be specified in one of four different ways, since the hashtag and the alfa 
 values are optional:
-
 
 | Pattern   | Example string |
 |-----------|----------------|
@@ -160,13 +166,26 @@ values are optional:
 
 If you don't specify the alfa component of the color, FF will be assumed.
 
+## Configuration - fonts
+If no font is specified in the settings file, the Go Regular TTF font will be used.
+
+The path must be a full path to the TTF font file. Example:
+
+```json
+   ...
+   "font_style": {
+     "path" : "/home/[username]/roboto.ttf"
+   }
+   ...
+```
+
 ## Context
 
 For simple chess board images, you don't need a context. You can just use `chessImager.NewImager().Render(fen)` and
 be done with it.
 
 For more advanced chess board images, you will need to create a Context object, using the `chessImager.NewContext()`
-function. Using this context object, you can add highlighted squares, annotations and actual moves.
+function. Using this context object, you can add **highlighted squares**, **annotations** and **moves**.
 
 Every new context created, resets the moves, annotations and highlighted squares lists, so it is strongly recommended
 to create a new context for each new image that you want to generate. When you are ready to render the image, you 
@@ -174,7 +193,7 @@ pass along the context object to the `chessImager.RenderEx()` function.
 
 ## Render order
 
-ChessImager is split up into seven different renderers, that are each responsible for drawing different parts of
+**ChessImager** is split up into seven different renderers, that are each responsible for rendering different parts of
 the chess board. The renderers, and their indexes, are:
 
 | Index | Name               | Description                               |
@@ -216,9 +235,7 @@ If you don't want to edit the JSON file, you could just specify it with code, li
 ```go
     _ = imager.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
 ```
-
-Each renderer has its own settings, which are described below.
-
+Check out `examples/advanced.go` to see how to change render order.
 ## Border renderer
 
 The border renderer should always be the first renderer. It clears the image with the border color specified in the
@@ -244,14 +261,15 @@ The settings for the border renderer can be found in the **border** section of t
 
 ## Board renderer
 
-The board renderer is usually the second renderer. It has a type that specifies how the renderer should draw the board.
+The board renderer is usually the second renderer. It has a `type` field that specifies how the renderer should draw 
+the board.
 
-If type=0, then the renderer will draw the board manually using the settings in the **default** section (under the
-**board** section). For now this is the only board type that is implemented, so type should always be 0.
+If `type`=0, then the renderer will draw the board manually using the settings in the **default** section (under the
+**board** section). For now this is the only board type that is implemented, so type should always be 0 at this point.
 
-If type=1 then the renderer will draw an image containing a chessboard using the settings in the **image** section (
-under the
-**board** section). <mark>This type is not implemented yet.</mark>
+If `type`=1 then the renderer will draw an image containing a chessboard using the settings in the **image** section (under the **board** section). 
+
+<mark>This type is not implemented yet.</mark>
 
 | Name    | Type    | Description                                   |
 |---------|---------|-----------------------------------------------|
@@ -268,7 +286,7 @@ The settings under **board.default** are the following:
 | Name     | type    | Description                                                                     |
 |----------|---------|---------------------------------------------------------------------------------|
 | inverted | boolean | Black at the top, or white at the top.                                          |
-| size     | integer | The size of the board (border not included). Should probably be dividable by 8. |
+| size     | integer | The size of the board (border not included). Should probably be divisible by 8. |
 | white    | string  | The color for the white squares                                                 |
 | black    | string  | The color for the black squares                                                 |
 
@@ -290,7 +308,7 @@ The settings under **board.default** are the following:
 
 ## Rank and File renderer
 
-The rank and file renderer draws the file letters A to H and the rank numbers 1 to 8 on the chess board.
+The rank and file renderer renders the file letters A to H and the rank numbers 1 to 8 on the chess board.
 
 | Name       | Type    | Description                                            |
 |------------|---------|--------------------------------------------------------|
@@ -320,7 +338,7 @@ json` file.
 | type   | integer | 0 = square, 1 = border, 2 = circle, 3 = filled circle, 4 = cross |
 | color  | string  | The highlight color                                              |
 | width  | integer | The width of the border, circle or cross (type=1, 2 or 4)        |
-| factor | float64 | The size of the circle or cross (type=2, 3 or 4)                 |
+| factor | float   | The size of the circle or cross (type=2, 3 or 4)                 |
 
 The factor 0.5 means that the circle or cross should be 50% och the width of the square.
 
@@ -482,6 +500,46 @@ styling to this specific square:
 
 ## Moves renderer
 
+The moves renderer is responsible for rendering moves, that is, indicating that a piece has moved from a square to a 
+square. 
+
+The style of the move can be changed in the `default.json` file, or by providing a `chessImager.MoveStyle` struct to 
+the `AddMoveEx()` method.
+
+| Name             | Type    | Description                                       |
+|------------------|---------|---------------------------------------------------|
+| type             | integer | 0 = Dotted                                        |
+| color            | string  | The color of the dots                             |
+| factor           | float   | The size of the dots, relative to the square size |
+
+You can add a move by using the method `AddMove()` on the **context** object.
+
+```go
+   imager := chessImager.NewImager()
+
+   ctx := imager.NewContext()
+   ctx.AddMove("e7", "c5")
+
+   image, _ := imager.RenderEx(fen, ctx)
+```
+
+Another alternative is to use the method `AddMoveEx()`, that allows you to provide some special
+styling to this particular move:
+
+```go
+   imager := chessImager.NewImager()
+   ctx := imager.NewContext()
+   
+   // Create a move style, for the move e7-c5
+   ms, _ := ctx.NewMoveStyle(
+      chessImager.MoveTypeDots, // Move type
+      "#9D6B5EFF",              // Dot color
+      0.2,                      // Dot size
+   )
+   ctx.AddMoveEx("e7", "c5", ms)
+   
+   image, _ := imager.RenderEx(fen, ctx)
+```
 ## Todo
 
 * Tests
@@ -490,3 +548,4 @@ styling to this specific square:
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
+* Create a Clear() method on the Context object.
