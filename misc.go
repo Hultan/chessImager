@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"log"
 	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font/gofont/goregular"
 )
 
 type SubImager interface {
@@ -154,14 +157,21 @@ func getSquareBox(x, y int) Rectangle {
 }
 
 func setFontFace(c *gg.Context, size int) error {
-	path := "/roboto.ttf"
-	if settings.FontStyle.Path != "" {
-		path = settings.FontStyle.Path
-	}
+	if settings.FontStyle.Path == "" {
+		// Use standard font
+		font, err := truetype.Parse(goregular.TTF)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	err := c.LoadFontFace(path, float64(size))
-	if err != nil {
-		return fmt.Errorf("failed to load font face : %v", err)
+		face := truetype.NewFace(font, &truetype.Options{Size: float64(size)})
+		c.SetFontFace(face)
+	} else {
+		// Load font specified in config file
+		err := c.LoadFontFace(settings.FontStyle.Path, float64(size))
+		if err != nil {
+			return fmt.Errorf("failed to load font face : %v", err)
+		}
 	}
 
 	return nil
