@@ -154,7 +154,7 @@ func getSquareBox(x, y int) Rectangle {
 }
 
 func setFontFace(c *gg.Context, size int) error {
-	path := "roboto.ttf"
+	path := "./roboto.ttf"
 	if settings.FontStyle.Path != "" {
 		path = settings.FontStyle.Path
 	}
