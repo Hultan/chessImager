@@ -547,5 +547,5 @@ styling to this particular move:
 * Implement MoveTypeArrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
-* Select corner for RankAndFileInSquare => RankAndFileTopLeft, RankAndFileTopRight, etc
 * Create a Clear() method on the Context object.
+* rendererRankAndFile type=RankAndFileTypeInSquares must be fixed.

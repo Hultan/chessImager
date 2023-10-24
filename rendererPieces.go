@@ -89,10 +89,10 @@ func (r *rendererPiece) loadPieces() error {
 func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRectangle) error {
 	sub, ok := imageMap.(SubImager)
 	if !ok {
-		return errors.New("failed to create SubImager. Wrong image type? Try PGN")
+		return errors.New("failed to create SubImager. Wrong image type? Try PNG")
 	}
 	for _, item := range items {
-		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.ToRect())))
+		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.ToImageRect())))
 	}
 	return nil
 }
@@ -111,12 +111,13 @@ func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) [
 func (r *rendererPiece) resize(img image.Image) image.Image {
 	var pieceSize uint
 
+	square := float64(settings.Board.Default.Size / 8)
 	switch settings.Board.Type {
 	case BoardTypeDefault:
-		pieceSize = uint(float64(settings.Board.Default.Size/8) * settings.Pieces.Factor)
+		pieceSize = uint(square * settings.Pieces.Factor)
 	case BoardTypeImage:
 		// Ok to panic here, not yet implemented
-		panic("Not implemented!")
+		panic("Not yet implemented!")
 	}
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }

@@ -25,7 +25,7 @@ func (r Rectangle) Shrink(f float64) Rectangle {
 	return rr
 }
 
-func (r Rectangle) ToRect() (int, int, int, int) {
+func (r Rectangle) ToImageRect() (int, int, int, int) {
 	return int(r.X), int(r.Y), int(r.X + r.Width), int(r.Y + r.Height)
 }
 

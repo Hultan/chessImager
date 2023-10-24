@@ -11,12 +11,12 @@ type rendererBoard struct {
 func (r *rendererBoard) draw(c *gg.Context) error {
 	board := r.getBoardBox()
 
-	// Set background to black color
+	// Draw the entire board in the black color
 	c.SetRGBA(toRGBA(settings.Board.Default.Black))
 	c.DrawRectangle(board.Coords())
 	c.Fill()
 
-	// Draw light squares
+	// Draw the white squares, on top of the black board
 	c.SetRGBA(toRGBA(settings.Board.Default.White))
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
