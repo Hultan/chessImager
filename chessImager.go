@@ -18,6 +18,7 @@ type Imager struct {
 }
 
 var settings *Settings
+var useInternalFont = true
 
 // NewImager creates a new Imager.
 func NewImager() *Imager {
