@@ -14,8 +14,8 @@
     },
     "image": {
       "inverted": false,
-      "path": "/home/per/temp/chessboard.jpeg",
-      "rect": {"x": 32,"y": 32,"width": 232,"height": 232}
+      "path": "/home/per/temp/chessboard.jpg",
+      "rect": {"x": 32,"y": 96, "width": 276,"height": 276}
     }
   },
   "rank_and_file": {
@@ -62,9 +62,9 @@
   },
   "annotation_style": {
     "position": 1,
-    "size": 10,
+    "size": 15,
     "font_color":"#000000FF",
-    "font_size": 8,
+    "font_size": 13,
     "background_color":"#E8E57CFF",
     "border_color":"#E8E57CFF",
     "border_width":1

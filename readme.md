@@ -1,4 +1,4 @@
-# ChessImager [WIP]
+# ChessImager
 
 **ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly
 configurable,
@@ -268,15 +268,11 @@ If `type`=0, then the renderer will draw the board manually using the settings i
 
 If `type`=1 then the renderer will draw an image containing a chessboard using the settings in the **image** section (under the **board** section). 
 
-<mark>This type is not implemented yet.</mark>
-
 | Name    | Type    | Description                                   |
 |---------|---------|-----------------------------------------------|
 | type    | integer | 0 = default, 1 = image                        |
 | default | -       | The settings for a manually drawn chess board |
 | image   | -       | The settings for a chess board image          |
-
-<mark>If you do use a board image, then the Border settings and RankAndFile settings will be ignored.</mark>
 
 ### Board default
 
@@ -303,6 +299,9 @@ The settings under **board.default** are the following:
 
 ### Board image
 
+You can use an image of a chess board as the background if you want to. <mark>If you do, the border settings and rank 
+and file settings will be ignored.</mark>
+
 The settings under **board.image** are the following:
 
 | Name     | type      | Description                                                 |
@@ -321,9 +320,11 @@ The settings under **board.image** are the following:
       }
    }
 ```
-Here is an example of how `example/medium` looks when using a board image, instead of the default board:
+Here is an example of how `example/medium` looks when using a background board image, instead of the default board:
 
 <img src="examples/boardImage.png" alt="drawing" width="294"/>
+
+Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
 
 ## Rank and File renderer
 
