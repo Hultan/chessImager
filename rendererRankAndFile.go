@@ -23,11 +23,14 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 		return nil
 	}
 
-	var dx, dy float64 // InSquare adjustments
-
-	square := float64(settings.Board.Default.Size) / 8
 	border := float64(settings.Border.Width)
-	size := settings.RankAndFile.FontSize
+	fontSize := settings.RankAndFile.FontSize
+
+	c.SetRGBA(toRGBA(settings.RankAndFile.FontColor))
+	err := setFontFace(c, fontSize)
+	if err != nil {
+		return err
+	}
 
 	switch settings.RankAndFile.Type {
 	case RankAndFileTypeNone:
@@ -37,22 +40,19 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 		if border < borderLimit {
 			return nil
 		}
+		r.drawRanksAndFiles(c, 0, 0)
 	case RankAndFileTypeInSquares:
+		// TODO : Needs better implementation
 		// Don't bother drawing ranks and files when to border is too thin
 		if border < borderLimit {
 			return nil
 		}
-		dx, dy = (square-border)/2-5, -border-5
+		square := float64(getBoardBox().Width) / 8
+		dx, dy := (square-border)/2-5, -border-5
+		r.drawRanksAndFiles(c, dx, dy)
 	default:
 		return errors.New("invalid rank and file type")
 	}
-
-	c.SetRGBA(toRGBA(settings.RankAndFile.FontColor))
-	err := setFontFace(c, size)
-	if err != nil {
-		return err
-	}
-	r.drawRanksAndFiles(c, dx, dy)
 
 	return nil
 }
@@ -63,7 +63,8 @@ func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 	for _, rfBox := range rfBoxes {
 		tw, th := c.MeasureString(rfBox.text)
 		x := rfBox.box.X + (rfBox.box.Width-tw)/2
-		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th
+		// We are adjusting by 2 pixels here because of bug in MeasureString?
+		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th - 2
 		c.DrawString(rfBox.text, x+dx, y+dy)
 	}
 }
@@ -80,7 +81,6 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 		// Files
 		text = r.getFileText(i)
 		box = r.getFileBox(i)
-		box.Height -= 3 // Adjust the height a little to handle the letter g
 		rf = append(rf, RankFile{box: box, text: text})
 	}
 	return rf
@@ -96,9 +96,9 @@ func (r *rendererRankAndFile) getRankText(n int) string {
 
 func (r *rendererRankAndFile) getFileText(n int) string {
 	if settings.Board.Default.Inverted {
-		return fmt.Sprintf("%c", 'a'+n)
+		return fmt.Sprintf("%c", 'H'-n)
 	} else {
-		return fmt.Sprintf("%c", 'h'-n)
+		return fmt.Sprintf("%c", 'A'+n)
 	}
 }
 
@@ -119,7 +119,7 @@ func (r *rendererRankAndFile) getFileBox(file int) Rectangle {
 	border := float64(settings.Border.Width)
 
 	return Rectangle{
-		X:      border + float64(invert(file))*square,
+		X:      border + float64(file)*square,
 		Y:      border + 8*square,
 		Width:  square,
 		Height: border,
