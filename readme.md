@@ -141,7 +141,7 @@ This code will generate the following image:
 As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
 
 All the examples above comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (*
-*Netherlands**), in 1999:
+**Netherlands**), in 1999:
 
 https://www.chess.com/games/view/969971
 
@@ -172,11 +172,9 @@ If no font is specified in the settings file, the Go Regular TTF font will be us
 The path must be a full path to the TTF font file. Example:
 
 ```json
-   ...
    "font_style": {
      "path" : "/home/[username]/roboto.ttf"
    }
-   ...
 ```
 
 ## Context

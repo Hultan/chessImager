@@ -18,6 +18,9 @@ type Imager struct {
 }
 
 var settings *Settings
+
+// Used to circumvent a bug in the fogleman/gg package, see
+// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 var useInternalFont = true
 
 // NewImager creates a new Imager.
