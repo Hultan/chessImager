@@ -564,7 +564,6 @@ styling to this particular move:
 ## Todo
 
 * Tests
-* Implement BoardImage
 * Implement MoveTypeArrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
