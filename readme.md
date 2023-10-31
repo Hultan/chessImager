@@ -166,7 +166,7 @@ values are optional:
 
 If you don't specify the alfa component of the color, FF will be assumed.
 
-## Configuration - fonts
+### Configuration - fonts
 If no font is specified in the settings file, the Go Regular TTF font will be used.
 
 The path must be a full path to the TTF font file. Example:
@@ -219,9 +219,7 @@ order to be **0,1,2,4,3,5,6** by setting:
 
 ```json
 {
-  ...
   "order": [0, 1, 2, 4, 3, 5, 6],
-  ...
 }
 
 ```
@@ -248,12 +246,10 @@ The settings for the border renderer can be found in the **border** section of t
 
 ```json
 {
-  ...
   "border": {
     "width": 20,
     "color": "#70663EFF"
   },
-  ...
 }
 ```
 <mark>The border settings will be ignored when `board.type=1` (image)</mark>
@@ -524,6 +520,8 @@ styling to this specific square:
 The moves renderer is responsible for rendering moves, that is, indicating that a piece has moved from a square to a 
 square. 
 
+For now, only one type of moves is supported, and that is `type=0` (dotted).
+
 The style of the move can be changed in the `default.json` file, or by providing a `chessImager.MoveStyle` struct to 
 the `AddMoveEx()` method.
 
@@ -564,8 +562,7 @@ styling to this particular move:
 ## Todo
 
 * Tests
-* Implement MoveTypeArrows
-* rendererRankAndFile should use getSquareBox for RankAndFileInSquare
+* Implement new MoveType: Arrows
 * in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
-* Create a Clear() method on the Context object.
+* rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * rendererRankAndFile type=RankAndFileTypeInSquares must be fixed.
