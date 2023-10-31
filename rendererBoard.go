@@ -1,6 +1,9 @@
 package chessImager
 
 import (
+	"image"
+	"os"
+
 	"github.com/fogleman/gg"
 )
 
@@ -9,7 +12,23 @@ type rendererBoard struct {
 }
 
 func (r *rendererBoard) draw(c *gg.Context) error {
-	board := r.getBoardBox()
+	switch settings.Board.Type {
+	case BoardTypeDefault:
+		r.drawDefault(c)
+	case BoardTypeImage:
+		err := r.drawImage(c)
+		if err != nil {
+			return err
+		}
+	default:
+		panic("invalid board type")
+	}
+
+	return nil
+}
+
+func (r *rendererBoard) drawDefault(c *gg.Context) {
+	board := getBoardBox()
 
 	// Draw the entire board in the black color
 	c.SetRGBA(toRGBA(settings.Board.Default.Black))
@@ -26,17 +45,19 @@ func (r *rendererBoard) draw(c *gg.Context) error {
 			}
 		}
 	}
-
-	return nil
 }
 
-func (r *rendererBoard) getBoardBox() Rectangle {
-	border := float64(settings.Border.Width)
-
-	return Rectangle{
-		X:      border,
-		Y:      border,
-		Width:  float64(settings.Board.Default.Size),
-		Height: float64(settings.Board.Default.Size),
+func (r *rendererBoard) drawImage(c *gg.Context) error {
+	f, err := os.Open(settings.Board.Image.Path)
+	if err != nil {
+		return err
 	}
+	img, _, err := image.Decode(f)
+	if err != nil {
+		return err
+	}
+
+	c.DrawImage(img, 0, 0)
+
+	return nil
 }

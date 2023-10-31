@@ -256,6 +256,7 @@ The settings for the border renderer can be found in the **border** section of t
   ...
 }
 ```
+<mark>The border settings will be ignored when `board.type=1` (image)</mark>
 
 ## Board renderer
 
@@ -302,7 +303,27 @@ The settings under **board.default** are the following:
 
 ### Board image
 
-<mark>Not implemented yet</mark>
+The settings under **board.image** are the following:
+
+| Name     | type      | Description                                                 |
+|----------|-----------|-------------------------------------------------------------|
+| inverted | boolean   | Black at the top, or white at the top.                      |
+| path     | string    | The path to the board image                                 |
+| rect     | rectangle | A rectangle that specifies where in the image the board is. |
+
+```JSON
+   "board": {
+      "type": 1,
+      "image": {
+         "inverted": false,
+         "path": "/home/[username]/chessboard.png",
+         "rect": {"x": 30, "y": 50, "width": 480,"height": 480},
+      }
+   }
+```
+Here is an example of how `example/medium` looks when using a board image, instead of the default board:
+
+<img src="examples/boardImage.png" alt="drawing" width="294"/>
 
 ## Rank and File renderer
 
@@ -321,6 +342,7 @@ The rank and file renderer renders the file letters A to H and the rank numbers 
       "font_size": 16
    }
 ```
+<mark>The rank and file settings will be ignored when `board.type=1` (image)</mark>
 
 ## Highlight renderer
 

@@ -66,16 +66,14 @@ type BoardDefault struct {
 }
 
 // BoardImage represents settings for rendering the background image of a chessboard (Board.Type=1)
-// If you are using BoardImage, BoardDefault will be ignored.
+// If you are using BoardImage, BoardDefault will be ignored. Also, Border and RankAndFile settings will be ignored.
 // Inverted : If false, white will be on bottom.
 // Path : Path to the background image of a chessboard
-// Board : Rectangle that defines where the board is positioned on the image
-// Size : The size of the piece images, will be centered in the squares
+// Rect : Rectangle that defines where the board is positioned on the image
 type BoardImage struct {
 	Inverted bool      `json:"inverted"`
 	Path     string    `json:"path"`
-	Board    Rectangle `json:"board"`
-	Size     int       `json:"size"`
+	Rect     Rectangle `json:"rect"`
 }
 
 // RankAndFile defines how the rank and file indicators should be drawn.

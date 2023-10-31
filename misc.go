@@ -112,13 +112,53 @@ func sgn(dx int) int {
 // getBoardSize returns a rectangle with the size of the board
 // plus the border surrounding it.
 func getBoardSize() image.Rectangle {
-	size := settings.Board.Default.Size + settings.Border.Width*2
+	switch settings.Board.Type {
+	case BoardTypeDefault:
+		size := settings.Board.Default.Size + settings.Border.Width*2
 
-	return image.Rectangle{
-		Max: image.Point{
-			X: size,
-			Y: size,
-		},
+		return image.Rectangle{
+			Max: image.Point{
+				X: size,
+				Y: size,
+			},
+		}
+	case BoardTypeImage:
+		f, err := os.Open(settings.Board.Image.Path)
+		if err != nil {
+			panic("error loading board image path: " + err.Error())
+		}
+		img, _, err := image.Decode(f)
+		if err != nil {
+			panic("failed to decode board image: " + err.Error())
+		}
+		return image.Rectangle{
+			Max: image.Point{
+				X: img.Bounds().Size().X,
+				Y: img.Bounds().Size().Y,
+			},
+		}
+
+	default:
+		panic("invalid board type")
+	}
+}
+
+func getBoardBox() Rectangle {
+	switch settings.Board.Type {
+	case BoardTypeDefault:
+		border := float64(settings.Border.Width)
+		size := float64(settings.Board.Default.Size)
+
+		return Rectangle{
+			X:      border,
+			Y:      border,
+			Width:  size,
+			Height: size,
+		}
+	case BoardTypeImage:
+		return settings.Board.Image.Rect
+	default:
+		panic("invalid board type")
 	}
 }
 
@@ -145,14 +185,25 @@ func algToCoords(alg string) (int, int) {
 }
 
 func getSquareBox(x, y int) Rectangle {
-	square := float64(settings.Board.Default.Size) / 8
-	border := float64(settings.Border.Width)
+	board := getBoardBox()
+	square := board.Width / 8
 
-	return Rectangle{
-		X:      border + float64(x)*square,
-		Y:      border + float64(invert(y))*square,
-		Width:  square,
-		Height: square,
+	if settings.Board.Type == BoardTypeDefault {
+		border := float64(settings.Border.Width)
+
+		return Rectangle{
+			X:      border + float64(x)*square,
+			Y:      border + float64(invert(y))*square,
+			Width:  square,
+			Height: square,
+		}
+	} else {
+		return Rectangle{
+			X:      board.X + float64(x)*square,
+			Y:      board.Y + float64(invert(y))*square,
+			Width:  square,
+			Height: square,
+		}
 	}
 }
 

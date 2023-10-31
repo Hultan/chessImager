@@ -111,25 +111,25 @@ func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) [
 func (r *rendererPiece) resize(img image.Image) image.Image {
 	var pieceSize uint
 
-	square := float64(settings.Board.Default.Size / 8)
+	board := getBoardBox()
+	square := board.Width / 8
 	switch settings.Board.Type {
 	case BoardTypeDefault:
 		pieceSize = uint(square * settings.Pieces.Factor)
 	case BoardTypeImage:
-		// Ok to panic here, not yet implemented
-		panic("Not yet implemented!")
+		pieceSize = uint(square * settings.Pieces.Factor)
 	}
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }
 
 func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Image, int, int) {
-	square := settings.Board.Default.Size / 8
-	border := settings.Border.Width
-	diff := (square - img.Bounds().Size().Y) / 2
+	board := getBoardBox()
+	box := getSquareBox(x, y)
+	diff := (int(box.Width) - img.Bounds().Size().Y) / 2
 
 	if settings.Board.Default.Inverted {
-		return img, border + invert(x)*square + diff, border + invert(y)*square + diff
+		return img, int(box.X) + invert(x)*int(box.Width) + diff, int(box.Y) + invert(y)*int(box.Height) + diff
 	}
 
-	return img, border + x*square + diff, border + y*square + diff
+	return img, int(board.X) + x*int(box.Width) + diff, int(board.Y) + y*int(box.Height) + diff
 }

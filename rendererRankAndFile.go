@@ -19,6 +19,10 @@ type RankFile struct {
 }
 
 func (r *rendererRankAndFile) draw(c *gg.Context) error {
+	if settings.Board.Type == BoardTypeImage {
+		return nil
+	}
+
 	var dx, dy float64 // InSquare adjustments
 
 	square := float64(settings.Board.Default.Size) / 8
