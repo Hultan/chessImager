@@ -562,7 +562,6 @@ styling to this particular move:
 ## Todo
 
 * Tests
+* Load board image just once at startup
 * Implement new MoveType: Arrows
-* in the readme.md file we are using WP and wp. Check if we handle capitalization of the piece tags.
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
-* rendererRankAndFile type=RankAndFileTypeInSquares must be fixed.

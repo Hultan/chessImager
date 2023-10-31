@@ -42,7 +42,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 		if border < borderLimit {
 			return nil
 		}
-		dx, dy = (square-border)/2, -border
+		dx, dy = (square-border)/2-5, -border-5
 	default:
 		return errors.New("invalid rank and file type")
 	}

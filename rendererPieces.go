@@ -65,7 +65,7 @@ func (r *rendererPiece) loadPieces() error {
 				return err
 			}
 
-			pieces[pieceMap[piece.Piece]] = r.resize(img)
+			pieces[pieceMap[strings.ToUpper(piece.Piece)]] = r.resize(img)
 		}
 	case PiecesTypeImageMap:
 		f, err := os.Open(settings.Pieces.ImageMap.Path)
@@ -101,7 +101,7 @@ func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) [
 	result := make([]PieceRectangle, len(mapPieces))
 	for _, piece := range mapPieces {
 		result = append(result, PieceRectangle{
-			piece: pieceMap[piece.Piece],
+			piece: pieceMap[strings.ToUpper(piece.Piece)],
 			rect:  piece.Rect,
 		})
 	}
