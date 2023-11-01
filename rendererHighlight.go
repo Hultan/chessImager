@@ -16,7 +16,11 @@ func (r *rendererHighlight) draw(c *gg.Context) error {
 	}
 	for _, high := range r.ctx.Highlight {
 		style := r.getStyle(high)
-		b := getSquareBox(algToCoords(high.Square))
+		a, err := newAlg(high.Square)
+		if err != nil {
+			return err
+		}
+		b := getSquareBox(a.coords())
 		c.SetRGBA(toRGBA(style.Color))
 		switch style.Type {
 		case HighlightTypeFull:
