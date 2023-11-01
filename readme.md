@@ -391,7 +391,7 @@ The piece renderer are responsible for drawing the pieces on the board (as speci
 | Name      | Type    | Description                                                                                      |
 |-----------|---------|--------------------------------------------------------------------------------------------------|
 | factor    | float   | Resize factor for pieces where 1.0 is equal to 100%. Pieces will be scaled up or down the factor |
-| type      | integer | 0 = Use embedded pieces, 1 = use 12 images, 2 = use an image map                                 |
+| type      | integer | 0 = Use embedded pieces, 1 = use an image for each piece, 2 = use an image map                   |
 | images    | -       | Contains 12 paths, one for each piece.                                                           |
 | image_map | -       | Contains 1 path, and 12 rectangles.                                                              |
 
