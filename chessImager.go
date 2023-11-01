@@ -2,9 +2,12 @@ package chessImager
 
 import (
 	_ "embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"image"
+	"os"
+	"strings"
 
 	"github.com/fogleman/gg"
 )
@@ -18,6 +21,7 @@ type Imager struct {
 }
 
 var settings *Settings
+var boardImage image.Image
 
 // Used to circumvent a bug in the fogleman/gg package, see
 // SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
@@ -33,6 +37,10 @@ func NewImager() *Imager {
 func NewImagerFromPath(path string) (i *Imager, err error) {
 	settings, err = loadSettings(path)
 	if err != nil {
+		return nil, err
+	}
+
+	if err = validateSettings(); err != nil {
 		return nil, err
 	}
 
@@ -111,4 +119,118 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 	}
 
 	return result, nil
+}
+
+// getBoardSize returns a rectangle with the size of the board
+// plus the border surrounding it.
+func getBoardSize() image.Rectangle {
+	switch settings.Board.Type {
+	case BoardTypeDefault:
+		size := settings.Board.Default.Size + settings.Border.Width*2
+
+		return image.Rectangle{
+			Max: image.Point{
+				X: size,
+				Y: size,
+			},
+		}
+	case BoardTypeImage:
+		return image.Rectangle{
+			Max: image.Point{
+				X: boardImage.Bounds().Size().X,
+				Y: boardImage.Bounds().Size().Y,
+			},
+		}
+
+	default:
+		panic("invalid board type")
+	}
+}
+
+// loadSettings loads the settings from a json file
+// Path : The path to load the settings from.
+func loadSettings(path string) (*Settings, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	s := &Settings{}
+	err = json.NewDecoder(f).Decode(s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s, nil
+}
+
+// loadDefaultSettings loads the embedded default settings
+func loadDefaultSettings() *Settings {
+	r := strings.NewReader(defaultSettings)
+
+	s := &Settings{}
+	// Ok to panic here, the embedded settings should always be correct
+	err := json.NewDecoder(r).Decode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return s
+}
+
+func validateSettings() error {
+	if settings.Board.Type == BoardTypeImage {
+		if err := tryLoadImage(settings.Board.Image.Path, &boardImage); err != nil {
+			return err
+		}
+	}
+
+	if settings.Pieces.Type == PiecesTypeImageMap {
+		var img image.Image
+		if err := tryLoadImage(settings.Pieces.ImageMap.Path, &img); err != nil {
+			return err
+		}
+	}
+
+	if settings.Pieces.Type == PiecesTypeImages {
+		var img image.Image
+		for _, p := range settings.Pieces.Images.Pieces {
+			if err := tryLoadImage(p.Path, &img); err != nil {
+				return err
+			}
+		}
+	}
+
+	if settings.FontStyle.Path != "" {
+		if err := tryLoadFile(settings.FontStyle.Path); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func tryLoadImage(path string, img *image.Image) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return fmt.Errorf("failed to load image : %v", err)
+	}
+	defer f.Close()
+
+	*img, _, err = image.Decode(f)
+	if err != nil {
+		return fmt.Errorf("failed to encode image : %v", err)
+	}
+
+	return nil
+}
+
+func tryLoadFile(path string) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return fmt.Errorf("failed to file (%s) : %v", path, err)
+	}
+	defer f.Close()
+
+	return nil
 }

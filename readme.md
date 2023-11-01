@@ -562,6 +562,6 @@ styling to this particular move:
 ## Todo
 
 * Tests
-* Load board image just once at startup
 * Implement new MoveType: Arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
+* create an Alg type

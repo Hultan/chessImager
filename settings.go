@@ -89,6 +89,7 @@ type RankAndFile struct {
 
 // HighlightedSquare defines how highlighted squares should be drawn.
 // Square : The square to be highlighted (ex "f3")
+// Style : The style to use for this highlighted square
 type HighlightedSquare struct {
 	Square string          `json:"square"`
 	Style  *HighlightStyle `json:"style"`

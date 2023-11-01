@@ -9,7 +9,10 @@ import (
 
 func main() {
 	// Create a new imager using your custom JSON file
-	imager, _ := chessImager.NewImagerFromPath("examples/other.json")
+	imager, err := chessImager.NewImagerFromPath("examples/other.json")
+	if err != nil {
+		panic(err)
+	}
 
 	// Create a new context
 	ctx := imager.NewContext()

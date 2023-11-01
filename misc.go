@@ -1,13 +1,11 @@
 package chessImager
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"image"
 	"image/color"
 	"log"
-	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -21,41 +19,6 @@ type SubImager interface {
 
 type renderer interface {
 	draw(*gg.Context) error
-}
-
-type PieceRectangle struct {
-	piece chessPiece
-	rect  Rectangle
-}
-
-var pieceMap = map[string]chessPiece{
-	"WK": WhiteKing,
-	"WQ": WhiteQueen,
-	"WR": WhiteRook,
-	"WN": WhiteKnight,
-	"WB": WhiteBishop,
-	"WP": WhitePawn,
-	"BK": BlackKing,
-	"BQ": BlackQueen,
-	"BR": BlackRook,
-	"BN": BlackKnight,
-	"BB": BlackBishop,
-	"BP": BlackPawn,
-}
-
-var embeddedPieces = []PieceRectangle{
-	{WhiteKing, Rectangle{0, 0, 333, 333}},
-	{WhiteQueen, Rectangle{333, 0, 333, 333}},
-	{WhiteBishop, Rectangle{666, 0, 333, 333}},
-	{WhiteKnight, Rectangle{999, 0, 333, 333}},
-	{WhiteRook, Rectangle{1332, 0, 333, 333}},
-	{WhitePawn, Rectangle{1665, 0, 333, 333}},
-	{BlackKing, Rectangle{0, 333, 333, 333}},
-	{BlackQueen, Rectangle{333, 333, 333, 333}},
-	{BlackBishop, Rectangle{666, 333, 333, 333}},
-	{BlackKnight, Rectangle{999, 333, 333, 333}},
-	{BlackRook, Rectangle{1332, 333, 333, 333}},
-	{BlackPawn, Rectangle{1665, 333, 333, 333}},
 }
 
 // hexToRGBA converts a hex string to a color
@@ -109,40 +72,6 @@ func sgn(dx int) int {
 	return 1
 }
 
-// getBoardSize returns a rectangle with the size of the board
-// plus the border surrounding it.
-func getBoardSize() image.Rectangle {
-	switch settings.Board.Type {
-	case BoardTypeDefault:
-		size := settings.Board.Default.Size + settings.Border.Width*2
-
-		return image.Rectangle{
-			Max: image.Point{
-				X: size,
-				Y: size,
-			},
-		}
-	case BoardTypeImage:
-		f, err := os.Open(settings.Board.Image.Path)
-		if err != nil {
-			panic("error loading board image path: " + err.Error())
-		}
-		img, _, err := image.Decode(f)
-		if err != nil {
-			panic("failed to decode board image: " + err.Error())
-		}
-		return image.Rectangle{
-			Max: image.Point{
-				X: img.Bounds().Size().X,
-				Y: img.Bounds().Size().Y,
-			},
-		}
-
-	default:
-		panic("invalid board type")
-	}
-}
-
 func getBoardBox() Rectangle {
 	switch settings.Board.Type {
 	case BoardTypeDefault:
@@ -160,28 +89,6 @@ func getBoardBox() Rectangle {
 	default:
 		panic("invalid board type")
 	}
-}
-
-func validateAlg(alg string) error {
-	alg = strings.ToLower(alg)
-	if len(alg) != 2 {
-		return errors.New("invalid length of alg")
-	}
-	if alg[0] < 'a' || alg[0] > 'h' {
-		return errors.New("invalid character in alg : " + string(alg[0]))
-	}
-	if alg[1] < '1' || alg[1] > '8' {
-		return errors.New("invalid character in alg : " + string(alg[1]))
-	}
-	return nil
-}
-func algToCoords(alg string) (int, int) {
-	alg = strings.ToLower(alg)
-	x, y := int(alg[0]-'a'), int(alg[1]-'1')
-	if settings.Board.Default.Inverted {
-		return invert(x), invert(y)
-	}
-	return x, y
 }
 
 func getSquareBox(x, y int) Rectangle {
@@ -207,6 +114,28 @@ func getSquareBox(x, y int) Rectangle {
 	}
 }
 
+func validateAlg(alg string) error {
+	alg = strings.ToLower(alg)
+	if len(alg) != 2 {
+		return errors.New("invalid length of alg")
+	}
+	if alg[0] < 'a' || alg[0] > 'h' {
+		return errors.New("invalid character in alg : " + string(alg[0]))
+	}
+	if alg[1] < '1' || alg[1] > '8' {
+		return errors.New("invalid character in alg : " + string(alg[1]))
+	}
+	return nil
+}
+func algToCoords(alg string) (int, int) {
+	alg = strings.ToLower(alg)
+	x, y := int(alg[0]-'a'), int(alg[1]-'1')
+	if settings.Board.Default.Inverted {
+		return invert(x), invert(y)
+	}
+	return x, y
+}
+
 func setFontFace(c *gg.Context, size int) error {
 	if settings.FontStyle.Path == "" {
 		// Use standard font
@@ -228,35 +157,4 @@ func setFontFace(c *gg.Context, size int) error {
 	}
 
 	return nil
-}
-
-// loadSettings loads the default settings from a json file
-// Path : The path to load the settings from. Leave empty
-// for the default settings (config/default.json).
-func loadSettings(path string) (*Settings, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	s := &Settings{}
-	err = json.NewDecoder(f).Decode(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return s, nil
-}
-
-func loadDefaultSettings() *Settings {
-	r := strings.NewReader(defaultSettings)
-
-	s := &Settings{}
-	// Ok to panic here, the embedded settings should always be correct
-	err := json.NewDecoder(r).Decode(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return s
 }

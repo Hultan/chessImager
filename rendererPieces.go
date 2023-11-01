@@ -17,8 +17,43 @@ var defaultPieces []byte
 
 var pieces map[chessPiece]image.Image
 
+var pieceMap = map[string]chessPiece{
+	"WK": WhiteKing,
+	"WQ": WhiteQueen,
+	"WR": WhiteRook,
+	"WN": WhiteKnight,
+	"WB": WhiteBishop,
+	"WP": WhitePawn,
+	"BK": BlackKing,
+	"BQ": BlackQueen,
+	"BR": BlackRook,
+	"BN": BlackKnight,
+	"BB": BlackBishop,
+	"BP": BlackPawn,
+}
+
+var embeddedPieces = []PieceRectangle{
+	{WhiteKing, Rectangle{0, 0, 333, 333}},
+	{WhiteQueen, Rectangle{333, 0, 333, 333}},
+	{WhiteBishop, Rectangle{666, 0, 333, 333}},
+	{WhiteKnight, Rectangle{999, 0, 333, 333}},
+	{WhiteRook, Rectangle{1332, 0, 333, 333}},
+	{WhitePawn, Rectangle{1665, 0, 333, 333}},
+	{BlackKing, Rectangle{0, 333, 333, 333}},
+	{BlackQueen, Rectangle{333, 333, 333, 333}},
+	{BlackBishop, Rectangle{666, 333, 333, 333}},
+	{BlackKnight, Rectangle{999, 333, 333, 333}},
+	{BlackRook, Rectangle{1332, 333, 333, 333}},
+	{BlackPawn, Rectangle{1665, 333, 333, 333}},
+}
+
 type rendererPiece struct {
 	*Imager
+}
+
+type PieceRectangle struct {
+	piece chessPiece
+	rect  Rectangle
 }
 
 func (r *rendererPiece) draw(c *gg.Context) error {
