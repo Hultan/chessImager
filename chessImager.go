@@ -62,7 +62,7 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 
 	i.fen = fen
 	i.ctx = ctx
-	c := gg.NewContextForImage(image.NewRGBA(getBoardSize()))
+	c := gg.NewContextForImage(image.NewRGBA(i.getBoardSize()))
 
 	r, err := i.getRenderers()
 	if err != nil {
@@ -123,7 +123,7 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 
 // getBoardSize returns a rectangle with the size of the board
 // plus the border surrounding it.
-func getBoardSize() image.Rectangle {
+func (i *Imager) getBoardSize() image.Rectangle {
 	switch settings.Board.Type {
 	case BoardTypeDefault:
 		size := settings.Board.Default.Size + settings.Border.Width*2
