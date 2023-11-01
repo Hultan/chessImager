@@ -56,6 +56,10 @@ type PieceRectangle struct {
 	rect  Rectangle
 }
 
+type SubImager interface {
+	SubImage(r image.Rectangle) image.Image
+}
+
 func (r *rendererPiece) draw(c *gg.Context) error {
 	err := r.loadPieces()
 	if err != nil {

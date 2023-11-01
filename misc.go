@@ -3,7 +3,6 @@ package chessImager
 import (
 	"errors"
 	"fmt"
-	"image"
 	"image/color"
 	"log"
 	"strings"
@@ -12,10 +11,6 @@ import (
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font/gofont/goregular"
 )
-
-type SubImager interface {
-	SubImage(r image.Rectangle) image.Image
-}
 
 type renderer interface {
 	draw(*gg.Context) error
