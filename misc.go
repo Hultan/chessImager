@@ -114,27 +114,28 @@ func getSquareBox(x, y int) Rectangle {
 	}
 }
 
-func validateAlg(alg string) error {
-	alg = strings.ToLower(alg)
-	if len(alg) != 2 {
-		return errors.New("invalid length of alg")
-	}
-	if alg[0] < 'a' || alg[0] > 'h' {
-		return errors.New("invalid character in alg : " + string(alg[0]))
-	}
-	if alg[1] < '1' || alg[1] > '8' {
-		return errors.New("invalid character in alg : " + string(alg[1]))
-	}
-	return nil
-}
-func algToCoords(alg string) (int, int) {
-	alg = strings.ToLower(alg)
-	x, y := int(alg[0]-'a'), int(alg[1]-'1')
-	if settings.Board.Default.Inverted {
-		return invert(x), invert(y)
-	}
-	return x, y
-}
+//
+//func validateAlg(alg string) error {
+//	alg = strings.ToLower(alg)
+//	if len(alg) != 2 {
+//		return errors.New("invalid length of alg")
+//	}
+//	if alg[0] < 'a' || alg[0] > 'h' {
+//		return errors.New("invalid character in alg : " + string(alg[0]))
+//	}
+//	if alg[1] < '1' || alg[1] > '8' {
+//		return errors.New("invalid character in alg : " + string(alg[1]))
+//	}
+//	return nil
+//}
+//func algToCoords(alg string) (int, int) {
+//	alg = strings.ToLower(alg)
+//	x, y := int(alg[0]-'a'), int(alg[1]-'1')
+//	if settings.Board.Default.Inverted {
+//		return invert(x), invert(y)
+//	}
+//	return x, y
+//}
 
 func setFontFace(c *gg.Context, size int) error {
 	if settings.FontStyle.Path == "" {

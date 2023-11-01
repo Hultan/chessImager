@@ -564,4 +564,3 @@ styling to this particular move:
 * Tests
 * Implement new MoveType: Arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
-* create an Alg type

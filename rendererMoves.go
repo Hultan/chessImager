@@ -13,21 +13,35 @@ func (r *rendererMoves) draw(c *gg.Context) error {
 		return nil
 	}
 	for _, move := range r.ctx.Moves {
-		r.renderMove(c, move)
+		err := r.renderMove(c, move)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
+func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 	style := r.getStyle(move)
-	fromX, fromY := algToCoords(move.From)
-	toX, toY := algToCoords(move.To)
+
+	from, err := newAlg(move.From)
+	if err != nil {
+		return err
+	}
+	fromX, fromY := from.coords()
+
+	to, err := newAlg(move.To)
+	if err != nil {
+		return err
+	}
+	toX, toY := to.coords()
+
 	dx, dy := toX-fromX, toY-fromY
 	x, y := fromX, fromY
 
 	if dx == 0 && dy == 0 {
-		return // Ignore no move
+		return nil // Ignore no move
 	}
 
 	c.SetRGBA(toRGBA(style.Color))
@@ -49,6 +63,8 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) {
 			r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), style)
 		}
 	}
+
+	return nil
 }
 
 func (r *rendererMoves) renderDottedLine(c *gg.Context, x, y *int, dx, dy, moves int, style *MoveStyle) {
