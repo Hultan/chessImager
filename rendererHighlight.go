@@ -14,14 +14,17 @@ func (r *rendererHighlight) draw(c *gg.Context) error {
 	if r.ctx == nil {
 		return nil
 	}
+
 	for _, high := range r.ctx.Highlight {
-		style := r.getStyle(high)
 		a, err := newAlg(high.Square)
 		if err != nil {
 			return err
 		}
 		b := getSquareBox(a.coords())
-		c.SetRGBA(toRGBA(style.Color))
+
+		style := r.getStyle(high)
+		c.SetRGBA(style.Color.toRGBA())
+
 		switch style.Type {
 		case HighlightTypeFull:
 			x, y, w, h := b.Coords()

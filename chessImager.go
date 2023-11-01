@@ -135,12 +135,7 @@ func (i *Imager) getBoardSize() image.Rectangle {
 			},
 		}
 	case BoardTypeImage:
-		return image.Rectangle{
-			Max: image.Point{
-				X: boardImage.Bounds().Size().X,
-				Y: boardImage.Bounds().Size().Y,
-			},
-		}
+		return boardImage.Bounds()
 
 	default:
 		panic("invalid board type")
@@ -178,6 +173,7 @@ func loadDefaultSettings() *Settings {
 	return s
 }
 
+// validateSettings validates some of the values in the JSON file
 func validateSettings() error {
 	if settings.Board.Type == BoardTypeImage {
 		if err := tryLoadImage(settings.Board.Image.Path, &boardImage); err != nil {
@@ -210,6 +206,8 @@ func validateSettings() error {
 	return nil
 }
 
+// tryLoadImage tries to load the specified image, makes sure it exists,
+// and is an image.
 func tryLoadImage(path string, img *image.Image) error {
 	f, err := os.Open(path)
 	if err != nil {
@@ -225,6 +223,7 @@ func tryLoadImage(path string, img *image.Image) error {
 	return nil
 }
 
+// tryLoadFile tries to load the specified file, makes sure it exists.
 func tryLoadFile(path string) error {
 	f, err := os.Open(path)
 	if err != nil {

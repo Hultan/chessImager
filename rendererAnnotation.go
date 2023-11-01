@@ -23,15 +23,15 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 		// Draw annotation circle
 		style := r.getStyle(annotation)
 		x, y := rect.Center()
-		c.SetRGBA(toRGBA(style.BorderColor))
+		c.SetRGBA(style.BorderColor.toRGBA())
 		c.DrawCircle(x, y, rect.Width/2)
 		c.Fill()
-		c.SetRGBA(toRGBA(style.BackgroundColor))
+		c.SetRGBA(style.BackgroundColor.toRGBA())
 		c.DrawCircle(x, y, rect.Width/2-float64(r.getStyle(annotation).BorderWidth))
 		c.Fill()
 
 		// Draw annotation text
-		c.SetRGBA(toRGBA(style.FontColor))
+		c.SetRGBA(style.FontColor.toRGBA())
 		err = setFontFace(c, r.getStyle(annotation).FontSize)
 		if err != nil {
 			return err
@@ -50,11 +50,13 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rect
 	if err != nil {
 		return Rectangle{}, err
 	}
-	rect := getSquareBox(a.coords())
 
-	size := float64(r.getStyle(annotation).Size)
+	rect := getSquareBox(a.coords())
+	style := r.getStyle(annotation)
+	size := float64(style.Size)
 	space := 2.0
-	switch r.getStyle(annotation).Position {
+
+	switch style.Position {
 	case PositionTypeTopLeft:
 		return Rectangle{
 			X:      rect.X + space,

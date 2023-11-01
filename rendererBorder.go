@@ -12,7 +12,7 @@ func (r *rendererBorder) draw(c *gg.Context) error {
 	}
 
 	// Set background color to border color
-	c.SetRGBA(toRGBA(settings.Border.Color))
+	c.SetRGBA(settings.Border.Color.toRGBA())
 	c.Clear()
 
 	return nil

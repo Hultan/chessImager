@@ -9,18 +9,18 @@ type alg struct {
 	pos string
 }
 
-func newAlg(pos string) (alg, error) {
-	pos = strings.ToLower(pos)
-	if len(pos) != 2 {
+func newAlg(s string) (alg, error) {
+	s = strings.ToLower(s)
+	if len(s) != 2 {
 		return alg{}, errors.New("invalid length of alg")
 	}
-	if pos[0] < 'a' || pos[0] > 'h' {
-		return alg{}, errors.New("invalid character in alg : " + string(pos[0]))
+	if s[0] < 'a' || s[0] > 'h' {
+		return alg{}, errors.New("invalid character in alg : " + string(s[0]))
 	}
-	if pos[1] < '1' || pos[1] > '8' {
-		return alg{}, errors.New("invalid character in alg : " + string(pos[1]))
+	if s[1] < '1' || s[1] > '8' {
+		return alg{}, errors.New("invalid character in alg : " + string(s[1]))
 	}
-	return alg{pos}, nil
+	return alg{s}, nil
 }
 
 func (a alg) coords() (int, int) {

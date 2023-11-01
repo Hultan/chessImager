@@ -66,8 +66,8 @@ func checkLength(item string) int {
 		if char >= '1' && char <= '8' {
 			// If the character is a digit (1-8), add its integer value to the length
 			length += int(char - '0')
-		} else if char != '/' {
-			// If the character is not a digit or '/', increment the length by 1
+		} else {
+			// If the character is not a digit, increment the length by 1
 			length++
 		}
 	}
@@ -76,7 +76,7 @@ func checkLength(item string) int {
 }
 
 func normalizeFEN(fen string) string {
-	// Fen is already validated to be correct here
+	// Fen is already validated when normalize is called
 	normalized := ""
 	fens := strings.Split(fen, " ")
 	ranks := strings.Split(fens[0], "/")

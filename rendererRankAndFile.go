@@ -19,34 +19,34 @@ type RankFile struct {
 }
 
 func (r *rendererRankAndFile) draw(c *gg.Context) error {
+	// If Board.Type is BoardTypeImage then we should not draw ranks and files
 	if settings.Board.Type == BoardTypeImage {
 		return nil
 	}
 
-	border := float64(settings.Border.Width)
-	fontSize := settings.RankAndFile.FontSize
+	// If the user has chosen to not render rank and file, then return
+	if settings.RankAndFile.Type == RankAndFileTypeNone {
+		return nil
+	}
 
-	c.SetRGBA(toRGBA(settings.RankAndFile.FontColor))
+	// Don't bother drawing ranks and files when to border is too thin
+	border := float64(settings.Border.Width)
+	if border < borderLimit {
+		return nil
+	}
+
+	fontSize := settings.RankAndFile.FontSize
+	c.SetRGBA(settings.RankAndFile.FontColor.toRGBA())
 	err := setFontFace(c, fontSize)
 	if err != nil {
 		return err
 	}
 
 	switch settings.RankAndFile.Type {
-	case RankAndFileTypeNone:
-		return nil
 	case RankAndFileTypeInBorder:
-		// Don't bother drawing ranks and files when to border is too thin
-		if border < borderLimit {
-			return nil
-		}
 		r.drawRanksAndFiles(c, 0, 0)
 	case RankAndFileTypeInSquares:
 		// TODO : Needs better implementation
-		// Don't bother drawing ranks and files when to border is too thin
-		if border < borderLimit {
-			return nil
-		}
 		square := float64(getBoardBox().Width) / 8
 		dx, dy := (square-border)/2-5, -border-5
 		r.drawRanksAndFiles(c, dx, dy)

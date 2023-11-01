@@ -19,8 +19,8 @@ type renderer interface {
 // hexToRGBA converts a hex string to a color
 // #RRGGBBAA or #RRGGBB or RRGGBBAA or RRGGBB
 func hexToRGBA(hex string) (col color.RGBA, err error) {
-	// Remove the '#' symbol if it exists
-	hex = strings.TrimPrefix(hex, "#")
+	// Remove leading '#' and spaces if they exists
+	hex = strings.TrimPrefix(hex, " #")
 
 	// Parse the hex values for red, green, blue and alpha
 	if len(hex) == 8 {
@@ -42,10 +42,6 @@ func hexToRGBA(hex string) (col color.RGBA, err error) {
 	return col, nil
 }
 
-func toRGBA(col ColorRGBA) (float64, float64, float64, float64) {
-	return float64(col.R) / 255, float64(col.G) / 255, float64(col.B) / 255, float64(col.A) / 255
-}
-
 func invert(x int) int {
 	return 7 - x
 }
@@ -58,13 +54,14 @@ func abs(x int) int {
 }
 
 func sgn(dx int) int {
-	if dx < 0 {
+	switch {
+	case dx < 0:
 		return -1
-	}
-	if dx == 0 {
+	case dx == 0:
 		return 0
+	default:
+		return 1
 	}
-	return 1
 }
 
 func getBoardBox() Rectangle {
@@ -90,22 +87,22 @@ func getSquareBox(x, y int) Rectangle {
 	board := getBoardBox()
 	square := board.Width / 8
 
-	if settings.Board.Type == BoardTypeDefault {
+	var dx, dy float64
+	switch settings.Board.Type {
+	case BoardTypeDefault:
 		border := float64(settings.Border.Width)
+		dx, dy = border, border
+	case BoardTypeImage:
+		dx, dy = board.X, board.Y
+	default:
+		panic("invalid board type")
+	}
 
-		return Rectangle{
-			X:      border + float64(x)*square,
-			Y:      border + float64(invert(y))*square,
-			Width:  square,
-			Height: square,
-		}
-	} else {
-		return Rectangle{
-			X:      board.X + float64(x)*square,
-			Y:      board.Y + float64(invert(y))*square,
-			Width:  square,
-			Height: square,
-		}
+	return Rectangle{
+		X:      dx + float64(x)*square,
+		Y:      dy + float64(invert(y))*square,
+		Width:  square,
+		Height: square,
 	}
 }
 

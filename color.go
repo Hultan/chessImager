@@ -30,3 +30,7 @@ func (c *ColorRGBA) UnmarshalJSON(data []byte) error {
 
 	return nil
 }
+
+func (c *ColorRGBA) toRGBA() (float64, float64, float64, float64) {
+	return float64(c.R) / 255, float64(c.G) / 255, float64(c.B) / 255, float64(c.A) / 255
+}

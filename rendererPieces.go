@@ -66,11 +66,13 @@ func (r *rendererPiece) draw(c *gg.Context) error {
 		return err
 	}
 
+	// FEN is validated before rendering starts,
+	// so it should be OK here.
 	fen := normalizeFEN(r.fen)
 	fens := strings.Split(fen, "/")
 
 	for rank, row := range fens {
-		for file, piece := range normalizeFENRank(row) {
+		for file, piece := range row {
 			if p := letter2Piece[piece]; p != NoPiece {
 				c.DrawImage(r.getImageAndPosition(pieces[p], file, rank))
 			}
@@ -148,16 +150,8 @@ func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) [
 }
 
 func (r *rendererPiece) resize(img image.Image) image.Image {
-	var pieceSize uint
-
 	board := getBoardBox()
-	square := board.Width / 8
-	switch settings.Board.Type {
-	case BoardTypeDefault:
-		pieceSize = uint(square * settings.Pieces.Factor)
-	case BoardTypeImage:
-		pieceSize = uint(square * settings.Pieces.Factor)
-	}
+	pieceSize := uint(board.Width * settings.Pieces.Factor / 8)
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }
 

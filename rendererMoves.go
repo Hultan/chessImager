@@ -44,16 +44,14 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 		return nil // Ignore no move
 	}
 
-	c.SetRGBA(toRGBA(style.Color))
+	c.SetRGBA(style.Color.toRGBA())
 	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
-		// Render pawn, rook, bishop, king and queen moves
-		// Rook type move or bishop type move
+		// Render pawn, rook, bishop, king and queen moves (ie straight moves)
 		d := max(abs(dx), abs(dy))
 		r.renderDottedLine(c, &x, &y, sgn(dx), sgn(dy), d, style)
 	} else {
 		// Horse type move (or other weird illegal move)
-		dir := r.getPreferredDirection(dx, dy)
-		if dir {
+		if abs(dx) > abs(dy) {
 			// abs(dx) > abs(dy) ; vertically first, horizontally second
 			r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), style)
 			r.renderDottedLine(c, &x, &y, sgn(dx), 0, abs(dx), style)
@@ -69,25 +67,17 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 
 func (r *rendererMoves) renderDottedLine(c *gg.Context, x, y *int, dx, dy, moves int, style *MoveStyle) {
 	for i := 0; i < moves; i++ {
-		r.renderDot(c, *x, *y, style)
+		r.renderDotInSquare(c, *x, *y, style)
 		*x += dx
 		*y += dy
 	}
 }
 
-func (r *rendererMoves) renderDot(c *gg.Context, x, y int, style *MoveStyle) {
+func (r *rendererMoves) renderDotInSquare(c *gg.Context, x, y int, style *MoveStyle) {
 	bb := getSquareBox(x, y).Shrink(style.Factor)
 	cX, cY := bb.Center()
 	c.DrawCircle(cX, cY, bb.Width/2)
 	c.Fill()
-}
-
-func (r *rendererMoves) getPreferredDirection(dx, dy int) bool {
-	if abs(dx) <= abs(dy) {
-		return false
-	}
-
-	return true
 }
 
 func (r *rendererMoves) getStyle(move Move) *MoveStyle {

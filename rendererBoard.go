@@ -27,12 +27,12 @@ func (r *rendererBoard) drawDefault(c *gg.Context) {
 	board := getBoardBox()
 
 	// Draw the entire board in the black color
-	c.SetRGBA(toRGBA(settings.Board.Default.Black))
+	c.SetRGBA(settings.Board.Default.Black.toRGBA())
 	c.DrawRectangle(board.Coords())
 	c.Fill()
 
 	// Draw the white squares, on top of the black board
-	c.SetRGBA(toRGBA(settings.Board.Default.White))
+	c.SetRGBA(settings.Board.Default.White.toRGBA())
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {
