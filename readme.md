@@ -57,9 +57,10 @@ This code will generate the following image, using the default styling in `defau
 
 ### Medium:
 
-Here is a slightly more advanced example, that adds a highlighted square, an annotation and a move. 
+Here is a slightly more advanced example, that adds a highlighted square, an annotation and a move. For this we need 
+to create a context object, using the `imager.NewContext()` method.
 
-This example also uses the styles that are defined in the `default.json` files, would be:
+This example also uses the styles that are defined in the `default.json` files:
 
 ```go
    // Create a new imager using embedded default.json settings
@@ -87,7 +88,7 @@ json you can do that by providing the styles objects manually.
 
 For example, let's change a few things from the medium example:
 
-* the highlight color and style (circle)
+* the highlight color and style (filled circle)
 * the annotation position (top left) and border color
 * the move size and color for the next image
 
@@ -105,22 +106,22 @@ And for fun, lets change the render order too...
    
    // Create a highlight style, for the square e7
    hs, _ := ctx.NewHighlightStyle(
-      chessImager.HighlightFull, // Highlight type 
-      "#88E57C",                 // Highlight color
-      35,                        // Highlight cirle radius
-      0                          // Highlight factor (not used for this Type)        
+      chessImager.HighlightFilledCircle, // Highlight type 
+      "#88E57C",                         // Highlight color
+      4,                                 // Highlight cirle width
+      0.9                                // Highlight factor (not used for this Type)        
    )
    
    // Create an annotation style, for the square e7
    as, _ := ctx.NewAnnotationStyle(
-      chessImager.PositionTopLeft, // Position
-      25, 20, 1,                   // Size, font size, border width
-      "#E8E57C", "#000000", "#FFFFFF", // Background, font, border color
+      chessImager.PositionTopLeft,       // Position top left
+      25, 20, 1,                         // Size, font size, border width
+      "#E8E57C", "#000000", "#FFFFFF",   // Background, font, border color
    )
    
    // Create a move style, for the move e1-e7 
    ms, _ := ctx.NewMoveStyle(
-      chessImager.MoveTypeDots, // Move type 
+      chessImager.MoveTypeDots,           // Move type 
       "#9D6B5EFF",                        // Dot color
       0.2,                                // Dot size
    )

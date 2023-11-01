@@ -19,8 +19,8 @@ type renderer interface {
 // hexToRGBA converts a hex string to a color
 // #RRGGBBAA or #RRGGBB or RRGGBBAA or RRGGBB
 func hexToRGBA(hex string) (col color.RGBA, err error) {
-	// Remove leading '#' and spaces if they exists
-	hex = strings.TrimPrefix(hex, " #")
+	// Remove leading '#' if it exists
+	hex = strings.TrimPrefix(hex, "#")
 
 	// Parse the hex values for red, green, blue and alpha
 	if len(hex) == 8 {

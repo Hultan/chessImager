@@ -19,10 +19,10 @@ func main() {
 
 	// Create a highlight style, for the square e7
 	hs, _ := ctx.NewHighlightStyle(
-		chessImager.HighlightTypeFull, // Highlight type
-		"#88E57C",                     // Highlight color
-		35,                            // Highlight circle radius
-		0,                             // Highlight factor (not used for this Type)
+		chessImager.HighlightTypeFilledCircle, // Highlight type
+		"#88E57C",                             // Highlight color
+		4,                                     // Highlight circle width
+		0.9,                                   // Highlight factor (not used for this Type)
 	)
 
 	// Create an annotation style, for the square e7
