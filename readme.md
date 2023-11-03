@@ -565,3 +565,4 @@ styling to this particular move:
 * Tests
 * Implement new MoveType: Arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
+* Update readme with `examples/other`

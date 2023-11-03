@@ -37,7 +37,7 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 			return err
 		}
 		if useInternalFont {
-			y -= 2 // SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
+			y -= 3 // SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 		}
 		c.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
 	}

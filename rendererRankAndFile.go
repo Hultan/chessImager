@@ -60,11 +60,16 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 	rfBoxes := r.getRFBoxes()
 
+	var diff float64
+	if useInternalFont {
+		diff = -2
+	}
+
 	for _, rfBox := range rfBoxes {
 		tw, th := c.MeasureString(rfBox.text)
 		x := rfBox.box.X + (rfBox.box.Width-tw)/2
 		// We are adjusting by 2 pixels here because of bug in MeasureString?
-		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th - 2
+		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th + diff
 		c.DrawString(rfBox.text, x+dx, y+dy)
 	}
 }
