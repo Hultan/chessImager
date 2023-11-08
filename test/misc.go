@@ -6,23 +6,19 @@ import (
 	"os"
 )
 
-func compareFiles(f1, f2 string) (bool, error) {
-	i1, err := loadImage(f1)
-	if err != nil {
-		return false, err
-	}
+func compareFiles(i1 *image.Image, f2 string) (bool, error) {
 	i2, err := loadImage(f2)
 	if err != nil {
 		return false, err
 	}
 
-	if !i1.Bounds().Eq(i2.Bounds()) {
+	if !(*i1).Bounds().Eq(i2.Bounds()) {
 		return false, nil
 	}
 
-	for y := 0; y < i1.Bounds().Size().Y; y++ {
-		for x := 0; x < i1.Bounds().Size().X; x++ {
-			if i1.At(x, y) != i2.At(x, y) {
+	for y := 0; y < (*i1).Bounds().Size().Y; y++ {
+		for x := 0; x < (*i1).Bounds().Size().X; x++ {
+			if (*i1).At(x, y) != i2.At(x, y) {
 				return false, nil
 			}
 		}

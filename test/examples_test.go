@@ -2,8 +2,6 @@ package test
 
 import (
 	"image"
-	"image/png"
-	"os"
 	"testing"
 
 	"github.com/Hultan/chessImager"
@@ -18,7 +16,7 @@ func TestSimpleExample(t *testing.T) {
 		t.Error(err)
 	}
 
-	createAndCompare(t, filename, &img)
+	compareImages(t, filename, &img)
 }
 
 func TestMediumExample(t *testing.T) {
@@ -42,27 +40,11 @@ func TestMediumExample(t *testing.T) {
 		t.Errorf("failed to render : %v", err)
 	}
 
-	createAndCompare(t, filename, &img)
+	compareImages(t, filename, &img)
 }
 
-func createAndCompare(t *testing.T, filename string, img *image.Image) {
-	file, err := os.Create(filename)
-	if err != nil {
-		t.Errorf("failed to create : %v", err)
-	}
-	defer file.Close()
-	err = png.Encode(file, *img)
-	if err != nil {
-		t.Errorf("failed to encode : %v", err)
-	}
-	defer func(name string) {
-		err = os.Remove(name)
-		if err != nil {
-			t.Errorf("failed to remove file: %v", err)
-		}
-	}(filename)
-
-	ok, err := compareFiles(filename, "valid/"+filename)
+func compareImages(t *testing.T, filename string, img *image.Image) {
+	ok, err := compareFiles(img, "valid/"+filename)
 	if err != nil {
 		t.Errorf("error during compare : %v", err)
 	}
