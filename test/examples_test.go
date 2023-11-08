@@ -18,7 +18,7 @@ func TestSimpleExample(t *testing.T) {
 		t.Error(err)
 	}
 
-	createAndCompare(t, filename, img)
+	createAndCompare(t, filename, &img)
 }
 
 func TestMediumExample(t *testing.T) {
@@ -42,16 +42,16 @@ func TestMediumExample(t *testing.T) {
 		t.Errorf("failed to render : %v", err)
 	}
 
-	createAndCompare(t, filename, img)
+	createAndCompare(t, filename, &img)
 }
 
-func createAndCompare(t *testing.T, filename string, img image.Image) {
+func createAndCompare(t *testing.T, filename string, img *image.Image) {
 	file, err := os.Create(filename)
 	if err != nil {
 		t.Errorf("failed to create : %v", err)
 	}
 	defer file.Close()
-	err = png.Encode(file, img)
+	err = png.Encode(file, *img)
 	if err != nil {
 		t.Errorf("failed to encode : %v", err)
 	}
