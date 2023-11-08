@@ -16,6 +16,7 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
     1. [Simple](#simple)
     2. [Medium](#medium)
     3. [Advanced](#advanced)
+   4. [Other](#other)
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
@@ -34,6 +35,11 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
 10. [Moves renderer](#moves-renderer)
 
 ## Examples:
+
+All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (*
+**Netherlands**), in 1999:
+
+https://www.chess.com/games/view/969971
 
 ### Simple:
 
@@ -141,10 +147,29 @@ This code will generate the following image:
 
 As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
 
-All the examples above comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (*
-**Netherlands**), in 1999:
+### Other
 
-https://www.chess.com/games/view/969971
+In this example we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
+`examples/other.json` file, we will use a board image (`examples/chessboard.jpg`), instead of drawing it manually.
+
+```go
+	// Create a new imager using your custom JSON file
+	imager, _ := chessImager.NewImagerFromPath("examples/other.json")
+
+	// Create a new context
+	ctx := imager.NewContext()
+
+	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
+	// show move e1-e7.
+	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
+
+	// Render the image
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	img, _ := imager.RenderEx(fen, ctx)
+```
+This code will generate the following image:
+
+<img src="examples/other.png" alt="drawing" width="350"/>
 
 ## Configuration
 
@@ -320,9 +345,9 @@ The settings under **board.image** are the following:
       }
    }
 ```
-Here is an example of how `example/medium` looks when using a background board image, instead of the default board:
+See the example `examples/other.go` for how to use a background board image, instead of the default board:
 
-<img src="examples/boardImage.png" alt="drawing" width="294"/>
+<img src="examples/other.png" alt="drawing" width="294"/>
 
 Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
 
@@ -570,5 +595,4 @@ styling to this particular move:
 * Tests
 * Implement new MoveType: Arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
-* Update readme with `examples/other`
 * links to example files

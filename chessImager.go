@@ -3,7 +3,6 @@ package chessImager
 import (
 	_ "embed"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"image"
 	"os"
@@ -62,7 +61,11 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 
 	i.fen = fen
 	i.ctx = ctx
-	c := gg.NewContextForImage(image.NewRGBA(i.getBoardSize()))
+	size, err := i.getBoardSize()
+	if err != nil {
+		return nil, err
+	}
+	c := gg.NewContextForImage(image.NewRGBA(size))
 
 	r, err := i.getRenderers()
 	if err != nil {
@@ -88,7 +91,7 @@ func (i *Imager) SetOrder(order []int) error {
 	}
 
 	if len(order) != 7 {
-		return errors.New("len(order) must be 7")
+		return fmt.Errorf("len(order) must be 7")
 	}
 
 	settings.Order = order
@@ -111,13 +114,13 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 	}
 
 	if len(settings.Order) != 7 {
-		return result, errors.New("len(order) must be 7")
+		return result, fmt.Errorf("len(order) must be 7")
 	}
 
 	for _, idx := range settings.Order {
 		r := renderers[idx]
 		if r == nil {
-			return result, fmt.Errorf("no renderer with index : %d", idx)
+			return result, fmt.Errorf("invalid renderer index : %v", idx)
 		}
 		result = append(result, r)
 	}
@@ -127,7 +130,7 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 
 // getBoardSize returns a rectangle with the size of the board
 // plus the border surrounding it.
-func (i *Imager) getBoardSize() image.Rectangle {
+func (i *Imager) getBoardSize() (image.Rectangle, error) {
 	switch settings.Board.Type {
 	case BoardTypeDefault:
 		size := settings.Board.Default.Size + settings.Border.Width*2
@@ -137,12 +140,12 @@ func (i *Imager) getBoardSize() image.Rectangle {
 				X: size,
 				Y: size,
 			},
-		}
+		}, nil
 	case BoardTypeImage:
-		return boardImage.Bounds()
+		return boardImage.Bounds(), nil
 
 	default:
-		panic("invalid board type")
+		return image.Rectangle{}, fmt.Errorf("invalid board type : %v", settings.Board.Type)
 	}
 }
 
