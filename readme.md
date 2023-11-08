@@ -150,7 +150,7 @@ As you can see, the pieces are now rendered **after** annotations, the annotatio
 ### Other
 
 In this example we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
-`examples/other.json` file, we will use a board image (`examples/chessboard.jpg`), instead of drawing it manually.
+[examples/other.json](examples/other.json) file, we will use a board image, [examples/chessboard.jpg](examples/chessboard.jpg), instead of drawing it manually.
 
 ```go
 	// Create a new imager using your custom JSON file
@@ -175,8 +175,8 @@ This code will generate the following image:
 
 **ChessImager** uses a configuration JSON file to define the size of the board and colors etc. You can
 either use the embedded default.json or you can create your own configuration file. If you want to use your own
-configuration file, you will need to use the function `chessImager.NewImagerFromPath(path)`. See `examples/other.go` 
-for an example of how to do this.
+configuration file, you will need to use the function `chessImager.NewImagerFromPath(path)`. See 
+[examples/other.go](examples/other.go) for an example of how to do this.
 
 ### Configuration - colors
 
@@ -260,7 +260,7 @@ To reset the rendering order, you can either create a new ChessImager object, or
     // Reset rendering order to default : 0, 1, 2, 3, 4, 5, 6
     _ = imager.SetOrder(nil)
 ```
-Check out `examples/advanced.go` to see how to change render order.
+Check out [examples/advanced.go](examples/advanced.go) to see how to change render order.
 ## Border renderer
 
 The border renderer should always be the first renderer. It clears the image with the border color specified in the
@@ -345,7 +345,7 @@ The settings under **board.image** are the following:
       }
    }
 ```
-See the example `examples/other.go` for how to use a background board image, instead of the default board:
+See [examples/other.go](examples/other.go) for how to use a background board image, instead of the default board:
 
 <img src="examples/other.png" alt="drawing" width="294"/>
 
@@ -553,8 +553,8 @@ square.
 
 For now, only one type of moves is supported, and that is `type=0` (dotted).
 
-The style of the move can be changed in the `default.json` file, or by providing a `chessImager.MoveStyle` struct to 
-the `AddMoveEx()` method.
+The style of the move can be changed in the [config/default.json](config/default.json) file, or by providing a 
+`chessImager.MoveStyle` struct to the `AddMoveEx()` method.
 
 | Name             | Type    | Description                                       |
 |------------------|---------|---------------------------------------------------|
@@ -595,4 +595,3 @@ styling to this particular move:
 * Tests
 * Implement new MoveType: Arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
-* links to example files
