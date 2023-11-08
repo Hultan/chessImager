@@ -16,7 +16,7 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
     1. [Simple](#simple)
     2. [Medium](#medium)
     3. [Advanced](#advanced)
-   4. [Other](#other)
+    4. [Other](#other)
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
@@ -553,8 +553,8 @@ square.
 
 For now, only one type of moves is supported, and that is `type=0` (dotted).
 
-The style of the move can be changed in the [config/default.json](config/default.json) file, or by providing a 
-`chessImager.MoveStyle` struct to the `AddMoveEx()` method.
+The style of the move can be changed in the [config/default.json](config/default.json) file (or your own version of 
+that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()` method.
 
 | Name             | Type    | Description                                       |
 |------------------|---------|---------------------------------------------------|
