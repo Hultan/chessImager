@@ -55,6 +55,12 @@ func createAndCompare(t *testing.T, filename string, img *image.Image) {
 	if err != nil {
 		t.Errorf("failed to encode : %v", err)
 	}
+	defer func(name string) {
+		err = os.Remove(name)
+		if err != nil {
+			t.Errorf("failed to remove file: %v", err)
+		}
+	}(filename)
 
 	ok, err := compareFiles(filename, "valid/"+filename)
 	if err != nil {
