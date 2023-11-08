@@ -83,6 +83,10 @@ func (i *Imager) NewContext() *Context {
 }
 
 func (i *Imager) SetOrder(order []int) error {
+	if len(order) == 0 {
+		order = []int{0, 1, 2, 3, 4, 5, 6}
+	}
+
 	if len(order) != 7 {
 		return errors.New("len(order) must be 7")
 	}

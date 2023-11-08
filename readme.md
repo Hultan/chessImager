@@ -216,21 +216,24 @@ is the order above.
 | order | integer list | The digits 0 through 6 in any order |
 
 An example would be if you want the pieces to be rendered **before** the highlighted squares, then you could set the
-order to be **0,1,2,4,3,5,6** by setting:
+order to be **0, 1, 2, 4, 3, 5, 6** by setting:
 
 ```json
 {
   "order": [0, 1, 2, 4, 3, 5, 6],
 }
-
 ```
-
 in the JSON file.
 
 If you don't want to edit the JSON file, you could just specify it with code, like this:
-
 ```go
+    // Change rendering order to : 0, 1, 2, 4, 3, 5, 6 
     _ = imager.SetOrder([]int{0, 1, 2, 4, 3, 5, 6})
+```
+To reset the rendering order, you can either create a new ChessImager object, or just set the order to nil:
+```go
+    // Reset rendering order to default : 0, 1, 2, 3, 4, 5, 6
+    _ = imager.SetOrder(nil)
 ```
 Check out `examples/advanced.go` to see how to change render order.
 ## Border renderer
@@ -448,6 +451,8 @@ This JSON will pick out the red and yellow pieces out of the following image.
 
 <img src="test/data/pieces_colorful.png" alt="drawing" width="150"/>
 
+https://opengameart.org/content/colorful-chess-pieces
+
 ```JSON
    "pieces": {
       "factor": 1.0,
@@ -566,3 +571,4 @@ styling to this particular move:
 * Implement new MoveType: Arrows
 * rendererRankAndFile should use getSquareBox for RankAndFileInSquare
 * Update readme with `examples/other`
+* links to example files
