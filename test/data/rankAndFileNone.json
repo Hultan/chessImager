@@ -1,0 +1,46 @@
+{
+  "order" : [0,1,2,3,4,5,6],
+  "border": {
+    "width": 20,
+    "color": "#333333FF"
+  },
+  "board": {
+    "type": 0,
+    "default": {
+      "inverted": false,
+      "size": 600,
+      "white": "#FFFFFFFF",
+      "black": "#666666FF"
+    }
+  },
+  "rank_and_file": {
+    "type": 0
+  },
+  "pieces": {
+    "factor" : 1.0,
+    "type":0
+  },
+  "annotation_style": {
+    "position": 1,
+    "size": 15,
+    "font_color":"#000000FF",
+    "font_size": 12,
+    "background_color":"#E8E57CFF",
+    "border_color":"#E8E57CFF",
+    "border_width":1
+  },
+  "highlight_style": {
+    "type": 0,
+    "color": "#EEEE4480",
+    "width": 4,
+    "factor": 0.5
+  },
+  "move_style": {
+    "type": 0,
+    "color": "#333333AA",
+    "factor": 0.3
+  },
+  "font_style": {
+    "path" : ""
+  }
+}
