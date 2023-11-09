@@ -593,4 +593,3 @@ styling to this particular move:
 ## Todo
 
 * Implement new MoveType: Arrows
-* rendererRankAndFile should use getSquareBox for RankAndFileInSquare

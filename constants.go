@@ -1,5 +1,12 @@
 package chessImager
 
+type rankFileType int
+
+const (
+	Rank rankFileType = iota
+	File
+)
+
 type chessPiece int
 
 const (

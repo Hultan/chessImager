@@ -14,6 +14,7 @@ type rendererRankAndFile struct {
 }
 
 type RankFile struct {
+	typ  rankFileType
 	box  Rectangle
 	text string
 }
@@ -46,10 +47,10 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 	case RankAndFileTypeInBorder:
 		r.drawRanksAndFiles(c, 0, 0)
 	case RankAndFileTypeInSquares:
-		// TODO : Needs better implementation
+		const padding = 3
 		square := float64(getBoardBox().Width) / 8
-		dx, dy := (square-border)/2-5, -border-5
-		r.drawRanksAndFiles(c, dx, dy)
+		diff := (square - float64(fontSize) - padding) / 2
+		r.drawRanksAndFiles(c, diff, diff)
 	default:
 		return errors.New("invalid rank and file type")
 	}
@@ -62,7 +63,7 @@ func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 
 	var diff float64
 	if useInternalFont {
-		diff = -2
+		diff -= 2
 	}
 
 	for _, rfBox := range rfBoxes {
@@ -70,24 +71,38 @@ func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 		x := rfBox.box.X + (rfBox.box.Width-tw)/2
 		// We are adjusting by 2 pixels here because of bug in MeasureString?
 		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th + diff
-		c.DrawString(rfBox.text, x+dx, y+dy)
+		if rfBox.typ == Rank {
+			c.DrawString(rfBox.text, x-dx, y-dy)
+		} else {
+			c.DrawString(rfBox.text, x+dx, y+dy)
+		}
 	}
 }
 
 func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 	var rf []RankFile
+	var box Rectangle
 
 	for i := 0; i < 8; i++ {
 		// Ranks
 		text := r.getRankText(i)
-		box := r.getRankBox(i)
-		rf = append(rf, RankFile{box: box, text: text})
+		if settings.RankAndFile.Type == RankAndFileTypeInBorder {
+			box = r.getRankBox(i)
+		} else {
+			box = getSquareBox(0, i)
+		}
+		rf = append(rf, RankFile{box: box, text: text, typ: Rank})
 
 		// Files
 		text = r.getFileText(i)
-		box = r.getFileBox(i)
-		rf = append(rf, RankFile{box: box, text: text})
+		if settings.RankAndFile.Type == RankAndFileTypeInBorder {
+			box = r.getFileBox(i)
+		} else {
+			box = getSquareBox(i, 0)
+		}
+		rf = append(rf, RankFile{box: box, text: text, typ: File})
 	}
+
 	return rf
 }
 
