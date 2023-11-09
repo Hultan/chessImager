@@ -1,7 +1,6 @@
 package test
 
 import (
-	"image"
 	"testing"
 
 	"github.com/Hultan/chessImager"
@@ -139,14 +138,4 @@ func TestOtherExample(t *testing.T) {
 	}
 
 	compareImages(t, filename, &img)
-}
-
-func compareImages(t *testing.T, filename string, img *image.Image) {
-	ok, err := compareFiles(img, "valid/"+filename)
-	if err != nil {
-		t.Fatalf("error during compare : %v", err)
-	}
-	if !ok {
-		t.Fatalf("failed to compare, images differ!")
-	}
 }

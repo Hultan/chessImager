@@ -4,7 +4,18 @@ import (
 	"image"
 	"image/png"
 	"os"
+	"testing"
 )
+
+func compareImages(t *testing.T, filename string, img *image.Image) {
+	ok, err := compareFiles(img, "valid/"+filename)
+	if err != nil {
+		t.Fatalf("error during compare : %v", err)
+	}
+	if !ok {
+		t.Fatalf("failed to compare, images differ!")
+	}
+}
 
 func compareFiles(i1 *image.Image, f2 string) (bool, error) {
 	i2, err := loadImage(f2)
@@ -37,4 +48,16 @@ func loadImage(f string) (image.Image, error) {
 		return nil, err
 	}
 	return img, nil
+}
+
+func saveImage(filename string, img image.Image) {
+	f, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	err = png.Encode(f, img)
+	if err != nil {
+		panic(err)
+	}
 }

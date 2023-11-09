@@ -161,7 +161,7 @@ func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Im
 	diff := (int(box.Width) - img.Bounds().Size().Y) / 2
 
 	if settings.Board.Default.Inverted {
-		return img, int(box.X) + invert(x)*int(box.Width) + diff, int(box.Y) + invert(y)*int(box.Height) + diff
+		return img, int(board.X) + invert(x)*int(box.Width) + diff, int(board.Y) + invert(y)*int(box.Height) + diff
 	}
 
 	return img, int(board.X) + x*int(box.Width) + diff, int(board.Y) + y*int(box.Height) + diff
