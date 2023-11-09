@@ -71,10 +71,15 @@ func (r *rendererPiece) draw(c *gg.Context) error {
 	fen := normalizeFEN(r.fen)
 	fens := strings.Split(fen, "/")
 
+	var inv = settings.Board.Default.Inverted
+	if settings.Board.Type == BoardTypeImage {
+		inv = settings.Board.Image.Inverted
+	}
+
 	for rank, row := range fens {
 		for file, piece := range row {
 			if p := letter2Piece[piece]; p != NoPiece {
-				c.DrawImage(r.getImageAndPosition(pieces[p], file, rank))
+				c.DrawImage(r.getImageAndPosition(pieces[p], file, rank, inv))
 			}
 		}
 	}
@@ -155,12 +160,12 @@ func (r *rendererPiece) resize(img image.Image) image.Image {
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }
 
-func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int) (image.Image, int, int) {
+func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int, inv bool) (image.Image, int, int) {
 	board := getBoardBox()
 	box := getSquareBox(x, y)
 	diff := (int(box.Width) - img.Bounds().Size().Y) / 2
 
-	if settings.Board.Default.Inverted {
+	if inv {
 		return img, int(board.X) + invert(x)*int(box.Width) + diff, int(board.Y) + invert(y)*int(box.Height) + diff
 	}
 
