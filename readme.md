@@ -592,4 +592,4 @@ styling to this particular move:
 ```
 ## Todo
 
-* Implement new MoveType: Arrows
+* Implement new MoveType: Arrows or lines
