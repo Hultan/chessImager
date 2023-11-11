@@ -21,12 +21,12 @@ type RankFile struct {
 
 func (r *rendererRankAndFile) draw(c *gg.Context) error {
 	// If Board.Type is BoardTypeImage then we should not draw ranks and files
-	if settings.Board.Type == BoardTypeImage {
+	if settings.Board.Type == boardTypeImage {
 		return nil
 	}
 
 	// If the user has chosen to not render rank and file, then return
-	if settings.RankAndFile.Type == RankAndFileTypeNone {
+	if settings.RankAndFile.Type == rankAndFileTypeNone {
 		return nil
 	}
 
@@ -44,9 +44,9 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 	}
 
 	switch settings.RankAndFile.Type {
-	case RankAndFileTypeInBorder:
+	case rankAndFileTypeInBorder:
 		r.drawRanksAndFiles(c, 0, 0)
-	case RankAndFileTypeInSquares:
+	case rankAndFileTypeInSquares:
 		const padding = 3
 		square := float64(getBoardBox().Width) / 8
 		diff := (square - float64(fontSize) - padding) / 2
@@ -71,7 +71,7 @@ func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 		x := rfBox.box.X + (rfBox.box.Width-tw)/2
 		// We are adjusting by 2 pixels here because of bug in MeasureString?
 		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th + diff
-		if rfBox.typ == Rank {
+		if rfBox.typ == rank {
 			c.DrawString(rfBox.text, x-dx, y-dy)
 		} else {
 			c.DrawString(rfBox.text, x+dx, y+dy)
@@ -86,21 +86,21 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 	for i := 0; i < 8; i++ {
 		// Ranks
 		text := r.getRankText(i)
-		if settings.RankAndFile.Type == RankAndFileTypeInBorder {
+		if settings.RankAndFile.Type == rankAndFileTypeInBorder {
 			box = r.getRankBox(i)
 		} else {
 			box = getSquareBox(0, i)
 		}
-		rf = append(rf, RankFile{box: box, text: text, typ: Rank})
+		rf = append(rf, RankFile{box: box, text: text, typ: rank})
 
 		// Files
 		text = r.getFileText(i)
-		if settings.RankAndFile.Type == RankAndFileTypeInBorder {
+		if settings.RankAndFile.Type == rankAndFileTypeInBorder {
 			box = r.getFileBox(i)
 		} else {
 			box = getSquareBox(i, 0)
 		}
-		rf = append(rf, RankFile{box: box, text: text, typ: File})
+		rf = append(rf, RankFile{box: box, text: text, typ: file})
 	}
 
 	return rf

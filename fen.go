@@ -8,19 +8,19 @@ import (
 const validChars = "pbnrqkPBNRQK12345678"
 
 var letter2Piece = map[rune]chessPiece{
-	'p': BlackPawn,
-	'b': BlackBishop,
-	'n': BlackKnight,
-	'r': BlackRook,
-	'q': BlackQueen,
-	'k': BlackKing,
-	'P': WhitePawn,
-	'B': WhiteBishop,
-	'N': WhiteKnight,
-	'R': WhiteRook,
-	'Q': WhiteQueen,
-	'K': WhiteKing,
-	' ': NoPiece,
+	'p': blackPawn,
+	'b': blackBishop,
+	'n': blackKnight,
+	'r': blackRook,
+	'q': blackQueen,
+	'k': blackKing,
+	'P': whitePawn,
+	'B': whiteBishop,
+	'N': whiteKnight,
+	'R': whiteRook,
+	'Q': whiteQueen,
+	'K': whiteKing,
+	' ': noPiece,
 }
 
 func validateFen(fen string) bool {

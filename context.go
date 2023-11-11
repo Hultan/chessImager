@@ -12,42 +12,49 @@ type Context struct {
 	Annotations []Annotation
 }
 
+// AddHighlight adds a new highlighted square.
 func (c *Context) AddHighlight(square string) *Context {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square})
 
 	return c
 }
 
+// AddHighlightEx adds a new highlighted square with a specific style.
 func (c *Context) AddHighlightEx(square string, style *HighlightStyle) *Context {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square, Style: style})
 
 	return c
 }
 
+// AddAnnotation adds a new annotation.
 func (c *Context) AddAnnotation(square, text string) *Context {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text})
 
 	return c
 }
 
+// AddAnnotationEx adds a new annotation with a specific style.
 func (c *Context) AddAnnotationEx(square, text string, style *AnnotationStyle) *Context {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text, Style: style})
 
 	return c
 }
 
+// AddMove adds a move.
 func (c *Context) AddMove(from, to string) *Context {
 	c.Moves = append(c.Moves, Move{From: from, To: to})
 
 	return c
 }
 
+// AddMoveEx adds a move with a specific style.
 func (c *Context) AddMoveEx(from, to string, style *MoveStyle) *Context {
 	c.Moves = append(c.Moves, Move{From: from, To: to, Style: style})
 
 	return c
 }
 
+// NewHighlightStyle creates a new highlight style.
 func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int, factor float64) (*HighlightStyle, error) {
 	col, err := hexToRGBA(color)
 	if err != nil {
@@ -61,6 +68,7 @@ func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int, 
 	}, nil
 }
 
+// NewAnnotationStyle creates a new annotation style.
 func (c *Context) NewAnnotationStyle(pos PositionType, size, fontSize, borderWidth int, bgc, fc,
 	bc string) (*AnnotationStyle, error) {
 
@@ -90,6 +98,7 @@ func (c *Context) NewAnnotationStyle(pos PositionType, size, fontSize, borderWid
 	}, nil
 }
 
+// NewMoveStyle creates a new move style.
 func (c *Context) NewMoveStyle(typ MoveType, color string, factor float64) (*MoveStyle, error) {
 	col, err := hexToRGBA(color)
 	if err != nil {

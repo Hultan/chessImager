@@ -68,13 +68,13 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 		// TODO : How to handle castling?
 	case MoveTypeArrow:
 		var rect Rectangle
-		fx, fy := getSquareBox(fromX, fromY).Center()
+		fx, fy := getSquareBox(fromX, fromY).center()
 		rect, err = r.getNextToLast(move)
 		if err != nil {
 			return err
 		}
-		tx, ty := rect.Center()
-		box := rect.Shrink(style.Factor)
+		tx, ty := rect.center()
+		box := rect.shrink(style.Factor)
 
 		c.SetLineWidth(box.Width)
 		c.DrawLine(fx, fy, tx, ty)
@@ -97,8 +97,8 @@ func (r *rendererMoves) renderDottedLine(c *gg.Context, x, y *int, dx, dy, moves
 }
 
 func (r *rendererMoves) renderDotInSquare(c *gg.Context, x, y int, style *MoveStyle) {
-	bb := getSquareBox(x, y).Shrink(style.Factor)
-	cX, cY := bb.Center()
+	bb := getSquareBox(x, y).shrink(style.Factor)
+	cX, cY := bb.center()
 	c.DrawCircle(cX, cY, bb.Width/2)
 	c.Fill()
 }
@@ -167,7 +167,7 @@ func (r *rendererMoves) renderArrowHead(c *gg.Context, rect Rectangle, square, w
 }
 
 func (r *rendererMoves) renderArrowHeadInDirection(c *gg.Context, rect Rectangle, square, width float64, dir direction) {
-	cx, cy := rect.Center()
+	cx, cy := rect.center()
 
 	// Rotate to draw in correct angle
 	c.RotateAbout(gg.Radians(float64(dir)), cx, cy)

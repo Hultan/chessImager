@@ -48,7 +48,7 @@ type Border struct {
 // Default : Settings for default drawing of the chessboard
 // Image : Settings for using an image of a chessboard as background.
 type Board struct {
-	Type    BoardType    `json:"type"`
+	Type    boardType    `json:"type"`
 	Default BoardDefault `json:"default"`
 	Image   BoardImage   `json:"image"`
 }
@@ -82,7 +82,7 @@ type BoardImage struct {
 // FontColor : Font color to use
 // FontSize : Font size to use
 type RankAndFile struct {
-	Type      RankAndFileType `json:"type"`
+	Type      rankAndFileType `json:"type"`
 	FontColor ColorRGBA       `json:"font_color"`
 	FontSize  int             `json:"font_size"`
 }
@@ -120,7 +120,7 @@ type HighlightStyle struct {
 // ImageMap : Only used if Type=2
 type Pieces struct {
 	Factor   float64    `json:"factor"`
-	Type     PiecesType `json:"type"`
+	Type     piecesType `json:"type"`
 	Images   Images     `json:"images"`
 	ImageMap ImageMap   `json:"image_map"`
 }

@@ -48,10 +48,12 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 	return
 }
 
+// Render renders an image of a chess board based on a FEN string.
 func (i *Imager) Render(fen string) (image.Image, error) {
 	return i.RenderEx(fen, nil)
 }
 
+// RenderEx renders an image of a chess board based on a FEN string and a context.
 func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	var err error
 
@@ -81,10 +83,15 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	return c.Image(), nil
 }
 
+// NewContext creates a new context, which can be used to:
+// * Add highlighted squares
+// * Add annotations
+// * Add moves
 func (i *Imager) NewContext() *Context {
 	return &Context{}
 }
 
+// SetOrder can be used to set the render order.
 func (i *Imager) SetOrder(order []int) error {
 	if len(order) == 0 {
 		order = []int{0, 1, 2, 3, 4, 5, 6}
@@ -132,7 +139,7 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 // plus the border surrounding it.
 func (i *Imager) getBoardSize() (image.Rectangle, error) {
 	switch settings.Board.Type {
-	case BoardTypeDefault:
+	case boardTypeDefault:
 		size := settings.Board.Default.Size + settings.Border.Width*2
 
 		return image.Rectangle{
@@ -141,7 +148,7 @@ func (i *Imager) getBoardSize() (image.Rectangle, error) {
 				Y: size,
 			},
 		}, nil
-	case BoardTypeImage:
+	case boardTypeImage:
 		return boardImage.Bounds(), nil
 
 	default:
@@ -182,20 +189,20 @@ func loadDefaultSettings() *Settings {
 
 // validateSettings validates some of the values in the JSON file
 func validateSettings() error {
-	if settings.Board.Type == BoardTypeImage {
+	if settings.Board.Type == boardTypeImage {
 		if err := tryLoadImage(settings.Board.Image.Path, &boardImage); err != nil {
 			return err
 		}
 	}
 
-	if settings.Pieces.Type == PiecesTypeImageMap {
+	if settings.Pieces.Type == piecesTypeImageMap {
 		var img image.Image
 		if err := tryLoadImage(settings.Pieces.ImageMap.Path, &img); err != nil {
 			return err
 		}
 	}
 
-	if settings.Pieces.Type == PiecesTypeImages {
+	if settings.Pieces.Type == piecesTypeImages {
 		var img image.Image
 		for _, p := range settings.Pieces.Images.Pieces {
 			if err := tryLoadImage(p.Path, &img); err != nil {

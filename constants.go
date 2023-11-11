@@ -1,53 +1,5 @@
 package chessImager
 
-type rankFileType int
-
-const (
-	Rank rankFileType = iota
-	File
-)
-
-type chessPiece int
-
-const (
-	WhitePawn chessPiece = iota
-	WhiteBishop
-	WhiteKnight
-	WhiteRook
-	WhiteQueen
-	WhiteKing
-	BlackPawn
-	BlackBishop
-	BlackKnight
-	BlackRook
-	BlackQueen
-	BlackKing
-	NoPiece
-)
-
-type BoardType int
-
-const (
-	BoardTypeDefault BoardType = iota
-	BoardTypeImage
-)
-
-type PiecesType int
-
-const (
-	PiecesTypeDefault PiecesType = iota
-	PiecesTypeImages
-	PiecesTypeImageMap
-)
-
-type RankAndFileType int
-
-const (
-	RankAndFileTypeNone RankAndFileType = iota
-	RankAndFileTypeInBorder
-	RankAndFileTypeInSquares
-)
-
 type PositionType int
 
 const (
@@ -73,6 +25,54 @@ const (
 	HighlightTypeCircle
 	HighlightTypeFilledCircle
 	HighlightTypeX
+)
+
+type rankFileType int
+
+const (
+	rank rankFileType = iota
+	file
+)
+
+type chessPiece int
+
+const (
+	whitePawn chessPiece = iota
+	whiteBishop
+	whiteKnight
+	whiteRook
+	whiteQueen
+	whiteKing
+	blackPawn
+	blackBishop
+	blackKnight
+	blackRook
+	blackQueen
+	blackKing
+	noPiece
+)
+
+type boardType int
+
+const (
+	boardTypeDefault boardType = iota
+	boardTypeImage
+)
+
+type piecesType int
+
+const (
+	piecesTypeDefault piecesType = iota
+	piecesTypeImages
+	piecesTypeImageMap
+)
+
+type rankAndFileType int
+
+const (
+	rankAndFileTypeNone rankAndFileType = iota
+	rankAndFileTypeInBorder
+	rankAndFileTypeInSquares
 )
 
 type direction int

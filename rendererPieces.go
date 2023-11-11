@@ -18,33 +18,33 @@ var defaultPieces []byte
 var pieces map[chessPiece]image.Image
 
 var pieceMap = map[string]chessPiece{
-	"WK": WhiteKing,
-	"WQ": WhiteQueen,
-	"WR": WhiteRook,
-	"WN": WhiteKnight,
-	"WB": WhiteBishop,
-	"WP": WhitePawn,
-	"BK": BlackKing,
-	"BQ": BlackQueen,
-	"BR": BlackRook,
-	"BN": BlackKnight,
-	"BB": BlackBishop,
-	"BP": BlackPawn,
+	"WK": whiteKing,
+	"WQ": whiteQueen,
+	"WR": whiteRook,
+	"WN": whiteKnight,
+	"WB": whiteBishop,
+	"WP": whitePawn,
+	"BK": blackKing,
+	"BQ": blackQueen,
+	"BR": blackRook,
+	"BN": blackKnight,
+	"BB": blackBishop,
+	"BP": blackPawn,
 }
 
 var embeddedPieces = []PieceRectangle{
-	{WhiteKing, Rectangle{0, 0, 333, 333}},
-	{WhiteQueen, Rectangle{333, 0, 333, 333}},
-	{WhiteBishop, Rectangle{666, 0, 333, 333}},
-	{WhiteKnight, Rectangle{999, 0, 333, 333}},
-	{WhiteRook, Rectangle{1332, 0, 333, 333}},
-	{WhitePawn, Rectangle{1665, 0, 333, 333}},
-	{BlackKing, Rectangle{0, 333, 333, 333}},
-	{BlackQueen, Rectangle{333, 333, 333, 333}},
-	{BlackBishop, Rectangle{666, 333, 333, 333}},
-	{BlackKnight, Rectangle{999, 333, 333, 333}},
-	{BlackRook, Rectangle{1332, 333, 333, 333}},
-	{BlackPawn, Rectangle{1665, 333, 333, 333}},
+	{whiteKing, Rectangle{0, 0, 333, 333}},
+	{whiteQueen, Rectangle{333, 0, 333, 333}},
+	{whiteBishop, Rectangle{666, 0, 333, 333}},
+	{whiteKnight, Rectangle{999, 0, 333, 333}},
+	{whiteRook, Rectangle{1332, 0, 333, 333}},
+	{whitePawn, Rectangle{1665, 0, 333, 333}},
+	{blackKing, Rectangle{0, 333, 333, 333}},
+	{blackQueen, Rectangle{333, 333, 333, 333}},
+	{blackBishop, Rectangle{666, 333, 333, 333}},
+	{blackKnight, Rectangle{999, 333, 333, 333}},
+	{blackRook, Rectangle{1332, 333, 333, 333}},
+	{blackPawn, Rectangle{1665, 333, 333, 333}},
 }
 
 type rendererPiece struct {
@@ -72,13 +72,13 @@ func (r *rendererPiece) draw(c *gg.Context) error {
 	fens := strings.Split(fen, "/")
 
 	var inv = settings.Board.Default.Inverted
-	if settings.Board.Type == BoardTypeImage {
+	if settings.Board.Type == boardTypeImage {
 		inv = settings.Board.Image.Inverted
 	}
 
 	for rank, row := range fens {
 		for file, piece := range row {
-			if p := letter2Piece[piece]; p != NoPiece {
+			if p := letter2Piece[piece]; p != noPiece {
 				c.DrawImage(r.getImageAndPosition(pieces[p], file, rank, inv))
 			}
 		}
@@ -91,7 +91,7 @@ func (r *rendererPiece) loadPieces() error {
 	pieces = make(map[chessPiece]image.Image, 12)
 
 	switch settings.Pieces.Type {
-	case PiecesTypeDefault:
+	case piecesTypeDefault:
 		imageMap, _, err := image.Decode(bytes.NewReader(defaultPieces))
 		if err != nil {
 			return err
@@ -100,7 +100,7 @@ func (r *rendererPiece) loadPieces() error {
 		if err != nil {
 			return err
 		}
-	case PiecesTypeImages:
+	case piecesTypeImages:
 		for _, piece := range settings.Pieces.Images.Pieces {
 			f, err := os.Open(piece.Path)
 			if err != nil {
@@ -113,7 +113,7 @@ func (r *rendererPiece) loadPieces() error {
 
 			pieces[pieceMap[strings.ToUpper(piece.Piece)]] = r.resize(img)
 		}
-	case PiecesTypeImageMap:
+	case piecesTypeImageMap:
 		f, err := os.Open(settings.Pieces.ImageMap.Path)
 		if err != nil {
 			return err
@@ -138,7 +138,7 @@ func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRe
 		return errors.New("failed to create SubImager. Wrong image type? Try PNG")
 	}
 	for _, item := range items {
-		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.ToImageRect())))
+		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.toImageRect())))
 	}
 	return nil
 }

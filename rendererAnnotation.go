@@ -22,7 +22,7 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 
 		// Draw annotation circle
 		style := r.getStyle(annotation)
-		x, y := rect.Center()
+		x, y := rect.center()
 		c.SetRGBA(style.BorderColor.toRGBA())
 		c.DrawCircle(x, y, rect.Width/2)
 		c.Fill()

@@ -12,9 +12,9 @@ type rendererBoard struct {
 
 func (r *rendererBoard) draw(c *gg.Context) error {
 	switch settings.Board.Type {
-	case BoardTypeDefault:
+	case boardTypeDefault:
 		r.drawDefault(c)
-	case BoardTypeImage:
+	case boardTypeImage:
 		r.drawImage(c)
 	default:
 		return errors.New("invalid board type")
@@ -28,7 +28,7 @@ func (r *rendererBoard) drawDefault(c *gg.Context) {
 
 	// Draw the entire board in the black color
 	c.SetRGBA(settings.Board.Default.Black.toRGBA())
-	c.DrawRectangle(board.Coords())
+	c.DrawRectangle(board.coords())
 	c.Fill()
 
 	// Draw the white squares, on top of the black board
@@ -36,7 +36,7 @@ func (r *rendererBoard) drawDefault(c *gg.Context) {
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {
-				c.DrawRectangle(getSquareBox(x, y).Coords())
+				c.DrawRectangle(getSquareBox(x, y).coords())
 				c.Fill()
 			}
 		}

@@ -27,29 +27,29 @@ func (r *rendererHighlight) draw(c *gg.Context) error {
 
 		switch style.Type {
 		case HighlightTypeFull:
-			x, y, w, h := b.Coords()
+			x, y, w, h := b.coords()
 			c.DrawRectangle(x, y, w, h)
 			c.Fill()
 		case HighlightTypeBorder:
-			x, y, w, h := b.Coords()
+			x, y, w, h := b.coords()
 			bw := float64(style.Width)
 			c.SetLineWidth(bw)
 			c.DrawRectangle(x+bw/2, y+bw/2, w-bw, h-bw)
 			c.Stroke()
 		case HighlightTypeCircle:
-			bb := b.Shrink(style.Factor)
-			x, y := bb.Center()
+			bb := b.shrink(style.Factor)
+			x, y := bb.center()
 			c.SetLineWidth(float64(style.Width))
 			c.DrawCircle(x, y, bb.Width/2)
 			c.Stroke()
 		case HighlightTypeFilledCircle:
-			bb := b.Shrink(style.Factor)
-			x, y := bb.Center()
+			bb := b.shrink(style.Factor)
+			x, y := bb.center()
 			c.DrawCircle(x, y, bb.Width/2)
 			c.Fill()
 		case HighlightTypeX:
-			bb := b.Shrink(style.Factor)
-			x, y, w, h := bb.Coords()
+			bb := b.shrink(style.Factor)
+			x, y, w, h := bb.coords()
 			c.SetLineWidth(float64(style.Width))
 			c.DrawLine(x, y, x+w, y+h)
 			c.DrawLine(x+w, y, x, y+h)

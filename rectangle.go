@@ -7,11 +7,11 @@ type Rectangle struct {
 	Height float64 `json:"height"`
 }
 
-func (r Rectangle) Coords() (float64, float64, float64, float64) {
+func (r Rectangle) coords() (float64, float64, float64, float64) {
 	return r.X, r.Y, r.Width, r.Height
 }
 
-func (r Rectangle) Shrink(f float64) Rectangle {
+func (r Rectangle) shrink(f float64) Rectangle {
 	wf := r.Width * (1 - f) / 2
 	hf := r.Height * (1 - f) / 2
 
@@ -27,10 +27,10 @@ func (r Rectangle) Shrink(f float64) Rectangle {
 
 // TODO : Should return an image.Rectangle instead?
 
-func (r Rectangle) ToImageRect() (int, int, int, int) {
+func (r Rectangle) toImageRect() (int, int, int, int) {
 	return int(r.X), int(r.Y), int(r.X + r.Width), int(r.Y + r.Height)
 }
 
-func (r Rectangle) Center() (float64, float64) {
+func (r Rectangle) center() (float64, float64) {
 	return r.X + r.Width/2, r.Y + r.Height/2
 }

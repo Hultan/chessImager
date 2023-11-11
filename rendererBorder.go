@@ -7,7 +7,7 @@ type rendererBorder struct {
 }
 
 func (r *rendererBorder) draw(c *gg.Context) error {
-	if settings.Board.Type == BoardTypeImage {
+	if settings.Board.Type == boardTypeImage {
 		return nil
 	}
 

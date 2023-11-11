@@ -68,7 +68,7 @@ func sgn(dx int) int {
 
 func getBoardBox() Rectangle {
 	switch settings.Board.Type {
-	case BoardTypeDefault:
+	case boardTypeDefault:
 		border := float64(settings.Border.Width)
 		size := float64(settings.Board.Default.Size)
 
@@ -78,7 +78,7 @@ func getBoardBox() Rectangle {
 			Width:  size,
 			Height: size,
 		}
-	case BoardTypeImage:
+	case boardTypeImage:
 		return settings.Board.Image.Rect
 	default:
 		panic("invalid board type")
@@ -91,10 +91,10 @@ func getSquareBox(x, y int) Rectangle {
 
 	var dx, dy float64
 	switch settings.Board.Type {
-	case BoardTypeDefault:
+	case boardTypeDefault:
 		border := float64(settings.Border.Width)
 		dx, dy = border, border
-	case BoardTypeImage:
+	case boardTypeImage:
 		dx, dy = board.X, board.Y
 	default:
 		panic("invalid board type")
