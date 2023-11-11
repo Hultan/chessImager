@@ -282,7 +282,7 @@ The settings for the border renderer can be found in the **border** section of t
   },
 }
 ```
-<mark>The border settings will be ignored when `board.type=1` (image)</mark>
+The border settings will be ignored when `board.type=1` (image)
 
 ## Board renderer
 
@@ -306,7 +306,7 @@ The settings under **board.default** are the following:
 
 | Name     | type    | Description                                                                     |
 |----------|---------|---------------------------------------------------------------------------------|
-| inverted | boolean | Black at the top, or white at the top.                                          |
+| inverted | boolean | White at the bottom (false), or white at the top (true).                        |
 | size     | integer | The size of the board (border not included). Should probably be divisible by 8. |
 | white    | string  | The color for the white squares                                                 |
 | black    | string  | The color for the black squares                                                 |
@@ -365,7 +365,7 @@ The rank and file renderer renders the file letters A to H and the rank numbers 
       "font_size": 16
    }
 ```
-<mark>The rank and file settings will be ignored when `board.type=1` (image)</mark>
+The rank and file settings will be ignored when `board.type=1` (image)
 
 ## Highlight renderer
 
@@ -385,7 +385,7 @@ json` file.
 
 The factor 0.5 means that the circle or cross should be 50% och the width of the square.
 
-You can add a highlighted square by using the method `AddHighlight()` on the **context** object:
+You can add a highlighted square by using the method `AddHighlight()` on the **context** object in the style that is specified in the currently used JSON file:
 
 ```go
    imager := chessImager.NewImager()
@@ -504,8 +504,7 @@ https://opengameart.org/content/colorful-chess-pieces
 The annotation renderer is responsible for rendering annotations, like !! or ??. You decide how big the annotation
 circle should be and what text it should contain.
 
-The style of the annotation is normally determined by the default annotation style provided in the `default.
-json` file.
+The style of the annotation is normally determined by the default annotation style provided in the [config/default.json](config/default.json) file.
 
 | Name             | Type    | Description                                                            |
 |------------------|---------|------------------------------------------------------------------------|
