@@ -171,6 +171,8 @@ This code will generate the following image:
 
 <img src="examples/other.png" alt="drawing" width="350"/>
 
+Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
+
 ## Configuration
 
 **ChessImager** uses a configuration JSON file to define the size of the board and colors etc. You can
@@ -345,11 +347,7 @@ The settings under **board.image** are the following:
       }
    }
 ```
-See [examples/other.go](examples/other.go) for how to use a background board image, instead of the default board:
-
-<img src="examples/other.png" alt="drawing" width="294"/>
-
-Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
+See [examples/other.go](examples/other.go) for an example of how to use a background board image, instead of the default board.
 
 ## Rank and File renderer
 
