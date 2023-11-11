@@ -1,11 +1,7 @@
 # ChessImager
 
 **ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly
-configurable,
-so that you can create chess board images that look exactly the way you want them to look.
-
-If you are happy with the default look, you can use that, but do note that the default embedded chess pieces are free
-for personal use only (See : https://clipart-library.com/clip-art/chess-pieces-silhouette-14.htm).
+configurable, so that you can create chess board images that look exactly the way you want them to look.
 
 ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s
 repository [chessimage](https://github.com/cjsaylor/chessimage).
@@ -181,8 +177,7 @@ configuration file, you will need to use the function `chessImager.NewImagerFrom
 
 ### Configuration - colors
 
-All colors in the settings file can be specified in one of four different ways, since the hashtag and the alfa 
-values are optional:
+All colors in the settings file can be specified in one of four different ways, since the hashtag and the alpha values are optional:
 
 | Pattern   | Example string |
 |-----------|----------------|
@@ -191,12 +186,12 @@ values are optional:
 | RRGGBBAA  | 10E4F3FF       |
 | RRGGBB    | 10E4F3         |
 
-If you don't specify the alfa component of the color, FF will be assumed.
+If you don't specify the alpha component of the color, FF will be assumed.
 
 ### Configuration - fonts
 If no font is specified in the settings file, the Go Regular TTF font will be used.
 
-The path must be a full path to the TTF font file. Example:
+The path must point to the TTF font file. Example:
 
 ```json
    "font_style": {
@@ -289,8 +284,7 @@ The border settings will be ignored when `board.type=1` (image)
 The board renderer is usually the second renderer. It has a `type` field that specifies how the renderer should draw 
 the board.
 
-If `type`=0, then the renderer will draw the board manually using the settings in the **default** section (under the
-**board** section). For now this is the only board type that is implemented, so type should always be 0 at this point.
+If `type`=0, then the renderer will draw the board manually using the settings in the **default** section (under the **board** section).
 
 If `type`=1 then the renderer will draw an image containing a chessboard using the settings in the **image** section (under the **board** section). 
 
@@ -325,8 +319,9 @@ The settings under **board.default** are the following:
 
 ### Board image
 
-You can use an image of a chess board as the background if you want to. <mark>If you do, the border settings and rank 
-and file settings will be ignored.</mark>
+You can use an image of a chess board as the background if you want to. 
+
+Important : If you do use a board image, it is assumed that the border and rank and files are in the image, so the **border** settings and **rank and file** settings will be ignored.  
 
 The settings under **board.image** are the following:
 
@@ -369,9 +364,7 @@ The rank and file settings will be ignored when `board.type=1` (image)
 
 ## Highlight renderer
 
-The highlight renderer highlights certain squares in whatever color you want. You can highlight the square by
-giving it a certain color, or a border of a certain color. You can also highlight the square by drawing a circle or
-a cross in the square, all depending on the type field.
+The highlight renderer highlights certain squares in a number of different ways. For example, you can highlight the square filling it with a color, or giving it a border of a specific color.
 
 The style of the highlighted square is normally determined by the default highlight style provided in the `default.
 json` file.
@@ -383,7 +376,7 @@ json` file.
 | width  | integer | The width of the border, circle or cross (type=1, 2 or 4)        |
 | factor | float   | The size of the circle or cross (type=2, 3 or 4)                 |
 
-The factor 0.5 means that the circle or cross should be 50% och the width of the square.
+The factor 0.5 means that the circle or cross should be 50% of the width of the square.
 
 You can add a highlighted square by using the method `AddHighlight()` on the **context** object in the style that is specified in the currently used JSON file:
 
@@ -413,16 +406,18 @@ styling to this specific square:
 
 The piece renderer are responsible for drawing the pieces on the board (as specified in the FEN string).
 
-| Name      | Type    | Description                                                                                      |
-|-----------|---------|--------------------------------------------------------------------------------------------------|
-| factor    | float   | Resize factor for pieces where 1.0 is equal to 100%. Pieces will be scaled up or down the factor |
-| type      | integer | 0 = Use embedded pieces, 1 = use an image for each piece, 2 = use an image map                   |
-| images    | -       | Contains 12 paths, one for each piece.                                                           |
-| image_map | -       | Contains 1 path, and 12 rectangles.                                                              |
+| Name      | Type    | Description                                                                                             |
+|-----------|---------|---------------------------------------------------------------------------------------------------------|
+| factor    | float   | Resize factor for pieces where 1.0 is equal to 100%. Pieces will be scaled up or down using the factor. |
+| type      | integer | 0 = Use embedded pieces, 1 = use an image for each piece, 2 = use an image map                          |
+| images    | -       | Contains 12 paths, one for each piece.                                                                  |
+| image_map | -       | Contains 1 path, and 12 rectangles.                                                                     |
 
 ### Piece renderer - embedded pieces (type=0)
 
 The embedded pieces has no configuration, except `piece.factor` that applies to all piece renderers.
+
+Important :Note that the default embedded chess pieces are free for personal use only (See : https://clipart-library.com/clip-art/chess-pieces-silhouette-14.htm).
 
 Example of the **pieces** section where type=0:
 
@@ -544,8 +539,7 @@ styling to this specific square:
 
 ## Moves renderer
 
-The moves renderer is responsible for rendering moves, that is, indicating that a piece has moved from a square to a 
-square. 
+The moves renderer is responsible for rendering moves, that is, indicating that a piece has moved from one square to another.
 
 The style of the move can be changed in the [config/default.json](config/default.json) file (or your own version of 
 that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()` method.
