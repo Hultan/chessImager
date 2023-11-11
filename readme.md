@@ -36,8 +36,7 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
 
 ## Examples:
 
-All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (*
-**Netherlands**), in 1999:
+All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
 
 https://www.chess.com/games/view/969971
 
@@ -57,16 +56,17 @@ save the image to disk, and you have this code:
    _ = png.Encode(file, img)
 ```
 
-This code will generate the following image, using the default styling in `default.json`:
+This code will generate the following image, using the default styling in [config/default.json](config/default.json):
 
 <img src="examples/simple.png" alt="simple example" width="350"/>
 
 ### Medium:
 
 Here is a slightly more advanced example, that adds a highlighted square, an annotation and a move. For this we need 
-to create a context object, using the `imager.NewContext()` method.
+to create a context object, using the `imager.NewContext()` method. We also need to use the `imager.RenderEx()` method 
+so that we can add both the FEN string and context.
 
-This example also uses the styles that are defined in the `default.json` files:
+This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
 
 ```go
    // Create a new imager using embedded default.json settings
@@ -89,8 +89,7 @@ This would generate the following image:
 
 ### Advanced:
 
-If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in default.
-json you can do that by providing the styles objects manually.
+If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in [config/default.json](config/default.json), you can do that by providing the styles objects manually.
 
 For example, let's change a few things from the medium example:
 
@@ -176,7 +175,7 @@ Background chess board image comes from here : https://www.supercoloring.com/pap
 ## Configuration
 
 **ChessImager** uses a configuration JSON file to define the size of the board and colors etc. You can
-either use the embedded default.json or you can create your own configuration file. If you want to use your own
+either use the embedded [config/default.json](config/default.json) or you can create your own configuration file. If you want to use your own
 configuration file, you will need to use the function `chessImager.NewImagerFromPath(path)`. See 
 [examples/other.go](examples/other.go) for an example of how to do this.
 
