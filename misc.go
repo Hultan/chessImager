@@ -10,6 +10,8 @@ import (
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font/gofont/goregular"
+
+	"golang.org/x/exp/constraints"
 )
 
 type renderer interface {
@@ -46,7 +48,7 @@ func invert(x int) int {
 	return 7 - x
 }
 
-func abs(x int) int {
+func abs[T constraints.Float | constraints.Integer](x T) T {
 	if x < 0 {
 		return -x
 	}

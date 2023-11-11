@@ -551,16 +551,14 @@ styling to this specific square:
 The moves renderer is responsible for rendering moves, that is, indicating that a piece has moved from a square to a 
 square. 
 
-For now, only one type of moves is supported, and that is `type=0` (dotted).
-
 The style of the move can be changed in the [config/default.json](config/default.json) file (or your own version of 
 that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()` method.
 
-| Name             | Type    | Description                                       |
-|------------------|---------|---------------------------------------------------|
-| type             | integer | 0 = Dotted                                        |
-| color            | string  | The color of the dots                             |
-| factor           | float   | The size of the dots, relative to the square size |
+| Name             | Type    | Description                                                |
+|------------------|---------|------------------------------------------------------------|
+| type             | integer | 0 = Dotted, 1 = Arrow                                      |
+| color            | string  | The color of the dots or arrow                             |
+| factor           | float   | The size of the dots or arrow, relative to the square size |
 
 You can add a move by using the method `AddMove()` on the **context** object.
 
@@ -590,6 +588,7 @@ styling to this particular move:
    
    image, _ := imager.RenderEx(fen, ctx)
 ```
-## Todo
 
-* Implement new MoveType: Arrows or lines
+## TODO:
+
+* Handle castling in rendererMoves

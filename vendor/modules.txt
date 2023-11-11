@@ -8,6 +8,9 @@ github.com/golang/freetype/truetype
 # github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 ## explicit
 github.com/nfnt/resize
+# golang.org/x/exp v0.0.0-20231108232855-2478ac86f678
+## explicit; go 1.20
+golang.org/x/exp/constraints
 # golang.org/x/image v0.13.0
 ## explicit; go 1.18
 golang.org/x/image/draw

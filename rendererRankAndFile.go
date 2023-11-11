@@ -123,7 +123,7 @@ func (r *rendererRankAndFile) getFileText(n int) string {
 }
 
 func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
-	square := float64(settings.Board.Default.Size) / 8
+	square := float64(getBoardBox().Width) / 8
 	border := float64(settings.Border.Width)
 
 	return Rectangle{
@@ -135,7 +135,7 @@ func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
 }
 
 func (r *rendererRankAndFile) getFileBox(file int) Rectangle {
-	square := float64(settings.Board.Default.Size) / 8
+	square := float64(getBoardBox().Width) / 8
 	border := float64(settings.Border.Width)
 
 	return Rectangle{

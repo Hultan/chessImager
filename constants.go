@@ -62,6 +62,7 @@ type MoveType int
 
 const (
 	MoveTypeDots MoveType = iota
+	MoveTypeArrow
 )
 
 type HighlightType int
@@ -72,4 +73,17 @@ const (
 	HighlightTypeCircle
 	HighlightTypeFilledCircle
 	HighlightTypeX
+)
+
+type direction int
+
+const (
+	directionNorth direction = iota * 45
+	directionNorthEast
+	directionEast
+	directionSouthEast
+	directionSouth
+	directionSouthWest
+	directionWest
+	directionNorthWest
 )

@@ -76,8 +76,8 @@
     "factor": 0.5
   },
   "move_style": {
-    "type": 0,
-    "color": "#333333AA",
+    "type": 1,
+    "color": "#777777FF",
     "factor": 0.3
   },
   "font_style": {
