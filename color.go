@@ -2,8 +2,10 @@ package chessImager
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"image/color"
+	"strings"
 )
 
 type ColorRGBA struct {
@@ -16,14 +18,26 @@ func (c *ColorRGBA) MarshalJSON() ([]byte, error) {
 	return json.Marshal(hexColor)
 }
 
-func (c *ColorRGBA) UnmarshalJSON(data []byte) error {
+func (c *ColorRGBA) UnmarshalJSON(data []byte) (err error) {
 	var hexColor string
-	if err := json.Unmarshal(data, &hexColor); err != nil {
+
+	if err = json.Unmarshal(data, &hexColor); err != nil {
 		return err
 	}
 
+	// Catch invalid colors
+	if len(hexColor) < 6 || len(hexColor) > 9 {
+		return errors.New("invalid color")
+	}
+
+	// Remove the # and add the alpha if needed
+	hexColor = strings.TrimPrefix(hexColor, "#")
+	if len(hexColor) == 6 {
+		hexColor += "FF"
+	}
+
 	// Parse the hexadecimal string and set it to the color.RGBA
-	_, err := fmt.Sscanf(hexColor, "#%02x%02x%02x%02x", &c.R, &c.G, &c.B, &c.A)
+	_, err = fmt.Sscanf(hexColor, "%02x%02x%02x%02x", &c.R, &c.G, &c.B, &c.A)
 	if err != nil {
 		return err
 	}
