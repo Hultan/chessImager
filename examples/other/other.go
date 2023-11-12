@@ -23,7 +23,7 @@ func main() {
 	img, _ := imager.RenderEx(fen, ctx)
 
 	// Save the image
-	file, _ := os.Create("examples/other.png")
+	file, _ := os.Create("examples/other/other.png")
 	defer file.Close()
 	_ = png.Encode(file, img)
 }

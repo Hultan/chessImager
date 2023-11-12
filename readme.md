@@ -38,7 +38,7 @@ https://www.chess.com/games/view/969971
 
 ### Simple:
 
-Rendering a chess board image, based on a FEN string, is basically one line of code. Add a few more lines of code to
+The first [example](examples/simple/simple.go) is super easy. Rendering a chess board image, based on a FEN string, is basically one line of code. Add a few more lines of code to
 save the image to disk, and you have this code:
 
 ```go
@@ -54,11 +54,11 @@ save the image to disk, and you have this code:
 
 This code will generate the following image, using the default styling in [config/default.json](config/default.json):
 
-<img src="examples/simple.png" alt="simple example" width="350"/>
+<img src="examples/simple/simple.png" alt="simple example" width="350"/>
 
 ### Medium:
 
-Here is a slightly more advanced example, that adds a highlighted square, an annotation and a move. For this we need 
+Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need 
 to create a context object, using the `imager.NewContext()` method. We also need to use the `imager.RenderEx()` method 
 so that we can add both the FEN string and context.
 
@@ -81,11 +81,11 @@ This example also uses the styles that are defined in the [config/default.json](
 ```
 This would generate the following image:
 
-<img src="examples/medium.png" alt="drawing" width="350"/>
+<img src="examples/medium/medium.png" alt="drawing" width="350"/>
 
 ### Advanced:
 
-If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in [config/default.json](config/default.json), you can do that by providing the styles objects manually.
+Let's look at an even more [advanced example](examples/advanced/advanced.go). If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in [config/default.json](config/default.json), you can do that by providing the styles objects manually.
 
 For example, let's change a few things from the medium example:
 
@@ -138,14 +138,14 @@ And for fun, lets change the render order too...
 
 This code will generate the following image:
 
-<img src="examples/advanced.png" alt="drawing" width="350"/>
+<img src="examples/advanced/advanced.png" alt="drawing" width="350"/>
 
 As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
 
 ### Other
 
-In this example we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
-[examples/other.json](examples/other.json) file, we will use a board image, [examples/chessboard.jpg](examples/chessboard.jpg), instead of drawing it manually.
+In this [example](examples/other/other.json) we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
+[examples/other/other.json](examples/other/other.json) file, we will also use a board image, [examples/other/chessboard.jpg](examples/other/chessboard.jpg), instead of drawing it manually.
 
 ```go
 	// Create a new imager using your custom JSON file
@@ -164,7 +164,7 @@ In this example we will create our own JSON file and load it using the `NewImage
 ```
 This code will generate the following image:
 
-<img src="examples/other.png" alt="drawing" width="350"/>
+<img src="examples/other/other.png" alt="drawing" width="350"/>
 
 Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
 
@@ -173,7 +173,7 @@ Background chess board image comes from here : https://www.supercoloring.com/pap
 **ChessImager** uses a configuration JSON file to define the size of the board and colors etc. You can
 either use the embedded [config/default.json](config/default.json) or you can create your own configuration file. If you want to use your own
 configuration file, you will need to use the function `chessImager.NewImagerFromPath(path)`. See 
-[examples/other.go](examples/other.go) for an example of how to do this.
+[examples/other/other.go](examples/other/other.go) for an example of how to do this.
 
 ### Configuration - colors
 
@@ -256,7 +256,7 @@ To reset the rendering order, you can either create a new ChessImager object, or
     // Reset rendering order to default : 0, 1, 2, 3, 4, 5, 6
     _ = imager.SetOrder(nil)
 ```
-Check out [examples/advanced.go](examples/advanced.go) to see how to change render order.
+Check out [examples/advanced/advanced.go](examples/advanced/advanced.go) to see how to change render order.
 ## Border renderer
 
 The border renderer should always be the first renderer. It clears the image with the border color specified in the
@@ -341,7 +341,7 @@ The settings under **board.image** are the following:
       }
    }
 ```
-See [examples/other.go](examples/other.go) for an example of how to use a background board image, instead of the default board.
+See [examples/other/other.json](examples/other/other.json) for an example of how to use a background board image, instead of the default board.
 
 ## Rank and File renderer
 

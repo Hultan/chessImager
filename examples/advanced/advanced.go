@@ -51,7 +51,7 @@ func main() {
 	}
 
 	// Save the image
-	file, _ := os.Create("examples/advanced.png")
+	file, _ := os.Create("examples/advanced/advanced.png")
 	defer file.Close()
 	_ = png.Encode(file, img)
 }

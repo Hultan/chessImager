@@ -13,7 +13,7 @@ func main() {
 	img, _ := chessImager.NewImager().Render(fen)
 
 	// Save image
-	file, _ := os.Create("examples/simple.png")
+	file, _ := os.Create("examples/simple/simple.png")
 	defer file.Close()
 	_ = png.Encode(file, img)
 }

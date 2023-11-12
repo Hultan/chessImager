@@ -24,7 +24,7 @@ func main() {
 	img, _ := imager.RenderEx(fen, ctx)
 
 	// Save the image to a file
-	file, _ := os.Create("examples/medium.png")
+	file, _ := os.Create("examples/medium/medium.png")
 	defer file.Close()
 	_ = png.Encode(file, img)
 }
