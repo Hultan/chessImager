@@ -287,9 +287,9 @@ The border settings will be ignored when `board.type=1` (image)
 The board renderer is usually the second renderer. It has a `type` field that specifies how the renderer should draw 
 the board.
 
-If `type`=0, then the renderer will draw the board manually using the settings in the **default** section (under the **board** section).
+If `type`=0, then the renderer will draw the board manually using the settings in the [default](#board-default) section (under the **board** section).
 
-If `type`=1 then the renderer will draw an image containing a chessboard using the settings in the **image** section (under the **board** section). 
+If `type`=1 then the renderer will draw an image containing a chessboard using the settings in the [image](#board-image) section (under the **board** section). 
 
 | Name    | Type    | Description                                   |
 |---------|---------|-----------------------------------------------|
@@ -408,6 +408,12 @@ styling to this specific square:
 ## Piece renderer
 
 The piece renderer are responsible for drawing the pieces on the board (as specified in the FEN string).
+
+`type=0` means that you want to use the embedded pieces. See the [embedded pieces section](#piece-renderer---embedded-pieces-type0) for more information. This is the easiest option, but you should be aware that these images are for personal use only.
+
+`type=1` means that you want to provide 12 images, one for each piece. See the [images section](#piece-renderer---images-type1) for more information.
+
+`type=2` means that you want to provide an image map that contains all 12 pieces. See the [image map section](#piece-renderer---image-map-type2) for more information.
 
 | Name      | Type    | Description                                                                                             |
 |-----------|---------|---------------------------------------------------------------------------------------------------------|
