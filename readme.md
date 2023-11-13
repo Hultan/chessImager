@@ -95,6 +95,8 @@ For example, let's change a few things from the medium example:
 
 And for fun, lets change the render order too...
 
+Read more about renderers and their order in the [render order](#render-order) section.
+
 ```go
    // Create a new imager using embedded default.json settings
    imager := chessImager.NewImager()
