@@ -16,19 +16,20 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
-3. [Render order](#render-order)
-4. [Border renderer](#border-renderer)
-5. [Board renderer](#board-renderer)
+3. [Context](#context)
+4. [Render order](#render-order)
+5. [Border renderer](#border-renderer)
+6. [Board renderer](#board-renderer)
     1. [Board default](#board-default)
     2. [Board image](#board-image)
-6. [Rank and file renderer](#rank-and-file-renderer)
-7. [Highlight renderer](#highlight-renderer)
-8. [Piece renderer](#piece-renderer)
+7. [Rank and file renderer](#rank-and-file-renderer)
+8. [Highlight renderer](#highlight-renderer)
+9. [Piece renderer](#piece-renderer)
     1. [Embedded pieces renderer](#piece-renderer---embedded-pieces-type0)
     2. [Images piece renderer](#piece-renderer---images-type1)
     3. [ImageMap piece renderer](#piece-renderer---image-map-type2)
-9. [Annotations renderer](#annotations-renderer)
-10. [Moves renderer](#moves-renderer)
+10. [Annotations renderer](#annotations-renderer)
+11. [Moves renderer](#moves-renderer)
 
 ## Examples:
 
@@ -59,8 +60,8 @@ This code will generate the following image, using the default styling in [confi
 ### Medium:
 
 Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need 
-to create a context object, using the `imager.NewContext()` method. We also need to use the `imager.RenderEx()` method 
-so that we can add both the FEN string and context.
+to create a [context](#context) object, using the `imager.NewContext()` method. We also need to use the `imager.RenderEx()` method 
+so that we can add both the FEN string and [context](#context).
 
 This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
 
@@ -89,9 +90,9 @@ Let's look at an even more [advanced example](examples/advanced/advanced.go). If
 
 For example, let's change a few things from the medium example:
 
-* the highlight color and style (filled circle)
-* the annotation position (top left) and border color
-* the move size and color for the next image
+* the highlight color and style (filled circle). See [Highlight renderer](#highlight-renderer) for more information.
+* the annotation position (top left) and border color. See [Annotation renderer](#annotations-renderer) for more information.
+* the move size and color for the next image. See [Move renderer](#moves-renderer) for more information.
 
 And for fun, lets change the render order too...
 
@@ -380,7 +381,7 @@ json` file.
 
 The factor 0.5 means that the circle or cross should be 50% of the width of the square.
 
-You can add a highlighted square by using the method `AddHighlight()` on the **context** object in the style that is specified in the currently used JSON file:
+You can add a highlighted square by using the method `AddHighlight()` on the [context](#context) object in the style that is specified in the currently used JSON file:
 
 ```go
    imager := chessImager.NewImager()
@@ -513,7 +514,7 @@ The style of the annotation is normally determined by the default annotation sty
 | border_color     | string  | The border color of the annotation circle                              |
 | border_width     | integer | The width of the border                                                |
 
-You can add an annotation by using the method `AddAnnotation()` on the **context** object:
+You can add an annotation by using the method `AddAnnotation()` on the [context](#context) object:
 
 ```go
    imager := chessImager.NewImager()
@@ -552,7 +553,7 @@ that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()
 | color            | string  | The color of the dots or arrow                             |
 | factor           | float   | The size of the dots or arrow, relative to the square size |
 
-You can add a move by using the method `AddMove()` on the **context** object.
+You can add a move by using the method `AddMove()` on the [context](#context) object.
 
 ```go
    imager := chessImager.NewImager()
