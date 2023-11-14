@@ -34,10 +34,10 @@ func TestMovesKnight(t *testing.T) {
 	imager := chessImager.NewImager()
 	ctx := imager.NewContext()
 
-	ctx.AddMove("g8", "f6").AddMove("h7", "f6")
-	ctx.AddMove("h5", "f6").AddMove("g4", "f6")
-	ctx.AddMove("e4", "f6").AddMove("d5", "f6")
-	ctx.AddMove("d7", "f6").AddMove("e8", "f6")
+	ctx.AddMove("f6", "g8").AddMove("f6", "h7")
+	ctx.AddMove("f6", "h5").AddMove("f6", "g4")
+	ctx.AddMove("f6", "e4").AddMove("f6", "d5")
+	ctx.AddMove("f6", "d7").AddMove("f6", "e8")
 
 	// Render the image
 	const fen = "8/8/5n2/8/8/8/8/8 b - - 1 25"

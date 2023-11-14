@@ -591,4 +591,3 @@ styling to this particular move:
 ## TODO:
 
 * Handle castling better in rendererMoves
-* MoveTypeArrow when using transparent color looks ugly

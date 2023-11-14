@@ -2,6 +2,7 @@ package chessImager
 
 import (
 	"errors"
+	"math"
 
 	"github.com/fogleman/gg"
 )
@@ -47,7 +48,7 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 			d := max(abs(dx), abs(dy))
 			r.renderDottedLine(c, &x, &y, sgn(dx), sgn(dy), d, style)
 		} else {
-			// Horse type move (or other weird illegal move)
+			// Knight type move (or other weird illegal move)
 			if abs(dx) > abs(dy) {
 				// abs(dx) > abs(dy) ; vertically first, horizontally second
 				r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), style)
@@ -67,98 +68,31 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 		tx, ty := rect.center()
 		styleBox := rect.shrink(style.Factor)
 
-		r.renderArrowLine(c, styleBox.Width, fx, fy, tx, ty)
-		r.renderArrowHead(c, styleBox.Width, rect, dx, dy)
+		if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
+			// Render pawn, rook, bishop, king and queen moves (ie straight moves)
+			const margin = 5
+			dir := r.getDirection(dx, dy)
+			length := math.Sqrt((tx-fx)*(tx-fx) + (ty-fy)*(ty-fy))
+			if dir%90 != 0 {
+				length += rect.Width*2/3*math.Sqrt(2) - styleBox.Width - margin
+			} else {
+				length += rect.Width/2 - styleBox.Width - margin
+			}
+			r.renderArrow(c, length, styleBox.Width, fx, fy, dir)
+		} else {
+			// Knight type move (or other weird illegal move)
+			dir, rl := r.getKnightDirection(dx, dy)
+			if rl == right {
+				r.renderKnightArrowRight(c, rect.Width, styleBox.Width, fx, fy, dir)
+			} else {
+				r.renderKnightArrowLeft(c, rect.Width, styleBox.Width, fx, fy, dir)
+			}
+		}
 	default:
 		return errors.New("illegal move type")
 	}
 
 	return nil
-}
-
-// Render arrow head for all types of moves
-func (r *rendererMoves) renderArrowLine(c *gg.Context, width, fx, fy, tx, ty float64) {
-	c.SetLineWidth(width)
-	c.DrawLine(fx, fy, tx, ty)
-	c.Stroke()
-}
-
-// Render arrow head for all types of moves
-func (r *rendererMoves) renderArrowHead(c *gg.Context, width float64, rect Rectangle, dx, dy int) {
-	switch {
-	case dx == 0 && dy > 0:
-		// Vertical move up (queen, rook, king, pawn)
-		r.renderArrowHeadInDirection(c, rect, width, directionNorth)
-		return
-	case dx == 0 && dy < 0:
-		// Vertical move down (queen, rook, king)
-		r.renderArrowHeadInDirection(c, rect, width, directionSouth)
-		return
-	case dx < 0 && dy == 0:
-		// Horizontal move left (queen, rook, king)
-		r.renderArrowHeadInDirection(c, rect, width, directionWest)
-		return
-	case dx > 0 && dy == 0:
-		// Horizontal move right (queen, rook, king)
-		r.renderArrowHeadInDirection(c, rect, width, directionEast)
-		return
-	case abs(dx) == abs(dy):
-		// Bishop move, king (diagonal), queen (diagonal) or pawn (when capturing)
-		switch {
-		case dx > 0 && dy > 0:
-			// NE
-			r.renderArrowHeadInDirection(c, rect, width, directionNorthEast)
-		case dx > 0 && dy < 0:
-			// SE
-			r.renderArrowHeadInDirection(c, rect, width, directionSouthEast)
-		case dx < 0 && dy > 0:
-			// NW
-			r.renderArrowHeadInDirection(c, rect, width, directionNorthWest)
-		case dx < 0 && dy < 0:
-			// SW
-			r.renderArrowHeadInDirection(c, rect, width, directionSouthWest)
-		}
-		return
-	case false:
-		// Castling, how to handle
-
-	// Knight moves
-	case (dx == 2 && dy == 1) || (dx == -2 && dy == 1):
-		r.renderArrowHeadInDirection(c, rect, width, directionNorth)
-	case (dx == 1 && dy == 2) || (dx == 1 && dy == -2):
-		r.renderArrowHeadInDirection(c, rect, width, directionEast)
-	case (dx == 2 && dy == -1) || (dx == -2 && dy == -1):
-		r.renderArrowHeadInDirection(c, rect, width, directionSouth)
-	case (dx == -1 && dy == 2) || (dx == -1 && dy == -2):
-		r.renderArrowHeadInDirection(c, rect, width, directionWest)
-
-	default:
-		// Illegal moves
-		return
-	}
-}
-
-func (r *rendererMoves) renderArrowHeadInDirection(c *gg.Context, rect Rectangle, width float64, dir direction) {
-	cx, cy := rect.center()
-
-	// Rotate to draw in correct angle
-	c.RotateAbout(gg.Radians(float64(dir)), cx, cy)
-
-	// Draw line
-	c.SetLineWidth(abs(width))
-	c.DrawLine(cx, cy, cx, cy-rect.Width/2+width)
-	c.Stroke()
-
-	// Draw arrow head (triangle part)
-	c.SetLineWidth(1)
-	c.MoveTo(cx+width, cy-rect.Width/2+width)
-	c.LineTo(cx-width, cy-rect.Width/2+width)
-	c.LineTo(cx, cy-rect.Width/2)
-	c.ClosePath()
-	c.Fill()
-
-	// Rotate back
-	c.RotateAbout(gg.Radians(float64(-dir)), cx, cy)
 }
 
 func (r *rendererMoves) renderDottedLine(c *gg.Context, x, y *int, dx, dy, moves int, style *MoveStyle) {
@@ -224,4 +158,100 @@ func (r *rendererMoves) getFromAndTo(move Move) (int, int, int, int, error) {
 	toX, toY := to.coords()
 
 	return fromX, fromY, toX, toY, nil
+}
+
+func (r *rendererMoves) getDirection(dx int, dy int) direction {
+	switch {
+	case dx == 0 && dy < 0:
+		return directionSouth
+	case dx == 0 && dy > 0:
+		return directionNorth
+	case dy == 0 && dx < 0:
+		return directionWest
+	case dy == 0 && dx > 0:
+		return directionEast
+	case dx > 0 && dy > 0:
+		return directionNorthEast
+	case dx > 0 && dy < 0:
+		return directionSouthEast
+	case dx < 0 && dy > 0:
+		return directionNorthWest
+	case dx < 0 && dy < 0:
+		return directionSouthWest
+	default:
+		panic("invalid direction")
+	}
+}
+
+func (r *rendererMoves) renderArrow(c *gg.Context, length, width, fx, fy float64, dir direction) {
+	c.RotateAbout(gg.Radians(float64(dir)), fx, fy)
+	c.MoveTo(fx-width/2, fy)
+	c.LineTo(fx-width/2, fy-length)
+	c.LineTo(fx-width, fy-length)
+	c.LineTo(fx, fy-length-width)
+	c.LineTo(fx+width, fy-length)
+	c.LineTo(fx+width/2, fy-length)
+	c.LineTo(fx+width/2, fy)
+	c.LineTo(fx-width/2, fy)
+	c.Fill()
+	c.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
+}
+
+func (r *rendererMoves) renderKnightArrowRight(c *gg.Context, square, width, fx, fy float64, dir direction) {
+	length := square * 2
+
+	c.RotateAbout(gg.Radians(float64(dir)), fx, fy)
+	c.MoveTo(fx-width/2, fy)
+	c.LineTo(fx-width/2, fy-length-width/2)
+	c.LineTo(fx+square/2-width, fy-length-width/2)
+	c.LineTo(fx+square/2-width, fy-length-width)
+	c.LineTo(fx+square/2, fy-length)
+	c.LineTo(fx+square/2-width, fy-length+width)
+	c.LineTo(fx+square/2-width, fy-length+width/2)
+	c.LineTo(fx+width/2, fy-length+width/2)
+	c.LineTo(fx+width/2, fy)
+	c.LineTo(fx-width/2, fy)
+	c.Fill()
+	c.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
+}
+
+func (r *rendererMoves) renderKnightArrowLeft(c *gg.Context, square, width, fx, fy float64, dir direction) {
+	length := square * 2
+
+	c.RotateAbout(gg.Radians(float64(dir)), fx, fy)
+	c.MoveTo(fx-width/2, fy)
+	c.LineTo(fx-width/2, fy-length+width/2)
+	c.LineTo(fx-square/2+width, fy-length+width/2)
+	c.LineTo(fx-square/2+width, fy-length+width)
+	c.LineTo(fx-square/2, fy-length)
+	c.LineTo(fx-square/2+width, fy-length-width)
+	c.LineTo(fx-square/2+width, fy-length-width/2)
+	c.LineTo(fx+width/2, fy-length-width/2)
+	c.LineTo(fx+width/2, fy)
+	c.LineTo(fx-width/2, fy)
+	c.Fill()
+	c.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
+}
+
+func (r *rendererMoves) getKnightDirection(dx int, dy int) (direction, leftRight) {
+	switch {
+	case dx == 1 && dy == 2:
+		return directionNorth, right
+	case dx == -1 && dy == 2:
+		return directionNorth, left
+	case dx == 1 && dy == -2:
+		return directionSouth, left
+	case dx == -1 && dy == -2:
+		return directionSouth, right
+	case dy == 1 && dx == 2:
+		return directionEast, left
+	case dy == -1 && dx == 2:
+		return directionEast, right
+	case dy == 1 && dx == -2:
+		return directionWest, right
+	case dy == -1 && dx == -2:
+		return directionWest, left
+	default:
+		panic("invalid move")
+	}
 }

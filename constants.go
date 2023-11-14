@@ -87,3 +87,10 @@ const (
 	directionWest
 	directionNorthWest
 )
+
+type leftRight int
+
+const (
+	left leftRight = iota
+	right
+)
