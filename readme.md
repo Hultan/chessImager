@@ -147,7 +147,7 @@ As you can see, the pieces are now rendered **after** annotations, the annotatio
 
 ### Other
 
-In this [example](examples/other/other.json) we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
+In this [example](examples/other/other.go) we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
 [examples/other/other.json](examples/other/other.json) file, we will also use a board image, [examples/other/chessboard.jpg](examples/other/chessboard.jpg), instead of drawing it manually.
 
 ```go
