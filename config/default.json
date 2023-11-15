@@ -78,7 +78,8 @@
   "move_style": {
     "type": 1,
     "color": "#777777FF",
-    "factor": 0.2
+    "factor": 0.15,
+    "padding": 5
   },
   "font_style": {
     "path" : ""

@@ -198,9 +198,10 @@ type Move struct {
 // Type : The arrow type, 0=dotted, 1=arrow
 // Factor: The size of the square to use (0.5 equals 50% of square size)
 type MoveStyle struct {
-	Color  ColorRGBA `json:"color"`
-	Type   MoveType  `json:"type"`
-	Factor float64   `json:"factor"`
+	Color   ColorRGBA `json:"color"`
+	Type    MoveType  `json:"type"`
+	Factor  float64   `json:"factor"`
+	Padding float64   `json:"padding"`
 }
 
 // FontStyle : Font to use, if path is not specified (or does not exist),

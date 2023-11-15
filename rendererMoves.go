@@ -70,13 +70,12 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 
 		if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
 			// Render pawn, rook, bishop, king and queen moves (ie straight moves)
-			const margin = 5
 			dir := r.getDirection(dx, dy)
 			length := math.Sqrt((tx-fx)*(tx-fx) + (ty-fy)*(ty-fy))
 			if dir%90 != 0 {
-				length += rect.Width*2/3*math.Sqrt(2) - styleBox.Width - margin
+				length += rect.Width*2/3*math.Sqrt(2) - styleBox.Width - style.Padding
 			} else {
-				length += rect.Width/2 - styleBox.Width - margin
+				length += rect.Width/2 - styleBox.Width - style.Padding
 			}
 			r.renderArrow(c, length, styleBox.Width, fx, fy, dir)
 		} else {

@@ -550,11 +550,12 @@ The moves renderer is responsible for rendering moves, that is, indicating that 
 The style of the move can be changed in the [config/default.json](config/default.json) file (or your own version of 
 that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()` method.
 
-| Name             | Type    | Description                                                |
-|------------------|---------|------------------------------------------------------------|
-| type             | integer | 0 = Dotted, 1 = Arrow                                      |
-| color            | string  | The color of the dots or arrow                             |
-| factor           | float   | The size of the dots or arrow, relative to the square size |
+| Name    | Type    | Description                                                                              |
+|---------|---------|------------------------------------------------------------------------------------------|
+| type    | integer | 0 = Dotted, 1 = Arrow                                                                    |
+| color   | string  | The color of the dots or arrow                                                           |
+| factor  | float   | The size of the dots or arrow, relative to the square size                               |
+| padding | float   | How much space should there be between the arrow and the square border. Can be negative. |
 
 You can add a move by using the method `AddMove()` on the [context](#context) object.
 
@@ -588,3 +589,4 @@ styling to this particular move:
 ## TODO:
 
 * Handle castling better in rendererMoves (MoveStyle.Color1 & 2, split arrow)
+* Padding for knight moves
