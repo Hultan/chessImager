@@ -47,6 +47,7 @@ func TestColors(t *testing.T) {
 	}
 }
 
+// Make sure that the correct color is applied to the style
 func validateColor(s *chessImager.MoveStyle) bool {
 	if s.Color.R == 157 && s.Color.G == 107 && s.Color.B == 94 && s.Color.A == 255 {
 		return true
