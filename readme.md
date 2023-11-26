@@ -3,8 +3,7 @@
 **ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly
 configurable, so that you can create chess board images that look exactly the way you want them to look.
 
-ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s
-repository [chessimage](https://github.com/cjsaylor/chessimage).
+ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s repository [chessimage](https://github.com/cjsaylor/chessimage).
 
 ## Table of Contents
 
@@ -30,6 +29,7 @@ repository [chessimage](https://github.com/cjsaylor/chessimage).
     3. [ImageMap piece renderer](#piece-renderer---image-map-type2)
 10. [Annotations renderer](#annotations-renderer)
 11. [Moves renderer](#moves-renderer)
+    1. [Castling](#castling)
 
 ## Examples:
 
@@ -554,10 +554,11 @@ that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()
 |---------|---------|------------------------------------------------------------------------------------------|
 | type    | integer | 0 = Dotted, 1 = Arrow                                                                    |
 | color   | string  | The color of the dots or arrow                                                           |
+| color2  | string  | The color of the second row of dots or arrow. Used only for castling moves.              |
 | factor  | float   | The size of the dots or arrow, relative to the square size                               |
 | padding | float   | How much space should there be between the arrow and the square border. Can be negative. |
 
-You can add a move by using the method `AddMove()` on the [context](#context) object.
+You can add a move by using the method `AddMove()` on the [context](#context) object, by providing the from square and the to square.
 
 ```go
    imager := chessImager.NewImager()
@@ -568,8 +569,7 @@ You can add a move by using the method `AddMove()` on the [context](#context) ob
    image, _ := imager.RenderEx(fen, ctx)
 ```
 
-Another alternative is to use the method `AddMoveEx()`, that allows you to provide some special
-styling to this particular move:
+Another alternative is to use the method `AddMoveEx()`, that allows you to provide some special styling to this particular move, on top of the from square and the to square:
 
 ```go
    imager := chessImager.NewImager()
@@ -585,8 +585,34 @@ styling to this particular move:
    
    image, _ := imager.RenderEx(fen, ctx)
 ```
+### Castling
+
+To create a castling move, use one of the following eight variations:
+
+```go
+    // White king side castling
+    ctx.AddMoveEx("0-0", "", ms) // or
+    ctx.AddMoveEx("o-o", "", ms)
+
+    // White queen side castling
+    ctx.AddMoveEx("0-0-0", "", ms) // or
+    ctx.AddMoveEx("o-o-o", "", ms)
+
+    // Black king side castling
+    ctx.AddMoveEx("", "0-0", ms) // or
+    ctx.AddMoveEx("", "o-o", ms)
+
+    // Black queen side castling
+    ctx.AddMoveEx("", "0-0-0", ms) // or
+    ctx.AddMoveEx("", "o-o-o", ms)
+```
+
+The color `movestyle.color` is used for the kings arrow or dots, and the color `movestyle.color2` is used for the rooks arrow or dots.
+
+See the [castling example](examples/castling/castling.go) where the following image is generated: 
+
+<img src="examples/castling/castling.png" alt="drawing" width="350"/>
 
 ## TODO:
 
-* Handle castling better in rendererMoves (MoveStyle.Color1 & 2, split arrow)
-* Padding for knight moves
+* Padding for knight moves?

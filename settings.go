@@ -199,6 +199,7 @@ type Move struct {
 // Factor: The size of the square to use (0.5 equals 50% of square size)
 type MoveStyle struct {
 	Color   ColorRGBA `json:"color"`
+	Color2  ColorRGBA `json:"color2"`
 	Type    MoveType  `json:"type"`
 	Factor  float64   `json:"factor"`
 	Padding float64   `json:"padding"`

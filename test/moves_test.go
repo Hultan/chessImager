@@ -78,16 +78,31 @@ func TestMovesRook(t *testing.T) {
 	compareImages(t, filename, &img)
 }
 
-func TestMovesCastling(t *testing.T) {
+func TestMovesCastlingKing(t *testing.T) {
 	filename := "movesCastling.png"
 
 	imager := chessImager.NewImager()
 	ctx := imager.NewContext()
 
-	ctx.AddMove("h1", "f1").AddMove("e1", "g1")
+	ctx.AddMove("0-0", "").AddMove("", "0-0")
 
 	// Render the image
-	const fen = "8/8/8/8/8/8/8/5rk1 b - - 1 25"
+	const fen = "5rk1/8/8/8/8/8/8/5rk1 b - - 1 25"
+	img, _ := imager.RenderEx(fen, ctx)
+
+	compareImages(t, filename, &img)
+}
+
+func TestMovesCastlingQueen(t *testing.T) {
+	filename := "movesCastling2.png"
+
+	imager := chessImager.NewImager()
+	ctx := imager.NewContext()
+
+	ctx.AddMove("0-0-0", "").AddMove("", "0-0-0")
+
+	// Render the image
+	const fen = "2kr4/8/8/8/8/8/8/2kr4 b - - 1 25"
 	img, _ := imager.RenderEx(fen, ctx)
 
 	compareImages(t, filename, &img)

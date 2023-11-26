@@ -94,3 +94,22 @@ const (
 	left leftRight = iota
 	right
 )
+
+type moveStatus int
+
+const (
+	moveStatusNormal moveStatus = iota
+	moveStatusEmpty
+	moveStatusKingSideCastling
+	moveStatusQueenSideCastling
+	moveStatusIllegal = 99
+)
+
+type castlingStatus int
+
+const (
+	whiteKingSideCastling  castlingStatus = iota
+	whiteQueenSideCastling castlingStatus = iota
+	blackKingSideCastling  castlingStatus = iota
+	blackQueenSideCastling castlingStatus = iota
+)

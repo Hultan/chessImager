@@ -77,7 +77,8 @@
   },
   "move_style": {
     "type": 1,
-    "color": "#777777FF",
+    "color": "#32CD32FF",
+    "color2": "#6495EDFF",
     "factor": 0.15,
     "padding": 5
   },
