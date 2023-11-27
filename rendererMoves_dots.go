@@ -66,8 +66,7 @@ func (r *rendererMoves) renderDottedMove(c *gg.Context, style *MoveStyle, move M
 
 func (r *rendererMoves) renderCastlingDottedLine(c *gg.Context, castling castlingStatus, style *MoveStyle) {
 	var kx, ky, rx, ry int
-	var dx, dy = 1, 0
-	var rookMoves = 3
+	var dx, dy, rookMoves = 1, 0, 3
 
 	switch castling {
 	case whiteKingSideCastling:

@@ -78,7 +78,7 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, castling castlingStatus) {
 	var kingPos, rookPos string
 	var dir1, dir2 = directionEast, directionWest
-	var lengthFactor float64 = 1.5
+	var lengthFactor = 1.5
 
 	square := getSquareBox(0, 0)
 	cdy := square.shrink(style.Factor).Width/2 + style.Padding
@@ -100,13 +100,13 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 		cdy *= -1
 	}
 
-	// Castling king
+	// Render king castling arrow
 	king, _ := newAlg(kingPos)
 	styleBox := square.shrink(style.Factor)
 	fx, fy := getSquareBox(king.coords()).center()
 	r.renderArrow(c, square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
-	// Castling rook
+	// Render rook castling arrow
 	c.SetRGBA(style.Color2.toRGBA())
 	rook, _ := newAlg(rookPos)
 	fx, fy = getSquareBox(rook.coords()).center()
@@ -190,14 +190,14 @@ func (r *rendererMoves) getKnightDirection(dx int, dy int) (direction, leftRight
 // For example if rook moves from d1 to d7, the d6 square will be returned
 func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 	// We don't need to check from.status here because it has already
-	// been checked in the draw() function.
+	// been checked in the renderArrowMove() function.
 	from, err := newAlg(move.From)
 	if err != nil {
 		return Rectangle{}, err
 	}
 
 	// We don't need to check to.status here because it has already
-	// been checked in the draw() function.
+	// been checked in the renderArrowMove() function.
 	to, err := newAlg(move.To)
 	if err != nil {
 		return Rectangle{}, err

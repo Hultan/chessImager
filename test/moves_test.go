@@ -12,7 +12,7 @@ func TestMovesDots(t *testing.T) {
 	imager := chessImager.NewImager()
 	ctx := imager.NewContext()
 
-	style, err := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#333333", 0.5)
+	style, err := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#333333", "#333333", 0.5)
 	if err != nil {
 		t.Fatalf("Failed to create a highlight style: %v", err)
 	}
@@ -100,6 +100,44 @@ func TestMovesCastlingQueen(t *testing.T) {
 	ctx := imager.NewContext()
 
 	ctx.AddMove("0-0-0", "").AddMove("", "0-0-0")
+
+	// Render the image
+	const fen = "2kr4/8/8/8/8/8/8/2kr4 b - - 1 25"
+	img, _ := imager.RenderEx(fen, ctx)
+
+	compareImages(t, filename, &img)
+}
+
+func TestMovesCastlingKing_Dots(t *testing.T) {
+	filename := "movesCastlingDots.png"
+
+	imager := chessImager.NewImager()
+	ctx := imager.NewContext()
+
+	style, err := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#33FF33", "#3333FF", 0.2)
+	if err != nil {
+		t.Fatalf("Failed to create a highlight style: %v", err)
+	}
+	ctx.AddMoveEx("0-0", "", style).AddMoveEx("", "0-0", style)
+
+	// Render the image
+	const fen = "5rk1/8/8/8/8/8/8/5rk1 b - - 1 25"
+	img, _ := imager.RenderEx(fen, ctx)
+
+	compareImages(t, filename, &img)
+}
+
+func TestMovesCastlingQueen_Dots(t *testing.T) {
+	filename := "movesCastling2Dots.png"
+
+	imager := chessImager.NewImager()
+	ctx := imager.NewContext()
+
+	style, err := ctx.NewMoveStyle(chessImager.MoveTypeDots, "#33FF33", "#3333FF", 0.2)
+	if err != nil {
+		t.Fatalf("Failed to create a highlight style: %v", err)
+	}
+	ctx.AddMoveEx("0-0-0", "", style).AddMoveEx("", "0-0-0", style)
 
 	// Render the image
 	const fen = "2kr4/8/8/8/8/8/8/2kr4 b - - 1 25"

@@ -99,14 +99,20 @@ func (c *Context) NewAnnotationStyle(pos PositionType, size, fontSize, borderWid
 }
 
 // NewMoveStyle creates a new move style.
-func (c *Context) NewMoveStyle(typ MoveType, color string, factor float64) (*MoveStyle, error) {
+func (c *Context) NewMoveStyle(typ MoveType, color string, color2 string, factor float64) (*MoveStyle, error) {
 	col, err := hexToRGBA(color)
+	if err != nil {
+		return nil, err
+	}
+
+	col2, err := hexToRGBA(color2)
 	if err != nil {
 		return nil, err
 	}
 
 	return &MoveStyle{
 		Color:  ColorRGBA{col},
+		Color2: ColorRGBA{col2},
 		Type:   typ,
 		Factor: factor,
 	}, nil

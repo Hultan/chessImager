@@ -88,6 +88,7 @@ func TestAdvancedExample(t *testing.T) {
 	ms, err := ctx.NewMoveStyle(
 		chessImager.MoveTypeDots, // Move type
 		"#9D6B5EFF",              // Dot color
+		"#9D6B5EFF",              // Dot color 2
 		0.2,                      // Dot size
 	)
 	if err != nil {
