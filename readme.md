@@ -127,7 +127,7 @@ Read more about renderers and their order in the [render order](#render-order) s
    // Create a move style, for the move e1-e7 
    ms, _ := ctx.NewMoveStyle(
       chessImager.MoveTypeDots,           // Move type 
-      "#9D6B5EFF",                        // Dot color
+      "#9D6B5EFF",                        // Dot color 
 	  "#9D6B5EFF",                        // Dot color 2
       0.2,                                // Dot size
    )
@@ -211,7 +211,7 @@ All colors in the settings file can be specified in one of four different ways, 
 If you don't specify the alpha component of the color, FF will be assumed.
 
 ### Configuration - fonts
-If no font is specified in the settings file, the Go Regular TTF font will be used.
+If no font is specified in the settings file, the Go Regular TTF font will be used. This font will be used for annotations and the rank and file decorators. 
 
 The path must point to the TTF font file. Example:
 
