@@ -12,6 +12,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
     2. [Medium](#medium)
     3. [Advanced](#advanced)
     4. [Other](#other)
+    5. [Castling](#castling)
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
@@ -29,7 +30,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
     3. [ImageMap piece renderer](#piece-renderer---image-map-type2)
 10. [Annotations renderer](#annotations-renderer)
 11. [Moves renderer](#moves-renderer)
-    1. [Castling](#castling)
+    1. [Castling](#moves-renderer---castling)
 
 ## Examples:
 
@@ -168,6 +169,28 @@ This code will generate the following image:
 <img src="examples/other/other.png" alt="drawing" width="350"/>
 
 Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
+
+### Castling
+
+In this [example](examples/castling/castling.go) we will look at how to create castling moves. For more information about castling, check out the [castling section](#moves-renderer---castling).
+
+```go
+	// Create a new imager using embedded default.json settings
+   imager := chessImager.NewImager()
+   
+   // Create a new context
+   ctx := imager.NewContext()
+   
+   // Add white king side castling, and black queen side castling
+   ctx.AddMove("0-0", "").AddMove("", "0-0-0")
+   
+   // Render the image
+   const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
+   img, _ := imager.RenderEx(fen, ctx)
+```
+This code will generate the following image:
+
+<img src="examples/castling/castling.png" alt="drawing" width="350"/>
 
 ## Configuration
 
@@ -587,7 +610,7 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
    
    image, _ := imager.RenderEx(fen, ctx)
 ```
-### Castling
+### Moves renderer - Castling
 
 To create a castling move, use one of the following eight variations:
 
