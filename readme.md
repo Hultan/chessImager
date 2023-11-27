@@ -7,7 +7,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 
 ## Table of Contents
 
-1. [Example](#examples)
+1. [Examples](#examples)
     1. [Simple](#simple)
     2. [Medium](#medium)
     3. [Advanced](#advanced)
@@ -612,7 +612,3 @@ The color `movestyle.color` is used for the kings arrow or dots, and the color `
 See the [castling example](examples/castling/castling.go) where the following image is generated: 
 
 <img src="examples/castling/castling.png" alt="drawing" width="350"/>
-
-## TODO:
-
-* Padding for knight moves?
