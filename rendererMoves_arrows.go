@@ -205,20 +205,18 @@ func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 
 	dx, dy := to.x-from.x, to.y-from.y
 
-	if dx == 0 && dy == 0 {
+	switch {
+	case dx == 0 && dy == 0:
 		return Rectangle{}, errors.New("no move") // Ignore no move
-	} else if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
-		// Straight moves
+	case dx == 0 || dy == 0 || abs(dx) == abs(dy): // Straight moves
 		return getSquareBox(to.x-sgn(dx), to.y-sgn(dy)), nil
-	} else if abs(dx) == 1 && abs(dy) == 2 {
-		// Knight move 1
+	case abs(dx) == 1 && abs(dy) == 2: // Knight move 1
 		return getSquareBox(to.x-sgn(dx), to.y), nil
-	} else if abs(dx) == 2 && abs(dy) == 1 {
-		// Knight move 2
+	case abs(dx) == 2 && abs(dy) == 1: // Knight move 2
 		return getSquareBox(to.x, to.y-sgn(dy)), nil
+	default:
+		panic("illegal move")
 	}
-
-	return Rectangle{}, errors.New("invalid move")
 }
 
 func (r *rendererMoves) getDirection(dx int, dy int) direction {
