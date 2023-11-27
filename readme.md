@@ -127,6 +127,7 @@ Read more about renderers and their order in the [render order](#render-order) s
    ms, _ := ctx.NewMoveStyle(
       chessImager.MoveTypeDots,           // Move type 
       "#9D6B5EFF",                        // Dot color
+	  "#9D6B5EFF",                        // Dot color 2
       0.2,                                // Dot size
    )
    
@@ -579,6 +580,7 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
    ms, _ := ctx.NewMoveStyle(
       chessImager.MoveTypeDots, // Move type
       "#9D6B5EFF",              // Dot color
+	  "#9D6B5EFF",              // Dot color 2
       0.2,                      // Dot size
    )
    ctx.AddMoveEx("e7", "c5", ms)
