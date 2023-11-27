@@ -175,14 +175,12 @@ Background chess board image comes from here : https://www.supercoloring.com/pap
 In this [example](examples/castling/castling.go) we will look at how to create castling moves. For more information about castling, check out the [castling section](#moves-renderer---castling).
 
 ```go
-	// Create a new imager using embedded default.json settings
+   // Create a new imager using embedded default.json settings
    imager := chessImager.NewImager()
-   
-   // Create a new context
-   ctx := imager.NewContext()
-   
-   // Add white king side castling, and black queen side castling
-   ctx.AddMove("0-0", "").AddMove("", "0-0-0")
+
+   // Create a new context, and add white king side castling,
+   // and black queen side castling.
+   ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
    
    // Render the image
    const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
@@ -603,7 +601,7 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
    ms, _ := ctx.NewMoveStyle(
       chessImager.MoveTypeDots, // Move type
       "#9D6B5EFF",              // Dot color
-	  "#9D6B5EFF",              // Dot color 2
+      "#9D6B5EFF",              // Dot color 2
       0.2,                      // Dot size
    )
    ctx.AddMoveEx("e7", "c5", ms)
