@@ -26,20 +26,19 @@ func (r *rendererMoves) draw(c *gg.Context) error {
 
 func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 	style := r.getStyle(move)
+	var err error
 
 	switch style.Type {
 	case MoveTypeDots:
-		err := r.renderDottedMove(c, style, move)
-		if err != nil {
-			return err
-		}
+		err = r.renderDottedMove(c, style, move)
 	case MoveTypeArrow:
-		err := r.renderArrowMove(c, style, move)
-		if err != nil {
-			return err
-		}
+		err = r.renderArrowMove(c, style, move)
 	default:
-		return errors.New("illegal move type")
+		err = errors.New("illegal move type")
+	}
+
+	if err != nil {
+		return err
 	}
 
 	return nil

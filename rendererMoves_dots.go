@@ -34,33 +34,41 @@ func (r *rendererMoves) renderDottedMove(c *gg.Context, style *MoveStyle, move M
 	case from.status == moveStatusEmpty && to.status == moveStatusQueenSideCastling:
 		r.renderCastlingDottedLine(c, blackQueenSideCastling, style)
 	case from.status == moveStatusNormal && to.status == moveStatusNormal:
-		fromX, fromY := from.coords()
-		toX, toY := to.coords()
-
-		dx, dy := toX-fromX, toY-fromY
-		if dx == 0 && dy == 0 {
-			return nil // Ignore no move
-		}
-
-		x, y := fromX, fromY
-		if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
-			// Render pawn, rook, bishop, king and queen moves (ie straight moves)
-			d := max(abs(dx), abs(dy))
-			r.renderDottedLine(c, &x, &y, sgn(dx), sgn(dy), d, 0, style)
-		} else {
-			// Knight type move (or other weird illegal move)
-			if abs(dx) > abs(dy) {
-				// abs(dx) > abs(dy) ; vertically first, horizontally second
-				r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), 0, style)
-				r.renderDottedLine(c, &x, &y, sgn(dx), 0, abs(dx), 0, style)
-			} else {
-				// abs(dx) <= abs(dy) ; horizontally first, vertically second
-				r.renderDottedLine(c, &x, &y, sgn(dx), 0, abs(dx), 0, style)
-				r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), 0, style)
-			}
+		err = r.renderNormalDottedMove(c, style, from, to)
+		if err != nil {
+			return err
 		}
 	}
 
+	return nil
+}
+
+func (r *rendererMoves) renderNormalDottedMove(c *gg.Context, style *MoveStyle, from, to alg) error {
+	fromX, fromY := from.coords()
+	toX, toY := to.coords()
+
+	dx, dy := toX-fromX, toY-fromY
+	if dx == 0 && dy == 0 {
+		return nil // Ignore no move
+	}
+
+	x, y := fromX, fromY
+	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
+		// Render pawn, rook, bishop, king and queen moves (ie straight moves)
+		d := max(abs(dx), abs(dy))
+		r.renderDottedLine(c, &x, &y, sgn(dx), sgn(dy), d, 0, style)
+	} else {
+		// Knight type move (or other weird illegal move)
+		if abs(dx) > abs(dy) {
+			// abs(dx) > abs(dy) ; vertically first, horizontally second
+			r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), 0, style)
+			r.renderDottedLine(c, &x, &y, sgn(dx), 0, abs(dx), 0, style)
+		} else {
+			// abs(dx) <= abs(dy) ; horizontally first, vertically second
+			r.renderDottedLine(c, &x, &y, sgn(dx), 0, abs(dx), 0, style)
+			r.renderDottedLine(c, &x, &y, 0, sgn(dy), abs(dy), 0, style)
+		}
+	}
 	return nil
 }
 

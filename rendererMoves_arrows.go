@@ -35,43 +35,50 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 	case from.status == moveStatusEmpty && to.status == moveStatusQueenSideCastling:
 		r.renderCastlingArrow(c, style, blackQueenSideCastling)
 	case from.status == moveStatusNormal && to.status == moveStatusNormal:
-		fromX, fromY := from.coords()
-		toX, toY := to.coords()
-		dx, dy := toX-fromX, toY-fromY
-		if dx == 0 && dy == 0 {
-			return nil // Ignore no move
-		}
-
-		fx, fy := getSquareBox(fromX, fromY).center()
-		rect, err := r.getNextToLast(move)
+		err = r.renderNormalMoveArrow(c, style, move, from, to)
 		if err != nil {
 			return err
 		}
-		styleBox := rect.shrink(style.Factor)
-		tx, ty := rect.center()
-
-		if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
-			// Render pawn, rook, bishop, king and queen moves (ie straight moves)
-			dir := r.getDirection(dx, dy)
-			length := math.Sqrt((tx-fx)*(tx-fx) + (ty-fy)*(ty-fy))
-			if dir%90 != 0 {
-				length += rect.Width*2/3*math.Sqrt(2) - styleBox.Width - style.Padding
-			} else {
-				length += rect.Width/2 - styleBox.Width - style.Padding
-			}
-			r.renderArrow(c, length, styleBox.Width, fx, fy, 0, dir)
-		} else {
-			// Knight type move (or other weird illegal move)
-			dir, rl := r.getKnightDirection(dx, dy)
-			if rl == right {
-				r.renderKnightArrowRight(c, rect.Width, styleBox.Width, fx, fy, dir)
-			} else {
-				r.renderKnightArrowLeft(c, rect.Width, styleBox.Width, fx, fy, dir)
-			}
-		}
-
 	}
 
+	return nil
+}
+
+func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, move Move, from alg, to alg) error {
+	fromX, fromY := from.coords()
+	toX, toY := to.coords()
+	dx, dy := toX-fromX, toY-fromY
+	if dx == 0 && dy == 0 {
+		return nil // Ignore no move
+	}
+
+	fx, fy := getSquareBox(fromX, fromY).center()
+	rect, err := r.getNextToLast(move)
+	if err != nil {
+		return err
+	}
+	styleBox := rect.shrink(style.Factor)
+	tx, ty := rect.center()
+
+	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
+		// Render pawn, rook, bishop, king and queen moves (ie straight moves)
+		dir := r.getDirection(dx, dy)
+		length := math.Sqrt((tx-fx)*(tx-fx) + (ty-fy)*(ty-fy))
+		if dir%90 != 0 {
+			length += rect.Width*2/3*math.Sqrt(2) - styleBox.Width - style.Padding
+		} else {
+			length += rect.Width/2 - styleBox.Width - style.Padding
+		}
+		r.renderArrow(c, length, styleBox.Width, fx, fy, 0, dir)
+	} else {
+		// Knight type move (or other weird illegal move)
+		dir, rl := r.getKnightDirection(dx, dy)
+		if rl == right {
+			r.renderKnightArrowRight(c, rect.Width, styleBox.Width, fx, fy, dir)
+		} else {
+			r.renderKnightArrowLeft(c, rect.Width, styleBox.Width, fx, fy, dir)
+		}
+	}
 	return nil
 }
 
