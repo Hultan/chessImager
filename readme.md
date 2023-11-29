@@ -10,9 +10,6 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 1. [Examples](#examples)
     1. [Simple](#simple)
     2. [Medium](#medium)
-    3. [Advanced](#advanced)
-    4. [Other](#other)
-    5. [Castling](#castling)
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
@@ -31,12 +28,19 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 10. [Annotations renderer](#annotations-renderer)
 11. [Moves renderer](#moves-renderer)
     1. [Castling](#moves-renderer---castling)
+12. [More examples](#more-examples)
+    1. [Advanced](#advanced)
+    2. [Other](#other)
+    3. [Castling](#castling)
+    4. [PGN](#pgn)
 
 ## Examples:
 
 All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
 
 https://www.chess.com/games/view/969971
+
+For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
 
 ### Simple:
 
@@ -57,6 +61,8 @@ save the image to disk, and you have this code:
 This code will generate the following image, using the default styling in [config/default.json](config/default.json):
 
 <img src="examples/simple/simple.png" alt="simple example" width="350"/>
+
+For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
 
 ### Medium:
 
@@ -85,110 +91,7 @@ This would generate the following image:
 
 <img src="examples/medium/medium.png" alt="drawing" width="350"/>
 
-### Advanced:
-
-Let's look at an even more [advanced example](examples/advanced/advanced.go). If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in [config/default.json](config/default.json), you can do that by providing the styles objects manually.
-
-For example, let's change a few things from the medium example:
-
-* the highlight color and style (filled circle). See [Highlight renderer](#highlight-renderer) for more information.
-* the annotation position (top left) and border color. See [Annotation renderer](#annotations-renderer) for more information.
-* the move size and color for the next image. See [Move renderer](#moves-renderer) for more information.
-
-And for fun, lets change the render order too...
-
-Read more about renderers and their order in the [render order](#render-order) section.
-
-```go
-   // Create a new imager using embedded default.json settings
-   imager := chessImager.NewImager()
-   
-   // Set the rendering order
-   _ = imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
-   
-   // Create a new context
-   ctx := imager.NewContext()
-   
-   // Create a highlight style, for the square e7
-   hs, _ := ctx.NewHighlightStyle(
-      chessImager.HighlightFilledCircle, // Highlight type 
-      "#88E57C",                         // Highlight color
-      4,                                 // Highlight cirle width
-      0.9                                // Highlight factor (not used for this Type)        
-   )
-   
-   // Create an annotation style, for the square e7
-   as, _ := ctx.NewAnnotationStyle(
-      chessImager.PositionTopLeft,       // Position top left
-      25, 20, 1,                         // Size, font size, border width
-      "#E8E57C", "#000000", "#FFFFFF",   // Background, font, border color
-   )
-   
-   // Create a move style, for the move e1-e7 
-   ms, _ := ctx.NewMoveStyle(
-      chessImager.MoveTypeDots,           // Move type 
-      "#9D6B5EFF",                        // Dot color 
-	  "#9D6B5EFF",                        // Dot color 2
-      0.2,                                // Dot size
-   )
-   
-   // Highlight the e7 square, annotate e7 as a brilliant move (!!) and
-   // show move e1-e7.
-   ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
-   
-   // Render the image 
-   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   image, _ := imager.RenderEx(fen, ctx)
-```
-
-This code will generate the following image:
-
-<img src="examples/advanced/advanced.png" alt="drawing" width="350"/>
-
-As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
-
-### Other
-
-In this [example](examples/other/other.go) we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the 
-[examples/other/other.json](examples/other/other.json) file, we will also use a board image, [examples/other/chessboard.jpg](examples/other/chessboard.jpg), instead of drawing it manually.
-
-```go
-	// Create a new imager using your custom JSON file
-	imager, _ := chessImager.NewImagerFromPath("examples/other.json")
-
-	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
-	// show move e1-e7. 
-	ctx := imager.NewContext().AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
-
-	// Render the image
-	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img, _ := imager.RenderEx(fen, ctx)
-```
-This code will generate the following image:
-
-<img src="examples/other/other.png" alt="drawing" width="350"/>
-
-Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
-
-### Castling
-
-In this [example](examples/castling/castling.go) we will look at how to create castling moves. For more information about castling, check out the [castling section](#moves-renderer---castling).
-
-```go
-   // Create a new imager using embedded default.json settings
-   imager := chessImager.NewImager()
-
-   // Create a new context, and add white king side castling,
-   // and black queen side castling.
-   ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
-   
-   // Render the image
-   const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
-   img, _ := imager.RenderEx(fen, ctx)
-```
-This code will generate the following image:
-
-<img src="examples/castling/castling.png" alt="drawing" width="350"/>
+For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
 
 ## Configuration
 
@@ -572,13 +475,13 @@ The moves renderer is responsible for rendering moves, that is, indicating that 
 The style of the move can be changed in the [config/default.json](config/default.json) file (or your own version of 
 that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()` method.
 
-| Name    | Type    | Description                                                                              |
-|---------|---------|------------------------------------------------------------------------------------------|
-| type    | integer | 0 = Dotted, 1 = Arrow                                                                    |
-| color   | string  | The color of the dots or arrow                                                           |
-| color2  | string  | The color of the second row of dots or arrow. Used only for castling moves.              |
-| factor  | float   | The size of the dots or arrow, relative to the square size                               |
-| padding | float   | How much space should there be between the arrow and the square border. Can be negative. |
+| Name    | Type    | Description                                                                 |
+|---------|---------|-----------------------------------------------------------------------------|
+| type    | integer | 0 = Dotted, 1 = Arrow                                                       |
+| color   | string  | The color of the dots or arrow                                              |
+| color2  | string  | The color of the second row of dots or arrow. Used only for castling moves. |
+| factor  | float   | The size of the dots or arrow, relative to the square size                  |
+| padding | float   | How much space should there be between the two arrows in castling moves     |
 
 You can add a move by using the method `AddMove()` on the [context](#context) object, by providing the from square and the to square.
 
@@ -635,3 +538,168 @@ The color `movestyle.color` is used for the kings arrow or dots, and the color `
 See the [castling example](examples/castling/castling.go) where the following image is generated: 
 
 <img src="examples/castling/castling.png" alt="drawing" width="350"/>
+
+## More examples
+
+### Advanced:
+
+Let's look at an even more [advanced example](examples/advanced/advanced.go). If you want to add annotations, highlighted squares and moves, using styles other than the ones provided in [config/default.json](config/default.json), you can do that by providing the styles objects manually.
+
+For example, let's change a few things from the medium example:
+
+* the highlight color and style (filled circle). See [Highlight renderer](#highlight-renderer) for more information.
+* the annotation position (top left) and border color. See [Annotation renderer](#annotations-renderer) for more information.
+* the move size and color for the next image. See [Move renderer](#moves-renderer) for more information.
+
+And for fun, lets change the render order too...
+
+Read more about renderers and their order in the [render order](#render-order) section.
+
+```go
+   // Create a new imager using embedded default.json settings
+   imager := chessImager.NewImager()
+   
+   // Set the rendering order
+   _ = imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
+   
+   // Create a new context
+   ctx := imager.NewContext()
+   
+   // Create a highlight style, for the square e7
+   hs, _ := ctx.NewHighlightStyle(
+      chessImager.HighlightFilledCircle, // Highlight type 
+      "#88E57C",                         // Highlight color
+      4,                                 // Highlight cirle width
+      0.9                                // Highlight factor (not used for this Type)        
+   )
+   
+   // Create an annotation style, for the square e7
+   as, _ := ctx.NewAnnotationStyle(
+      chessImager.PositionTopLeft,       // Position top left
+      25, 20, 1,                         // Size, font size, border width
+      "#E8E57C", "#000000", "#FFFFFF",   // Background, font, border color
+   )
+   
+   // Create a move style, for the move e1-e7 
+   ms, _ := ctx.NewMoveStyle(
+      chessImager.MoveTypeDots,           // Move type 
+      "#9D6B5EFF",                        // Dot color 
+	  "#9D6B5EFF",                        // Dot color 2
+      0.2,                                // Dot size
+   )
+   
+   // Highlight the e7 square, annotate e7 as a brilliant move (!!) and
+   // show move e1-e7.
+   ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
+   
+   // Render the image 
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   image, _ := imager.RenderEx(fen, ctx)
+```
+
+This code will generate the following image:
+
+<img src="examples/advanced/advanced.png" alt="drawing" width="350"/>
+
+As you can see, the pieces are now rendered **after** annotations, the annotation lies behind the piece.
+
+### Other
+
+In this [example](examples/other/other.go) we will create our own JSON file and load it using the `NewImagerFromPath()` function. In the
+[examples/other/other.json](examples/other/other.json) file, we will also use a board image, [examples/other/chessboard.jpg](examples/other/chessboard.jpg), instead of drawing it manually.
+
+```go
+	// Create a new imager using your custom JSON file
+	imager, _ := chessImager.NewImagerFromPath("examples/other.json")
+
+	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
+	// show move e1-e7. 
+	ctx := imager.NewContext().AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
+
+	// Render the image
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	img, _ := imager.RenderEx(fen, ctx)
+```
+This code will generate the following image:
+
+<img src="examples/other/other.png" alt="drawing" width="350"/>
+
+Background chess board image comes from here : https://www.supercoloring.com/paper-crafts/printable-green-chess-board-with-pieces-template
+
+### Castling
+
+In this [example](examples/castling/castling.go) we will look at how to create castling moves. For more information about castling, check out the [castling section](#moves-renderer---castling).
+
+```go
+   // Create a new imager using embedded default.json settings
+   imager := chessImager.NewImager()
+
+   // Create a new context, and add white king side castling,
+   // and black queen side castling.
+   ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
+   
+   // Render the image
+   const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
+   img, _ := imager.RenderEx(fen, ctx)
+```
+This code will generate the following image:
+
+<img src="examples/castling/castling.png" alt="drawing" width="350"/>
+
+### PGN
+
+In this [example](examples/pgn/pgn.go) we will read a [PGN file](examples/pgn/game.pgn), and generate a picture for each move. This code can definitely be improved when it comes to handling castling moves better, but for this example it will have to do.
+
+To be able to read and parse a PGN file, we will need the use of a package that can do that for us : [gopkg.in/freeeve/pgn.v1](https://gopkg.in/freeeve/pgn.v1)
+
+```go
+package main
+
+import (
+   "fmt"
+   "image/png"
+   "log"
+   "os"
+
+   "github.com/Hultan/chessImager"
+   "gopkg.in/freeeve/pgn.v1"
+)
+
+func main() {
+   imager := chessImager.NewImager()
+
+   f, err := os.Open("game.pgn")
+   if err != nil {
+      log.Fatal(err)
+   }
+   ps := pgn.NewPGNScanner(f)
+
+   for ps.Next() {
+      game, err := ps.Scan()
+      if err != nil {
+         log.Fatal(err)
+      }
+
+      b := pgn.NewBoard()
+      i := 1
+      for _, move := range game.Moves {
+         _ = b.MakeMove(move)
+
+         ctx := imager.NewContext()
+         ctx.AddMove(move.From.String(), move.To.String()).AddHighlight(move.From.String()).AddHighlight(move.To.String())
+         img, _ := imager.RenderEx(b.String(), ctx)
+
+         file, _ := os.Create(fmt.Sprintf("%d.png", i))
+         _ = png.Encode(file, img)
+         _ = file.Close()
+         i++
+      }
+   }
+}
+```
+This code will generate 85 PNG images, one for each move in the game.
+
+# TODO
+
+* CLI tool
+* PGN file reader

@@ -65,9 +65,9 @@ func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, m
 		dir := r.getDirection(dx, dy)
 		length := math.Sqrt((tx-fx)*(tx-fx) + (ty-fy)*(ty-fy))
 		if dir%90 != 0 {
-			length += rect.Width*2/3*math.Sqrt(2) - styleBox.Width - style.Padding
+			length += rect.Width/2*math.Sqrt(2) - styleBox.Width
 		} else {
-			length += rect.Width/2 - styleBox.Width - style.Padding
+			length += rect.Width/2 - styleBox.Width
 		}
 		r.renderArrow(c, length, styleBox.Width, fx, fy, 0, dir)
 	} else {
