@@ -40,7 +40,6 @@ All the examples below comes from move 25 by **Kasparov**, playing against **Top
 
 https://www.chess.com/games/view/969971
 
-
 For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
 
 ### Simple:
@@ -72,7 +71,6 @@ to create a [context](#context) object, using the `imager.NewContext()` method. 
 so that we can add both the FEN string and [context](#context).
 
 This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
-
 
 ```go
    // Create a new imager using embedded default.json settings
