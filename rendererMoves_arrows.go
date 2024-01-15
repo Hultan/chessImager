@@ -45,14 +45,14 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 }
 
 func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, move Move, from alg, to alg) error {
-	fromX, fromY := from.coords(settings.Board.Default.Inverted)
-	toX, toY := to.coords(settings.Board.Default.Inverted)
+	fromX, fromY := from.coords(r.settings.Board.Default.Inverted)
+	toX, toY := to.coords(r.settings.Board.Default.Inverted)
 	dx, dy := toX-fromX, toY-fromY
 	if dx == 0 && dy == 0 {
 		return nil // Ignore no move
 	}
 
-	fx, fy := settings.getSquareBox(fromX, fromY).center()
+	fx, fy := r.settings.getSquareBox(fromX, fromY).center()
 	rect, err := r.getNextToLast(move)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	var dir1, dir2 = directionEast, directionWest
 	var lengthFactor = 1.5
 
-	square := settings.getSquareBox(0, 0)
+	square := r.settings.getSquareBox(0, 0)
 	cdy := square.shrink(style.Factor).Width/2 + style.Padding
 
 	switch castling {
@@ -110,13 +110,13 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	// Render king castling arrow
 	king, _ := newAlg(kingPos)
 	styleBox := square.shrink(style.Factor)
-	fx, fy := settings.getSquareBox(king.coords(settings.Board.Default.Inverted)).center()
+	fx, fy := r.settings.getSquareBox(king.coords(r.settings.Board.Default.Inverted)).center()
 	r.renderArrow(c, square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
 	// Render rook castling arrow
 	c.SetRGBA(style.Color2.toRGBA())
 	rook, _ := newAlg(rookPos)
-	fx, fy = settings.getSquareBox(rook.coords(settings.Board.Default.Inverted)).center()
+	fx, fy = r.settings.getSquareBox(rook.coords(r.settings.Board.Default.Inverted)).center()
 	r.renderArrow(c, square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
 }
 
@@ -216,11 +216,11 @@ func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 	case dx == 0 && dy == 0:
 		return Rectangle{}, errors.New("no move") // Ignore no move
 	case dx == 0 || dy == 0 || abs(dx) == abs(dy): // Straight moves
-		return settings.getSquareBox(to.x-sgn(dx), to.y-sgn(dy)), nil
+		return r.settings.getSquareBox(to.x-sgn(dx), to.y-sgn(dy)), nil
 	case abs(dx) == 1 && abs(dy) == 2: // Knight move 1
-		return settings.getSquareBox(to.x-sgn(dx), to.y), nil
+		return r.settings.getSquareBox(to.x-sgn(dx), to.y), nil
 	case abs(dx) == 2 && abs(dy) == 1: // Knight move 2
-		return settings.getSquareBox(to.x, to.y-sgn(dy)), nil
+		return r.settings.getSquareBox(to.x, to.y-sgn(dy)), nil
 	default:
 		panic("illegal move")
 	}

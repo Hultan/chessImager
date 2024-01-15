@@ -11,7 +11,7 @@ type rendererBoard struct {
 }
 
 func (r *rendererBoard) draw(c *gg.Context) error {
-	switch settings.Board.Type {
+	switch r.settings.Board.Type {
 	case boardTypeDefault:
 		r.drawDefault(c)
 	case boardTypeImage:
@@ -24,19 +24,19 @@ func (r *rendererBoard) draw(c *gg.Context) error {
 }
 
 func (r *rendererBoard) drawDefault(c *gg.Context) {
-	board := settings.getBoardBox()
+	board := r.settings.getBoardBox()
 
 	// Draw the entire board in the black color
-	c.SetRGBA(settings.Board.Default.Black.toRGBA())
+	c.SetRGBA(r.settings.Board.Default.Black.toRGBA())
 	c.DrawRectangle(board.coords())
 	c.Fill()
 
 	// Draw the white squares, on top of the black board
-	c.SetRGBA(settings.Board.Default.White.toRGBA())
+	c.SetRGBA(r.settings.Board.Default.White.toRGBA())
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {
-				c.DrawRectangle(settings.getSquareBox(x, y).coords())
+				c.DrawRectangle(r.settings.getSquareBox(x, y).coords())
 				c.Fill()
 			}
 		}

@@ -44,8 +44,8 @@ func (r *rendererMoves) renderDottedMove(c *gg.Context, style *MoveStyle, move M
 }
 
 func (r *rendererMoves) renderNormalDottedMove(c *gg.Context, style *MoveStyle, from, to alg) error {
-	fromX, fromY := from.coords(settings.Board.Default.Inverted)
-	toX, toY := to.coords(settings.Board.Default.Inverted)
+	fromX, fromY := from.coords(r.settings.Board.Default.Inverted)
+	toX, toY := to.coords(r.settings.Board.Default.Inverted)
 
 	dx, dy := toX-fromX, toY-fromY
 	if dx == 0 && dy == 0 {
@@ -95,7 +95,7 @@ func (r *rendererMoves) renderCastlingDottedLine(c *gg.Context, castling castlin
 		rookMoves = 4
 	}
 	// Calculate the castling dy
-	cdy := settings.getSquareBox(0, 0).shrink(style.Factor).Width/2 + style.Padding
+	cdy := r.settings.getSquareBox(0, 0).shrink(style.Factor).Width/2 + style.Padding
 
 	c.SetRGBA(style.Color.toRGBA())
 	r.renderDottedLine(c, &kx, &ky, dx, dy, 3, -cdy, style)
@@ -113,7 +113,7 @@ func (r *rendererMoves) renderDottedLine(c *gg.Context, x, y *int, dx, dy, moves
 }
 
 func (r *rendererMoves) renderDotInSquare(c *gg.Context, x, y int, cdy float64, style *MoveStyle) {
-	bb := settings.getSquareBox(x, y).shrink(style.Factor)
+	bb := r.settings.getSquareBox(x, y).shrink(style.Factor)
 	cX, cY := bb.center()
 	c.DrawCircle(cX, cY+cdy, bb.Width/2)
 	c.Fill()

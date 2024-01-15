@@ -25,20 +25,20 @@ type Imager struct {
 	// Used to circumvent a bug in the fogleman/gg package, see
 	// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 	useInternalFont bool
+	settings        *Settings
 }
-
-var settings *Settings
 
 // NewImager creates a new Imager.
 func NewImager() *Imager {
-	settings = loadDefaultSettings()
-	return &Imager{}
+	i := &Imager{}
+	i.settings = loadDefaultSettings()
+	return i
 }
 
 // NewImagerFromPath creates a new Imager using a user-defined JSON file.
 func NewImagerFromPath(path string) (i *Imager, err error) {
 	i = &Imager{}
-	settings, err = loadSettings(path)
+	i.settings, err = loadSettings(path)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (i *Imager) SetOrder(order []int) error {
 		return fmt.Errorf("len(order) must be 7")
 	}
 
-	settings.Order = order
+	i.settings.Order = order
 
 	return nil
 }
@@ -122,11 +122,11 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 		6: &rendererMoves{i},
 	}
 
-	if len(settings.Order) != 7 {
+	if len(i.settings.Order) != 7 {
 		return result, fmt.Errorf("len(order) must be 7")
 	}
 
-	for _, idx := range settings.Order {
+	for _, idx := range i.settings.Order {
 		r := renderers[idx]
 		if r == nil {
 			return result, fmt.Errorf("invalid renderer index : %v", idx)
@@ -140,9 +140,9 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 // getBoardSize returns a rectangle with the size of the board
 // plus the border surrounding it.
 func (i *Imager) getBoardSize() (image.Rectangle, error) {
-	switch settings.Board.Type {
+	switch i.settings.Board.Type {
 	case boardTypeDefault:
-		size := settings.Board.Default.Size + settings.Border.Width*2
+		size := i.settings.Board.Default.Size + i.settings.Border.Width*2
 
 		return image.Rectangle{
 			Max: image.Point{
@@ -154,7 +154,7 @@ func (i *Imager) getBoardSize() (image.Rectangle, error) {
 		return i.boardImage.Bounds(), nil
 
 	default:
-		return image.Rectangle{}, fmt.Errorf("invalid board type : %v", settings.Board.Type)
+		return image.Rectangle{}, fmt.Errorf("invalid board type : %v", i.settings.Board.Type)
 	}
 }
 
@@ -191,30 +191,30 @@ func loadDefaultSettings() *Settings {
 
 // validateSettings validates some of the values in the JSON file
 func (i *Imager) validateSettings() error {
-	if settings.Board.Type == boardTypeImage {
-		if err := tryLoadImage(settings.Board.Image.Path, &i.boardImage); err != nil {
+	if i.settings.Board.Type == boardTypeImage {
+		if err := tryLoadImage(i.settings.Board.Image.Path, &i.boardImage); err != nil {
 			return err
 		}
 	}
 
-	if settings.Pieces.Type == piecesTypeImageMap {
+	if i.settings.Pieces.Type == piecesTypeImageMap {
 		var img image.Image
-		if err := tryLoadImage(settings.Pieces.ImageMap.Path, &img); err != nil {
+		if err := tryLoadImage(i.settings.Pieces.ImageMap.Path, &img); err != nil {
 			return err
 		}
 	}
 
-	if settings.Pieces.Type == piecesTypeImages {
+	if i.settings.Pieces.Type == piecesTypeImages {
 		var img image.Image
-		for _, p := range settings.Pieces.Images.Pieces {
+		for _, p := range i.settings.Pieces.Images.Pieces {
 			if err := tryLoadImage(p.Path, &img); err != nil {
 				return err
 			}
 		}
 	}
 
-	if settings.FontStyle.Path != "" {
-		if err := tryLoadFile(settings.FontStyle.Path); err != nil {
+	if i.settings.FontStyle.Path != "" {
+		if err := tryLoadFile(i.settings.FontStyle.Path); err != nil {
 			return err
 		}
 	}

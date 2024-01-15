@@ -7,12 +7,12 @@ type rendererBorder struct {
 }
 
 func (r *rendererBorder) draw(c *gg.Context) error {
-	if settings.Board.Type == boardTypeImage {
+	if r.settings.Board.Type == boardTypeImage {
 		return nil
 	}
 
 	// Set background color to border color
-	c.SetRGBA(settings.Border.Color.toRGBA())
+	c.SetRGBA(r.settings.Border.Color.toRGBA())
 	c.Clear()
 
 	return nil

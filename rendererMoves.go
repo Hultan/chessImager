@@ -46,7 +46,7 @@ func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
 
 func (r *rendererMoves) getStyle(move Move) *MoveStyle {
 	if move.Style == nil {
-		return &settings.MoveStyle
+		return &r.settings.MoveStyle
 	} else {
 		return move.Style
 	}

@@ -71,9 +71,9 @@ func (r *rendererPiece) draw(c *gg.Context) error {
 	fen := normalizeFEN(r.fen)
 	fens := strings.Split(fen, "/")
 
-	var inv = settings.Board.Default.Inverted
-	if settings.Board.Type == boardTypeImage {
-		inv = settings.Board.Image.Inverted
+	var inv = r.settings.Board.Default.Inverted
+	if r.settings.Board.Type == boardTypeImage {
+		inv = r.settings.Board.Image.Inverted
 	}
 
 	for rank, row := range fens {
@@ -90,7 +90,7 @@ func (r *rendererPiece) draw(c *gg.Context) error {
 func (r *rendererPiece) loadPieces() error {
 	pieces = make(map[chessPiece]image.Image, 12)
 
-	switch settings.Pieces.Type {
+	switch r.settings.Pieces.Type {
 	case piecesTypeDefault:
 		imageMap, _, err := image.Decode(bytes.NewReader(defaultPieces))
 		if err != nil {
@@ -101,7 +101,7 @@ func (r *rendererPiece) loadPieces() error {
 			return err
 		}
 	case piecesTypeImages:
-		for _, piece := range settings.Pieces.Images.Pieces {
+		for _, piece := range r.settings.Pieces.Images.Pieces {
 			f, err := os.Open(piece.Path)
 			if err != nil {
 				return err
@@ -114,7 +114,7 @@ func (r *rendererPiece) loadPieces() error {
 			pieces[pieceMap[strings.ToUpper(piece.Piece)]] = r.resize(img)
 		}
 	case piecesTypeImageMap:
-		f, err := os.Open(settings.Pieces.ImageMap.Path)
+		f, err := os.Open(r.settings.Pieces.ImageMap.Path)
 		if err != nil {
 			return err
 		}
@@ -122,7 +122,7 @@ func (r *rendererPiece) loadPieces() error {
 		if err != nil {
 			return err
 		}
-		pr := r.createPieceRectangleSlice(settings.Pieces.ImageMap.Pieces)
+		pr := r.createPieceRectangleSlice(r.settings.Pieces.ImageMap.Pieces)
 		err = r.loadImageMapPieces(imageMap, pr)
 		if err != nil {
 			return err
@@ -155,14 +155,14 @@ func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) [
 }
 
 func (r *rendererPiece) resize(img image.Image) image.Image {
-	board := settings.getBoardBox()
-	pieceSize := uint(board.Width * settings.Pieces.Factor / 8)
+	board := r.settings.getBoardBox()
+	pieceSize := uint(board.Width * r.settings.Pieces.Factor / 8)
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }
 
 func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int, inv bool) (image.Image, int, int) {
-	board := settings.getBoardBox()
-	box := settings.getSquareBox(x, y)
+	board := r.settings.getBoardBox()
+	box := r.settings.getSquareBox(x, y)
 	diff := (int(box.Width) - img.Bounds().Size().Y) / 2
 
 	if inv {

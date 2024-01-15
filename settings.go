@@ -213,10 +213,10 @@ type FontStyle struct {
 }
 
 func (s Settings) getBoardBox() Rectangle {
-	switch settings.Board.Type {
+	switch s.Board.Type {
 	case boardTypeDefault:
-		border := float64(settings.Border.Width)
-		size := float64(settings.Board.Default.Size)
+		border := float64(s.Border.Width)
+		size := float64(s.Board.Default.Size)
 
 		return Rectangle{
 			X:      border,
@@ -225,7 +225,7 @@ func (s Settings) getBoardBox() Rectangle {
 			Height: size,
 		}
 	case boardTypeImage:
-		return settings.Board.Image.Rect
+		return s.Board.Image.Rect
 	default:
 		panic("invalid board type")
 	}
@@ -236,9 +236,9 @@ func (s Settings) getSquareBox(x, y int) Rectangle {
 	square := board.Width / 8
 
 	var dx, dy float64
-	switch settings.Board.Type {
+	switch s.Board.Type {
 	case boardTypeDefault:
-		border := float64(settings.Border.Width)
+		border := float64(s.Border.Width)
 		dx, dy = border, border
 	case boardTypeImage:
 		dx, dy = board.X, board.Y

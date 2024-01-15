@@ -21,34 +21,34 @@ type RankFile struct {
 
 func (r *rendererRankAndFile) draw(c *gg.Context) error {
 	// If Board.Type is BoardTypeImage then we should not draw ranks and files
-	if settings.Board.Type == boardTypeImage {
+	if r.settings.Board.Type == boardTypeImage {
 		return nil
 	}
 
 	// If the user has chosen to not render rank and file, then return
-	if settings.RankAndFile.Type == rankAndFileTypeNone {
+	if r.settings.RankAndFile.Type == rankAndFileTypeNone {
 		return nil
 	}
 
 	// Don't bother drawing ranks and files when to border is too thin
-	border := float64(settings.Border.Width)
+	border := float64(r.settings.Border.Width)
 	if border < borderLimit {
 		return nil
 	}
 
-	fontSize := settings.RankAndFile.FontSize
-	c.SetRGBA(settings.RankAndFile.FontColor.toRGBA())
-	err := r.setFontFace(settings.FontStyle.Path, c, fontSize)
+	fontSize := r.settings.RankAndFile.FontSize
+	c.SetRGBA(r.settings.RankAndFile.FontColor.toRGBA())
+	err := r.setFontFace(r.settings.FontStyle.Path, c, fontSize)
 	if err != nil {
 		return err
 	}
 
-	switch settings.RankAndFile.Type {
+	switch r.settings.RankAndFile.Type {
 	case rankAndFileTypeInBorder:
 		r.drawRanksAndFiles(c, 0, 0)
 	case rankAndFileTypeInSquares:
 		const padding = 3
-		square := float64(settings.getBoardBox().Width) / 8
+		square := float64(r.settings.getBoardBox().Width) / 8
 		diff := (square - float64(fontSize) - padding) / 2
 		r.drawRanksAndFiles(c, diff, diff)
 	default:
@@ -86,19 +86,19 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 	for i := 0; i < 8; i++ {
 		// Ranks
 		text := r.getRankText(i)
-		if settings.RankAndFile.Type == rankAndFileTypeInBorder {
+		if r.settings.RankAndFile.Type == rankAndFileTypeInBorder {
 			box = r.getRankBox(i)
 		} else {
-			box = settings.getSquareBox(0, i)
+			box = r.settings.getSquareBox(0, i)
 		}
 		rf = append(rf, RankFile{box: box, text: text, typ: rank})
 
 		// Files
 		text = r.getFileText(i)
-		if settings.RankAndFile.Type == rankAndFileTypeInBorder {
+		if r.settings.RankAndFile.Type == rankAndFileTypeInBorder {
 			box = r.getFileBox(i)
 		} else {
-			box = settings.getSquareBox(i, 0)
+			box = r.settings.getSquareBox(i, 0)
 		}
 		rf = append(rf, RankFile{box: box, text: text, typ: file})
 	}
@@ -107,7 +107,7 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 }
 
 func (r *rendererRankAndFile) getRankText(n int) string {
-	if settings.Board.Default.Inverted {
+	if r.settings.Board.Default.Inverted {
 		return fmt.Sprintf("%d", 8-n)
 	} else {
 		return fmt.Sprintf("%d", n+1)
@@ -115,7 +115,7 @@ func (r *rendererRankAndFile) getRankText(n int) string {
 }
 
 func (r *rendererRankAndFile) getFileText(n int) string {
-	if settings.Board.Default.Inverted {
+	if r.settings.Board.Default.Inverted {
 		return fmt.Sprintf("%c", 'H'-n)
 	} else {
 		return fmt.Sprintf("%c", 'A'+n)
@@ -123,8 +123,8 @@ func (r *rendererRankAndFile) getFileText(n int) string {
 }
 
 func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
-	square := float64(settings.getBoardBox().Width) / 8
-	border := float64(settings.Border.Width)
+	square := float64(r.settings.getBoardBox().Width) / 8
+	border := float64(r.settings.Border.Width)
 
 	return Rectangle{
 		X:      0,
@@ -135,8 +135,8 @@ func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
 }
 
 func (r *rendererRankAndFile) getFileBox(file int) Rectangle {
-	square := float64(settings.getBoardBox().Width) / 8
-	border := float64(settings.Border.Width)
+	square := float64(r.settings.getBoardBox().Width) / 8
+	border := float64(r.settings.Border.Width)
 
 	return Rectangle{
 		X:      border + float64(file)*square,

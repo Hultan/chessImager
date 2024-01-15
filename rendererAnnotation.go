@@ -32,7 +32,7 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 
 		// Draw annotation text
 		c.SetRGBA(style.FontColor.toRGBA())
-		err = r.setFontFace(settings.FontStyle.Path, c, r.getStyle(annotation).FontSize)
+		err = r.setFontFace(r.settings.FontStyle.Path, c, r.getStyle(annotation).FontSize)
 		if err != nil {
 			return err
 		}
@@ -51,7 +51,7 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rect
 		return Rectangle{}, err
 	}
 
-	rect := settings.getSquareBox(a.coords(settings.Board.Default.Inverted))
+	rect := r.settings.getSquareBox(a.coords(r.settings.Board.Default.Inverted))
 	style := r.getStyle(annotation)
 	size := float64(style.Size)
 	space := 2.0
@@ -99,7 +99,7 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rect
 
 func (r *rendererAnnotation) getStyle(annotation Annotation) *AnnotationStyle {
 	if annotation.Style == nil {
-		return &settings.AnnotationStyle
+		return &r.settings.AnnotationStyle
 	} else {
 		return annotation.Style
 	}
