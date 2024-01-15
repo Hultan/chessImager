@@ -10,12 +10,12 @@ import (
 func (r *rendererMoves) renderDottedMove(c *gg.Context, style *MoveStyle, move Move) error {
 	c.SetRGBA(style.Color.toRGBA())
 
-	from, err := newAlg(move.From)
+	from, err := newAlg(move.From, r.settings)
 	if err != nil {
 		return err
 	}
 
-	to, err := newAlg(move.To)
+	to, err := newAlg(move.To, r.settings)
 	if err != nil {
 		return err
 	}
@@ -44,8 +44,8 @@ func (r *rendererMoves) renderDottedMove(c *gg.Context, style *MoveStyle, move M
 }
 
 func (r *rendererMoves) renderNormalDottedMove(c *gg.Context, style *MoveStyle, from, to alg) error {
-	fromX, fromY := from.coords(r.settings.Board.Default.Inverted)
-	toX, toY := to.coords(r.settings.Board.Default.Inverted)
+	fromX, fromY := from.coords()
+	toX, toY := to.coords()
 
 	dx, dy := toX-fromX, toY-fromY
 	if dx == 0 && dy == 0 {

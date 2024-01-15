@@ -11,12 +11,12 @@ import (
 func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Move) error {
 	c.SetRGBA(style.Color.toRGBA())
 
-	from, err := newAlg(move.From)
+	from, err := newAlg(move.From, r.settings)
 	if err != nil {
 		return err
 	}
 
-	to, err := newAlg(move.To)
+	to, err := newAlg(move.To, r.settings)
 	if err != nil {
 		return err
 	}
@@ -45,8 +45,8 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 }
 
 func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, move Move, from alg, to alg) error {
-	fromX, fromY := from.coords(r.settings.Board.Default.Inverted)
-	toX, toY := to.coords(r.settings.Board.Default.Inverted)
+	fromX, fromY := from.coords()
+	toX, toY := to.coords()
 	dx, dy := toX-fromX, toY-fromY
 	if dx == 0 && dy == 0 {
 		return nil // Ignore no move
@@ -108,15 +108,15 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	}
 
 	// Render king castling arrow
-	king, _ := newAlg(kingPos)
+	king, _ := newAlg(kingPos, r.settings)
 	styleBox := square.shrink(style.Factor)
-	fx, fy := r.settings.getSquareBox(king.coords(r.settings.Board.Default.Inverted)).center()
+	fx, fy := r.settings.getSquareBox(king.coords()).center()
 	r.renderArrow(c, square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
 	// Render rook castling arrow
 	c.SetRGBA(style.Color2.toRGBA())
-	rook, _ := newAlg(rookPos)
-	fx, fy = r.settings.getSquareBox(rook.coords(r.settings.Board.Default.Inverted)).center()
+	rook, _ := newAlg(rookPos, r.settings)
+	fx, fy = r.settings.getSquareBox(rook.coords()).center()
 	r.renderArrow(c, square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
 }
 
@@ -198,14 +198,14 @@ func (r *rendererMoves) getKnightDirection(dx int, dy int) (direction, leftRight
 func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 	// We don't need to check from.status here because it has already
 	// been checked in the renderArrowMove() function.
-	from, err := newAlg(move.From)
+	from, err := newAlg(move.From, r.settings)
 	if err != nil {
 		return Rectangle{}, err
 	}
 
 	// We don't need to check to.status here because it has already
 	// been checked in the renderArrowMove() function.
-	to, err := newAlg(move.To)
+	to, err := newAlg(move.To, r.settings)
 	if err != nil {
 		return Rectangle{}, err
 	}

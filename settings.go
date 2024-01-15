@@ -212,7 +212,7 @@ type FontStyle struct {
 	Path string `json:"path"`
 }
 
-func (s Settings) getBoardBox() Rectangle {
+func (s *Settings) getBoardBox() Rectangle {
 	switch s.Board.Type {
 	case boardTypeDefault:
 		border := float64(s.Border.Width)
@@ -231,7 +231,7 @@ func (s Settings) getBoardBox() Rectangle {
 	}
 }
 
-func (s Settings) getSquareBox(x, y int) Rectangle {
+func (s *Settings) getSquareBox(x, y int) Rectangle {
 	board := s.getBoardBox()
 	square := board.Width / 8
 

@@ -46,12 +46,12 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 }
 
 func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rectangle, error) {
-	a, err := newAlg(annotation.Square)
+	a, err := newAlg(annotation.Square, r.settings)
 	if err != nil {
 		return Rectangle{}, err
 	}
 
-	rect := r.settings.getSquareBox(a.coords(r.settings.Board.Default.Inverted))
+	rect := r.settings.getSquareBox(a.coords())
 	style := r.getStyle(annotation)
 	size := float64(style.Size)
 	space := 2.0

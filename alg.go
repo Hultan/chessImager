@@ -9,8 +9,9 @@ import (
 type alg struct {
 	pos string
 
-	x, y   int
-	status moveStatus
+	x, y     int
+	status   moveStatus
+	settings *Settings
 }
 
 var algs = map[string]alg{
@@ -23,7 +24,7 @@ var algs = map[string]alg{
 
 // newAlg calculates coordinates (0-7),(0-7) from a chess position string, like "C5".
 // It also handles special cases, like castling and empty strings.
-func newAlg(s string) (alg, error) {
+func newAlg(s string, settings *Settings) (alg, error) {
 	s = strings.ToLower(s)
 
 	fixedAlg, ok := algs[s]
@@ -33,7 +34,7 @@ func newAlg(s string) (alg, error) {
 	}
 
 	// Check illegal moves
-	a := alg{pos: s, status: moveStatusIllegal}
+	a := alg{pos: s, status: moveStatusIllegal, settings: settings}
 	if len(s) != 2 {
 		return a, errors.New("invalid length of alg")
 	} else if s[0] < 'a' || s[0] > 'h' {
@@ -50,13 +51,13 @@ func newAlg(s string) (alg, error) {
 	return a, nil
 }
 
-func (a alg) coords(inverted bool) (int, int) {
+func (a alg) coords() (int, int) {
 	if a.status != moveStatusNormal {
 		// ok to panic here, it's an internal struct
 		panic("not a normal move, check status field")
 	}
 
-	if inverted {
+	if a.settings.Board.Default.Inverted {
 		return invert(a.x), invert(a.y)
 	}
 	return a.x, a.y
