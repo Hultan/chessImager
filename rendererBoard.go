@@ -24,7 +24,7 @@ func (r *rendererBoard) draw(c *gg.Context) error {
 }
 
 func (r *rendererBoard) drawDefault(c *gg.Context) {
-	board := getBoardBox()
+	board := settings.getBoardBox()
 
 	// Draw the entire board in the black color
 	c.SetRGBA(settings.Board.Default.Black.toRGBA())
@@ -36,7 +36,7 @@ func (r *rendererBoard) drawDefault(c *gg.Context) {
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {
-				c.DrawRectangle(getSquareBox(x, y).coords())
+				c.DrawRectangle(settings.getSquareBox(x, y).coords())
 				c.Fill()
 			}
 		}

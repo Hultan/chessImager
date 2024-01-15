@@ -95,7 +95,7 @@ func (r *rendererMoves) renderCastlingDottedLine(c *gg.Context, castling castlin
 		rookMoves = 4
 	}
 	// Calculate the castling dy
-	cdy := getSquareBox(0, 0).shrink(style.Factor).Width/2 + style.Padding
+	cdy := settings.getSquareBox(0, 0).shrink(style.Factor).Width/2 + style.Padding
 
 	c.SetRGBA(style.Color.toRGBA())
 	r.renderDottedLine(c, &kx, &ky, dx, dy, 3, -cdy, style)
@@ -113,7 +113,7 @@ func (r *rendererMoves) renderDottedLine(c *gg.Context, x, y *int, dx, dy, moves
 }
 
 func (r *rendererMoves) renderDotInSquare(c *gg.Context, x, y int, cdy float64, style *MoveStyle) {
-	bb := getSquareBox(x, y).shrink(style.Factor)
+	bb := settings.getSquareBox(x, y).shrink(style.Factor)
 	cX, cY := bb.center()
 	c.DrawCircle(cX, cY+cdy, bb.Width/2)
 	c.Fill()

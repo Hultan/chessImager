@@ -155,14 +155,14 @@ func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) [
 }
 
 func (r *rendererPiece) resize(img image.Image) image.Image {
-	board := getBoardBox()
+	board := settings.getBoardBox()
 	pieceSize := uint(board.Width * settings.Pieces.Factor / 8)
 	return resize.Resize(pieceSize, pieceSize, img, resize.Lanczos3)
 }
 
 func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int, inv bool) (image.Image, int, int) {
-	board := getBoardBox()
-	box := getSquareBox(x, y)
+	board := settings.getBoardBox()
+	box := settings.getSquareBox(x, y)
 	diff := (int(box.Width) - img.Bounds().Size().Y) / 2
 
 	if inv {
