@@ -44,5 +44,5 @@ func (r *rendererBoard) drawDefault(c *gg.Context) {
 }
 
 func (r *rendererBoard) drawImage(c *gg.Context) {
-	c.DrawImage(boardImage, 0, 0)
+	c.DrawImage(r.boardImage, 0, 0)
 }

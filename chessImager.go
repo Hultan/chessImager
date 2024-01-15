@@ -15,12 +15,12 @@ import (
 var defaultSettings string
 
 type Imager struct {
-	fen string
-	ctx *Context
+	fen        string
+	ctx        *Context
+	boardImage image.Image
 }
 
 var settings *Settings
-var boardImage image.Image
 
 // Used to circumvent a bug in the fogleman/gg package, see
 // SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
@@ -34,18 +34,17 @@ func NewImager() *Imager {
 
 // NewImagerFromPath creates a new Imager using a user-defined JSON file.
 func NewImagerFromPath(path string) (i *Imager, err error) {
+	i = &Imager{}
 	settings, err = loadSettings(path)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = validateSettings(); err != nil {
+	if err = i.validateSettings(); err != nil {
 		return nil, err
 	}
 
-	i = &Imager{}
-
-	return
+	return i, nil
 }
 
 // Render renders an image of a chess board based on a FEN string.
@@ -149,7 +148,7 @@ func (i *Imager) getBoardSize() (image.Rectangle, error) {
 			},
 		}, nil
 	case boardTypeImage:
-		return boardImage.Bounds(), nil
+		return i.boardImage.Bounds(), nil
 
 	default:
 		return image.Rectangle{}, fmt.Errorf("invalid board type : %v", settings.Board.Type)
@@ -188,9 +187,9 @@ func loadDefaultSettings() *Settings {
 }
 
 // validateSettings validates some of the values in the JSON file
-func validateSettings() error {
+func (i *Imager) validateSettings() error {
 	if settings.Board.Type == boardTypeImage {
-		if err := tryLoadImage(settings.Board.Image.Path, &boardImage); err != nil {
+		if err := tryLoadImage(settings.Board.Image.Path, &i.boardImage); err != nil {
 			return err
 		}
 	}
