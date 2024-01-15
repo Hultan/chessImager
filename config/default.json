@@ -14,7 +14,7 @@
     },
     "image": {
       "inverted": false,
-      "path": "/home/per/temp/chessboard.jpg",
+      "path": "./test/data/chessboard.jpg",
       "rect": {"x": 32,"y": 96, "width": 276,"height": 276}
     }
   },
@@ -28,22 +28,22 @@
     "type":0,
     "images": {
       "pieces": [
-        {"piece":"wp", "path":"/home/per/code/chessImager/test/data/wp.png"},
-        {"piece":"wb", "path":"/home/per/code/chessImager/test/data/wb.png"},
-        {"piece":"wn", "path":"/home/per/code/chessImager/test/data/wn.png"},
-        {"piece":"wr", "path":"/home/per/code/chessImager/test/data/wr.png"},
-        {"piece":"wq", "path":"/home/per/code/chessImager/test/data/wq.png"},
-        {"piece":"wk", "path":"/home/per/code/chessImager/test/data/wk.png"},
-        {"piece":"bp", "path":"/home/per/code/chessImager/test/data/bp.png"},
-        {"piece":"bb", "path":"/home/per/code/chessImager/test/data/bb.png"},
-        {"piece":"bn", "path":"/home/per/code/chessImager/test/data/bn.png"},
-        {"piece":"br", "path":"/home/per/code/chessImager/test/data/br.png"},
-        {"piece":"bq", "path":"/home/per/code/chessImager/test/data/bq.png"},
-        {"piece":"bk", "path":"/home/per/code/chessImager/test/data/bk.png"}
+        {"piece":"wp", "path":"./test/data/wp.png"},
+        {"piece":"wb", "path":"./test/data/wb.png"},
+        {"piece":"wn", "path":"./test/data/wn.png"},
+        {"piece":"wr", "path":"./test/data/wr.png"},
+        {"piece":"wq", "path":"./test/data/wq.png"},
+        {"piece":"wk", "path":"./test/data/wk.png"},
+        {"piece":"bp", "path":"./test/data/bp.png"},
+        {"piece":"bb", "path":"./test/data/bb.png"},
+        {"piece":"bn", "path":"./test/data/bn.png"},
+        {"piece":"br", "path":"./test/data/br.png"},
+        {"piece":"bq", "path":"./test/data/bq.png"},
+        {"piece":"bk", "path":"./test/data/bk.png"}
       ]
     },
     "image_map": {
-      "path": "/home/per/code/chessImager/test/data/pieces_colorful.png",
+      "path": "./test/data/pieces_colorful.png",
       "pieces": [
         {"piece":"WP","rect":{"x": 0,"y": 896,"width": 128,"height": 128}},
         {"piece":"WN","rect":{"x": 128,"y": 896,"width": 128,"height": 128}},
