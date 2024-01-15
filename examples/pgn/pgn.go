@@ -13,7 +13,7 @@ import (
 func main() {
 	imager := chessImager.NewImager()
 
-	f, err := os.Open("game.pgn")
+	f, err := os.Open("./game.pgn")
 	if err != nil {
 		log.Fatal(err)
 	}
