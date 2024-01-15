@@ -20,7 +20,7 @@ func (r *rendererHighlight) draw(c *gg.Context) error {
 		if err != nil {
 			return err
 		}
-		b := getSquareBox(a.coords())
+		b := getSquareBox(a.coords(settings.Board.Default.Inverted))
 
 		style := r.getStyle(high)
 		c.SetRGBA(style.Color.toRGBA())

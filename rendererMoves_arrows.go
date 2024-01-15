@@ -45,8 +45,8 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 }
 
 func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, move Move, from alg, to alg) error {
-	fromX, fromY := from.coords()
-	toX, toY := to.coords()
+	fromX, fromY := from.coords(settings.Board.Default.Inverted)
+	toX, toY := to.coords(settings.Board.Default.Inverted)
 	dx, dy := toX-fromX, toY-fromY
 	if dx == 0 && dy == 0 {
 		return nil // Ignore no move
@@ -110,13 +110,13 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	// Render king castling arrow
 	king, _ := newAlg(kingPos)
 	styleBox := square.shrink(style.Factor)
-	fx, fy := getSquareBox(king.coords()).center()
+	fx, fy := getSquareBox(king.coords(settings.Board.Default.Inverted)).center()
 	r.renderArrow(c, square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
 	// Render rook castling arrow
 	c.SetRGBA(style.Color2.toRGBA())
 	rook, _ := newAlg(rookPos)
-	fx, fy = getSquareBox(rook.coords()).center()
+	fx, fy = getSquareBox(rook.coords(settings.Board.Default.Inverted)).center()
 	r.renderArrow(c, square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
 }
 

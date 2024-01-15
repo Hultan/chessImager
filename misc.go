@@ -4,13 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"image/color"
-	"log"
 	"strings"
 
 	"github.com/fogleman/gg"
-	"github.com/golang/freetype/truetype"
-	"golang.org/x/image/font/gofont/goregular"
-
 	"golang.org/x/exp/constraints"
 )
 
@@ -106,27 +102,4 @@ func getSquareBox(x, y int) Rectangle {
 		Width:  square,
 		Height: square,
 	}
-}
-
-func setFontFace(c *gg.Context, size int) error {
-	if settings.FontStyle.Path == "" {
-		// Use standard font
-		font, err := truetype.Parse(goregular.TTF)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		face := truetype.NewFace(font, &truetype.Options{Size: float64(size)})
-		c.SetFontFace(face)
-		useInternalFont = true
-	} else {
-		// Load font specified in config file
-		err := c.LoadFontFace(settings.FontStyle.Path, float64(size))
-		if err != nil {
-			return fmt.Errorf("failed to load font face : %v", err)
-		}
-		useInternalFont = false
-	}
-
-	return nil
 }

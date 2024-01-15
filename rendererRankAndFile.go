@@ -38,7 +38,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context) error {
 
 	fontSize := settings.RankAndFile.FontSize
 	c.SetRGBA(settings.RankAndFile.FontColor.toRGBA())
-	err := setFontFace(c, fontSize)
+	err := r.setFontFace(settings.FontStyle.Path, c, fontSize)
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 	rfBoxes := r.getRFBoxes()
 
 	var diff float64
-	if useInternalFont {
+	if r.useInternalFont {
 		diff -= 2
 	}
 

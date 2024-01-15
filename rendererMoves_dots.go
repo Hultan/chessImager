@@ -44,8 +44,8 @@ func (r *rendererMoves) renderDottedMove(c *gg.Context, style *MoveStyle, move M
 }
 
 func (r *rendererMoves) renderNormalDottedMove(c *gg.Context, style *MoveStyle, from, to alg) error {
-	fromX, fromY := from.coords()
-	toX, toY := to.coords()
+	fromX, fromY := from.coords(settings.Board.Default.Inverted)
+	toX, toY := to.coords(settings.Board.Default.Inverted)
 
 	dx, dy := toX-fromX, toY-fromY
 	if dx == 0 && dy == 0 {

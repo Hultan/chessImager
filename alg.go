@@ -50,13 +50,13 @@ func newAlg(s string) (alg, error) {
 	return a, nil
 }
 
-func (a alg) coords() (int, int) {
+func (a alg) coords(inverted bool) (int, int) {
 	if a.status != moveStatusNormal {
 		// ok to panic here, it's an internal struct
 		panic("not a normal move, check status field")
 	}
 
-	if settings.Board.Default.Inverted {
+	if inverted {
 		return invert(a.x), invert(a.y)
 	}
 	return a.x, a.y

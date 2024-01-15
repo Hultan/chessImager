@@ -32,11 +32,11 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 
 		// Draw annotation text
 		c.SetRGBA(style.FontColor.toRGBA())
-		err = setFontFace(c, r.getStyle(annotation).FontSize)
+		err = r.setFontFace(settings.FontStyle.Path, c, r.getStyle(annotation).FontSize)
 		if err != nil {
 			return err
 		}
-		if useInternalFont {
+		if r.useInternalFont {
 			y -= 3 // SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 		}
 		c.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
@@ -51,7 +51,7 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rect
 		return Rectangle{}, err
 	}
 
-	rect := getSquareBox(a.coords())
+	rect := getSquareBox(a.coords(settings.Board.Default.Inverted))
 	style := r.getStyle(annotation)
 	size := float64(style.Size)
 	space := 2.0

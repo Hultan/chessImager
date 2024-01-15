@@ -5,10 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"log"
 	"os"
 	"strings"
 
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font/gofont/goregular"
 )
 
 //go:embed config/default.json
@@ -18,13 +21,13 @@ type Imager struct {
 	fen        string
 	ctx        *Context
 	boardImage image.Image
+
+	// Used to circumvent a bug in the fogleman/gg package, see
+	// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
+	useInternalFont bool
 }
 
 var settings *Settings
-
-// Used to circumvent a bug in the fogleman/gg package, see
-// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
-var useInternalFont = true
 
 // NewImager creates a new Imager.
 func NewImager() *Imager {
@@ -243,6 +246,29 @@ func tryLoadFile(path string) error {
 		return fmt.Errorf("failed to file (%s) : %v", path, err)
 	}
 	defer f.Close()
+
+	return nil
+}
+
+func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
+	if path == "" {
+		// Use standard font
+		font, err := truetype.Parse(goregular.TTF)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		face := truetype.NewFace(font, &truetype.Options{Size: float64(size)})
+		c.SetFontFace(face)
+		i.useInternalFont = true
+	} else {
+		// Load font specified in config file
+		err := c.LoadFontFace(path, float64(size))
+		if err != nil {
+			return fmt.Errorf("failed to load font face : %v", err)
+		}
+		i.useInternalFont = false
+	}
 
 	return nil
 }
