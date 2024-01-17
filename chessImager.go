@@ -160,37 +160,6 @@ func (i *Imager) getBoardSize() (image.Rectangle, error) {
 	}
 }
 
-// loadSettings loads the settings from a json file
-// Path : The path to load the settings from.
-func loadSettings(path string) (*Settings, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	s := &Settings{}
-	err = json.NewDecoder(f).Decode(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return s, nil
-}
-
-// loadDefaultSettings loads the embedded default settings
-func loadDefaultSettings() *Settings {
-	r := strings.NewReader(defaultSettings)
-
-	s := &Settings{}
-	// Ok to panic here, the embedded settings should always be correct
-	err := json.NewDecoder(r).Decode(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return s
-}
-
 // validateSettings validates some of the values in the JSON file
 func (i *Imager) validateSettings() error {
 	if i.settings.Board.Type == boardTypeImage {
@@ -224,6 +193,60 @@ func (i *Imager) validateSettings() error {
 	return nil
 }
 
+func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
+	if path == "" {
+		// Use standard font
+		font, err := truetype.Parse(goregular.TTF)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		face := truetype.NewFace(font, &truetype.Options{Size: float64(size)})
+		c.SetFontFace(face)
+		i.useInternalFont = true
+	} else {
+		// Load font specified in config file
+		err := c.LoadFontFace(path, float64(size))
+		if err != nil {
+			return fmt.Errorf("failed to load font face : %v", err)
+		}
+		i.useInternalFont = false
+	}
+
+	return nil
+}
+
+// loadSettings loads the settings from a json file
+// Path : The path to load the settings from.
+func loadSettings(path string) (*Settings, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	s := &Settings{}
+	err = json.NewDecoder(f).Decode(s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s, nil
+}
+
+// loadDefaultSettings loads the embedded default settings
+func loadDefaultSettings() *Settings {
+	r := strings.NewReader(defaultSettings)
+
+	s := &Settings{}
+	// Ok to panic here, the embedded settings should always be correct
+	err := json.NewDecoder(r).Decode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return s
+}
+
 // tryLoadImage tries to load the specified image, makes sure it exists,
 // and is an image.
 func tryLoadImage(path string, img *image.Image) error {
@@ -248,29 +271,6 @@ func tryLoadFile(path string) error {
 		return fmt.Errorf("failed to file (%s) : %v", path, err)
 	}
 	defer f.Close()
-
-	return nil
-}
-
-func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
-	if path == "" {
-		// Use standard font
-		font, err := truetype.Parse(goregular.TTF)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		face := truetype.NewFace(font, &truetype.Options{Size: float64(size)})
-		c.SetFontFace(face)
-		i.useInternalFont = true
-	} else {
-		// Load font specified in config file
-		err := c.LoadFontFace(path, float64(size))
-		if err != nil {
-			return fmt.Errorf("failed to load font face : %v", err)
-		}
-		i.useInternalFont = false
-	}
 
 	return nil
 }
