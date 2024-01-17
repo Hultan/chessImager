@@ -10,6 +10,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 1. [Examples](#examples)
     1. [Simple](#simple)
     2. [Medium](#medium)
+2. [The Basics](#the-basics)
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
@@ -92,6 +93,20 @@ This would generate the following image:
 <img src="examples/medium/medium.png" alt="drawing" width="350"/>
 
 For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
+
+## The Basics
+
+Start by creating an **Imager** struct by calling the **NewImager()** function. With this object, you can render simple 
+chess board images from a **FEN** string by using the **Imager.Render()** method.
+
+If you want to create more advanced images with move arrows, highlighted squares or annotations, you'll need a 
+**Context** object. You can create that by using the **imager.NewContext()** method. Add all the moves, highlighted 
+squares and annotations to the **context** object, and then call the **Imager.RenderEx()** method, and send in the 
+**Context** object to that method. 
+
+The purpose of the **Context** struct is that you create one **Imager** object at the beginning of your code, and then 
+one **Context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
+discard the **Context** object, but keep the **Imager** object.
 
 ## Configuration
 
