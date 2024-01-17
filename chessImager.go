@@ -54,7 +54,7 @@ func (i *Imager) Render(fen string) (image.Image, error) {
 	return i.RenderEx(ctx)
 }
 
-// RenderEx renders an image of a chess board based on a FEN string and an image context.
+// RenderEx renders an image of a chess board based on an image context.
 func (i *Imager) RenderEx(ctx *ImageContext) (image.Image, error) {
 	var err error
 

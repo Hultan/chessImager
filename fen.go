@@ -29,7 +29,7 @@ func validateFen(fen string) bool {
 		return false
 	}
 
-	// We only care about the first section (board section) of the fen string.
+	// We only care about the first section (board section) of the FEN string.
 	items := strings.Split(fens[0], "/")
 	if len(items) != 8 {
 		return false

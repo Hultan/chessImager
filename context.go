@@ -4,8 +4,8 @@ import "fmt"
 
 //
 // ImageContext is used for advanced chess images
-// (images that includes highlighted squares,
-// annotations and/or moves)
+// (images that includes a FEN string and optionally
+// highlighted squares, annotations and/or moves.
 //
 
 type ImageContext struct {
@@ -18,7 +18,7 @@ type ImageContext struct {
 // SetFEN adds a FEN string to the ImageContext object
 func (c *ImageContext) SetFEN(fen string) error {
 	if !validateFen(fen) {
-		return fmt.Errorf("invalid fen : %v", fen)
+		return fmt.Errorf("invalid FEN : %v", fen)
 	}
 
 	c.fen = fen
