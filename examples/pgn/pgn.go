@@ -30,9 +30,8 @@ func main() {
 		for _, move := range game.Moves {
 			_ = b.MakeMove(move)
 
-			ctx := imager.NewContext()
+			ctx := imager.NewContextWithFEN(b.String())
 			ctx.AddMove(move.From.String(), move.To.String()).AddHighlight(move.From.String()).AddHighlight(move.To.String())
-			_ = ctx.SetFEN(b.String())
 
 			img, _ := imager.RenderEx(ctx)
 

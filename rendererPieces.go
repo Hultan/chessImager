@@ -68,7 +68,7 @@ func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
 
 	// FEN is validated before rendering starts,
 	// so it should be OK here.
-	fen := normalizeFEN(ctx.fen)
+	fen := normalizeFEN(ctx.Fen)
 	fens := strings.Split(fen, "/")
 
 	var inv = r.settings.Board.Default.Inverted

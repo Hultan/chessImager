@@ -50,7 +50,7 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 
 // Render renders an image of a chess board based on a FEN string.
 func (i *Imager) Render(fen string) (image.Image, error) {
-	ctx := &ImageContext{fen: fen}
+	ctx := &ImageContext{Fen: fen}
 	return i.RenderEx(ctx)
 }
 
@@ -79,11 +79,20 @@ func (i *Imager) RenderEx(ctx *ImageContext) (image.Image, error) {
 }
 
 // NewContext creates a new image context, which can be used to:
+// * Add the FEN string
 // * Add highlighted squares
 // * Add annotations
 // * Add moves
 func (i *Imager) NewContext() *ImageContext {
 	return &ImageContext{}
+}
+
+// NewContextWithFEN creates a new image context with a FEN string set, which can be used to:
+// * Add highlighted squares
+// * Add annotations
+// * Add moves
+func (i *Imager) NewContextWithFEN(fen string) *ImageContext {
+	return &ImageContext{Fen: fen}
 }
 
 // SetOrder can be used to set the render order.

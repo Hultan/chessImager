@@ -13,9 +13,7 @@ func main() {
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
 	// show move e1-e7.
-	ctx := imager.NewContext().AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
-
-	_ = ctx.SetFEN("b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25")
+	ctx := imager.NewContextWithFEN("b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25").AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
 	// Render the image
 	img, _ := imager.RenderEx(ctx)

@@ -9,7 +9,7 @@ import "fmt"
 //
 
 type ImageContext struct {
-	fen         string
+	Fen         string
 	Highlight   []HighlightedSquare
 	Moves       []Move
 	Annotations []Annotation
@@ -21,7 +21,7 @@ func (c *ImageContext) SetFEN(fen string) error {
 		return fmt.Errorf("invalid FEN : %v", fen)
 	}
 
-	c.fen = fen
+	c.Fen = fen
 	return nil
 }
 
