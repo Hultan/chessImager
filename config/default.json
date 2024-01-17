@@ -43,7 +43,7 @@
       ]
     },
     "image_map": {
-      "path": "./test/data/pieces_colorful.png",
+      "path": "test/data/pieces_colorful.png",
       "pieces": [
         {"piece":"WP","rect":{"x": 0,"y": 896,"width": 128,"height": 128}},
         {"piece":"WN","rect":{"x": 128,"y": 896,"width": 128,"height": 128}},

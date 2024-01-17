@@ -1,4 +1,4 @@
-package test
+package chessImager
 
 import (
 	"image"
@@ -8,7 +8,7 @@ import (
 )
 
 func compareImages(t *testing.T, filename string, img *image.Image) {
-	ok, err := compareFiles(img, "valid/"+filename)
+	ok, err := compareFiles(img, "test/valid/"+filename)
 	if err != nil {
 		t.Fatalf("error during compare : %v", err)
 	}

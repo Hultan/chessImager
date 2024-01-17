@@ -8,7 +8,7 @@
     "type": 1,
     "image": {
       "inverted": true,
-      "path": "./data/chessboard.jpg",
+      "path": "./test/data/chessboard.jpg",
       "rect": {"x": 32,"y": 96, "width": 276,"height": 276}
     }
   },
