@@ -15,9 +15,10 @@ func main() {
 	// and black queen side castling.
 	ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
 
+	_ = ctx.SetFEN("2kr4/8/8/8/8/8/8/5RK1 b - - 1 25")
+
 	// Render the image
-	const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
-	img, _ := imager.RenderEx(fen, ctx)
+	img, _ := imager.RenderEx(ctx)
 
 	// Save the image to a file
 	file, _ := os.Create("examples/castling/castling.png")

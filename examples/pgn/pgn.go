@@ -32,7 +32,9 @@ func main() {
 
 			ctx := imager.NewContext()
 			ctx.AddMove(move.From.String(), move.To.String()).AddHighlight(move.From.String()).AddHighlight(move.To.String())
-			img, _ := imager.RenderEx(b.String(), ctx)
+			_ = ctx.SetFEN(b.String())
+
+			img, _ := imager.RenderEx(ctx)
 
 			file, _ := os.Create(fmt.Sprintf("%d.png", i))
 			_ = png.Encode(file, img)

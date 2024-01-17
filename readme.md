@@ -69,9 +69,7 @@ For more examples, see the section [more examples](#more-examples) last in this 
 
 Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need 
 to create a [ImageContext](#image-context) object, using the `imager.NewContext()` method. We also need to use the 
-`imager.
-RenderEx()` method 
-so that we can add both the FEN string and [ImageContext](#image-context).
+`imager.RenderEx()` method so that we can provide the [ImageContext](#image-context).
 
 This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
 
@@ -86,9 +84,11 @@ This example also uses the styles that are defined in the [config/default.json](
    // show move e1-e7 using the styles specified in default.json.
    ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
    
-   // Render image
    const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   image, _ := imager.RenderEx(fen, ctx)
+   _ = ctx.SetFEN(fen)
+
+   // Render image
+   image, _ := imager.RenderEx(ctx)
 ```
 This would generate the following image:
 
@@ -103,8 +103,8 @@ chess board images from a **FEN** string by using the **Imager.Render()** method
 
 If you want to create more advanced images with move arrows, highlighted squares or annotations, you'll need a 
 **Context** object. You can create that by using the **imager.NewContext()** method. Add all the moves, highlighted 
-squares and annotations to the **context** object, and then call the **Imager.RenderEx()** method, and send in the 
-**Context** object to that method. 
+squares, annotations and the FEN string to the **context** object, and then call the **Imager.RenderEx()** method, and 
+provide the **Context** object to that method. 
 
 The purpose of the **Context** struct is that you create one **Imager** object at the beginning of your code, and then 
 one **Context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
@@ -329,8 +329,10 @@ style that is specified in the currently used JSON file:
 
    ctx := imager.NewContext()
    ctx.AddHighlight("e7")
+   
+   _ = ctx.SetFEN(fen)
 
-   image := imager.RenderEx(fen, ctx)
+   image := imager.RenderEx(ctx)
 ```
 
 Another alternative is to use the method `AddHighlightEx()`, that allows you to provide some special
@@ -343,7 +345,9 @@ styling to this specific square:
    hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0, 0)
    ctx.AddHighlightEx("e7", hs)
    
-   image := imager.RenderEx(fen, ctx)
+   _ = ctx.SetFEN(fen)
+   
+   image := imager.RenderEx(ctx)
 ```
 
 ## Piece renderer
@@ -468,8 +472,10 @@ You can add an annotation by using the method `AddAnnotation()` on the [ImageCon
 
    ctx := imager.NewContext()
    ctx.AddAnnotation("e7", "!!")
+   
+   _ = ctx.SetFEN(fen)
 
-   image, _ := imager.RenderEx(fen, ctx)
+   image, _ := imager.RenderEx(ctx)
 ```
 
 Another alternative is to use the method `AddAnnotationEx()`, that allows you to provide some special
@@ -484,7 +490,10 @@ styling to this specific square:
       "E8E57C", "000000", "FFFFFF",
    )
    ctx.AddAnnotationEx("e7", "11", as)
-   image, _ := imager.RenderEx(fen, ctx)
+
+   _ = ctx.SetFEN(fen)
+
+   image, _ := imager.RenderEx(ctx)
 ```
 
 ## Moves renderer
@@ -511,7 +520,9 @@ square and the to square.
    ctx := imager.NewContext()
    ctx.AddMove("e7", "c5")
 
-   image, _ := imager.RenderEx(fen, ctx)
+   _ = ctx.SetFEN(fen)
+   
+   image, _ := imager.RenderEx(ctx)
 ```
 
 Another alternative is to use the method `AddMoveEx()`, that allows you to provide some special styling to this particular move, on top of the from square and the to square:
@@ -528,8 +539,10 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
       0.2,                      // Dot size
    )
    ctx.AddMoveEx("e7", "c5", ms)
+
+   _ = ctx.SetFEN(fen)
    
-   image, _ := imager.RenderEx(fen, ctx)
+   image, _ := imager.RenderEx(ctx)
 ```
 ### Moves renderer - Castling
 
@@ -612,9 +625,11 @@ Read more about renderers and their order in the [render order](#render-order) s
    // show move e1-e7.
    ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
    
-   // Render the image 
    const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   image, _ := imager.RenderEx(fen, ctx)
+   _ = ctx.SetFEN(fen)
+   
+   // Render the image 
+   image, _ := imager.RenderEx(ctx)
 ```
 
 This code will generate the following image:
@@ -636,9 +651,11 @@ In this [example](examples/other/other.go) we will create our own JSON file and 
 	// show move e1-e7. 
 	ctx := imager.NewContext().AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
-	// Render the image
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img, _ := imager.RenderEx(fen, ctx)
+    _ = ctx.SetFEN(fen)
+
+	// Render the image
+	img, _ := imager.RenderEx(ctx)
 ```
 This code will generate the following image:
 
@@ -658,9 +675,11 @@ In this [example](examples/castling/castling.go) we will look at how to create c
    // and black queen side castling.
    ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
    
-   // Render the image
    const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
-   img, _ := imager.RenderEx(fen, ctx)
+   _ = ctx.SetFEN(fen)
+
+   // Render the image
+   img, _ := imager.RenderEx(ctx)
 ```
 This code will generate the following image:
 
@@ -707,7 +726,8 @@ func main() {
 
          ctx := imager.NewContext()
          ctx.AddMove(move.From.String(), move.To.String()).AddHighlight(move.From.String()).AddHighlight(move.To.String())
-         img, _ := imager.RenderEx(b.String(), ctx)
+		  _ = ctx.SetFEN(b.String())
+         img, _ := imager.RenderEx(ctx)
 
          file, _ := os.Create(fmt.Sprintf("%d.png", i))
          _ = png.Encode(file, img)
@@ -718,8 +738,3 @@ func main() {
 }
 ```
 This code will generate 85 PNG images, one for each move in the game.
-
-# TODO
-
-* CLI tool
-* PGN file reader

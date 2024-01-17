@@ -19,7 +19,6 @@ var defaultSettings string
 
 // Imager is the main struct that is used to create chess board images
 type Imager struct {
-	fen        string
 	ctx        *ImageContext
 	boardImage image.Image
 
@@ -53,18 +52,14 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 
 // Render renders an image of a chess board based on a FEN string.
 func (i *Imager) Render(fen string) (image.Image, error) {
-	return i.RenderEx(fen, nil)
+	ctx := &ImageContext{fen: fen}
+	return i.RenderEx(ctx)
 }
 
 // RenderEx renders an image of a chess board based on a FEN string and an image context.
-func (i *Imager) RenderEx(fen string, ctx *ImageContext) (image.Image, error) {
+func (i *Imager) RenderEx(ctx *ImageContext) (image.Image, error) {
 	var err error
 
-	if !validateFen(fen) {
-		return nil, fmt.Errorf("invalid fen : %v", fen)
-	}
-
-	i.fen = fen
 	i.ctx = ctx
 	size, err := i.getBoardSize()
 	if err != nil {

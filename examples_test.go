@@ -33,9 +33,11 @@ func TestMediumExample(t *testing.T) {
 	// Show move e1-e7
 	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
-	// Render the image
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img, err := imager.RenderEx(fen, ctx)
+	_ = ctx.SetFEN(fen)
+
+	// Render the image
+	img, err := imager.RenderEx(ctx)
 	if err != nil {
 		t.Fatalf("failed to render : %v", err)
 	}
@@ -97,9 +99,11 @@ func TestAdvancedExample(t *testing.T) {
 	// show move e1-e7.
 	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
 
-	// Render the image
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img, err := imager.RenderEx(fen, ctx)
+	_ = ctx.SetFEN(fen)
+
+	// Render the image
+	img, err := imager.RenderEx(ctx)
 	if err != nil {
 		t.Fatalf("failed to render : %v", err)
 	}
@@ -126,9 +130,11 @@ func TestOtherExample(t *testing.T) {
 	// show move e1-e7.
 	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
-	// Render the image
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img, err := imager.RenderEx(fen, ctx)
+	_ = ctx.SetFEN(fen)
+
+	// Render the image
+	img, err := imager.RenderEx(ctx)
 	if err != nil {
 		t.Fatalf("failed to render : %v", err)
 	}

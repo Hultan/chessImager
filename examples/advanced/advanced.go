@@ -44,9 +44,10 @@ func main() {
 	// show move e1-e7.
 	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
 
+	_ = ctx.SetFEN("b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25")
+
 	// Render the image
-	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	img, err := imager.RenderEx(fen, ctx)
+	img, err := imager.RenderEx(ctx)
 	if err != nil {
 		panic(err)
 	}
