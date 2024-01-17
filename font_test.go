@@ -1,15 +1,13 @@
-package test
+package chessImager
 
 import (
 	"testing"
-
-	"github.com/Hultan/chessImager"
 )
 
 func TestFontStandard(t *testing.T) {
 	filename := "fontStandard.png"
 
-	imager, err := chessImager.NewImagerFromPath("data/fontStandard.json")
+	imager, err := NewImagerFromPath("test/data/fontStandard.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
 	}
@@ -27,7 +25,7 @@ func TestFontStandard(t *testing.T) {
 func TestFontRoboto(t *testing.T) {
 	filename := "fontRoboto.png"
 
-	imager, err := chessImager.NewImagerFromPath("data/fontRoboto.json")
+	imager, err := NewImagerFromPath("test/data/fontRoboto.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
 	}

@@ -43,6 +43,6 @@
     "factor": 0.3
   },
   "font_style": {
-    "path" : "data/roboto.ttf"
+    "path" : "test/data/roboto.ttf"
   }
 }
