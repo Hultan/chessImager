@@ -10,11 +10,11 @@ type rendererMoves struct {
 	*Imager
 }
 
-func (r *rendererMoves) draw(c *gg.Context) error {
-	if r.ctx == nil {
+func (r *rendererMoves) draw(c *gg.Context, ctx *ImageContext) error {
+	if ctx == nil {
 		return nil
 	}
-	for _, move := range r.ctx.Moves {
+	for _, move := range ctx.Moves {
 		err := r.renderMove(c, move)
 		if err != nil {
 			return err

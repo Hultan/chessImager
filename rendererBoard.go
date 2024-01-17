@@ -10,7 +10,7 @@ type rendererBoard struct {
 	*Imager
 }
 
-func (r *rendererBoard) draw(c *gg.Context) error {
+func (r *rendererBoard) draw(c *gg.Context, _ *ImageContext) error {
 	switch r.settings.Board.Type {
 	case boardTypeDefault:
 		r.drawDefault(c)

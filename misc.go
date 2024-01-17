@@ -11,7 +11,7 @@ import (
 )
 
 type renderer interface {
-	draw(*gg.Context) error
+	draw(*gg.Context, *ImageContext) error
 }
 
 // hexToRGBA converts a hex string to a color

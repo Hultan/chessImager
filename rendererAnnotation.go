@@ -10,11 +10,11 @@ type rendererAnnotation struct {
 	*Imager
 }
 
-func (r *rendererAnnotation) draw(c *gg.Context) error {
-	if r.ctx == nil {
+func (r *rendererAnnotation) draw(c *gg.Context, ctx *ImageContext) error {
+	if ctx == nil {
 		return nil
 	}
-	for _, annotation := range r.ctx.Annotations {
+	for _, annotation := range ctx.Annotations {
 		rect, err := r.getAnnotationRectangle(annotation)
 		if err != nil {
 			return err

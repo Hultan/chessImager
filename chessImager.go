@@ -19,13 +19,11 @@ var defaultSettings string
 
 // Imager is the main struct that is used to create chess board images
 type Imager struct {
-	ctx        *ImageContext
-	boardImage image.Image
-
 	// Used to circumvent a bug in the fogleman/gg package, see
 	// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 	useInternalFont bool
 	settings        *Settings
+	boardImage      image.Image
 }
 
 // NewImager creates a new Imager.
@@ -60,7 +58,6 @@ func (i *Imager) Render(fen string) (image.Image, error) {
 func (i *Imager) RenderEx(ctx *ImageContext) (image.Image, error) {
 	var err error
 
-	i.ctx = ctx
 	size, err := i.getBoardSize()
 	if err != nil {
 		return nil, err
@@ -72,7 +69,7 @@ func (i *Imager) RenderEx(ctx *ImageContext) (image.Image, error) {
 		return nil, err
 	}
 	for _, rend := range r {
-		err = rend.draw(c)
+		err = rend.draw(c, ctx)
 		if err != nil {
 			return nil, err
 		}

@@ -60,7 +60,7 @@ type SubImager interface {
 	SubImage(r image.Rectangle) image.Image
 }
 
-func (r *rendererPiece) draw(c *gg.Context) error {
+func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
 	err := r.loadPieces()
 	if err != nil {
 		return err
@@ -68,7 +68,7 @@ func (r *rendererPiece) draw(c *gg.Context) error {
 
 	// FEN is validated before rendering starts,
 	// so it should be OK here.
-	fen := normalizeFEN(r.ctx.fen)
+	fen := normalizeFEN(ctx.fen)
 	fens := strings.Split(fen, "/")
 
 	var inv = r.settings.Board.Default.Inverted

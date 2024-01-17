@@ -6,7 +6,7 @@ type rendererBorder struct {
 	*Imager
 }
 
-func (r *rendererBorder) draw(c *gg.Context) error {
+func (r *rendererBorder) draw(c *gg.Context, _ *ImageContext) error {
 	if r.settings.Board.Type == boardTypeImage {
 		return nil
 	}

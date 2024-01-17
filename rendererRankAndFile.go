@@ -19,7 +19,7 @@ type RankFile struct {
 	text string
 }
 
-func (r *rendererRankAndFile) draw(c *gg.Context) error {
+func (r *rendererRankAndFile) draw(c *gg.Context, _ *ImageContext) error {
 	// If Board.Type is BoardTypeImage then we should not draw ranks and files
 	if r.settings.Board.Type == boardTypeImage {
 		return nil

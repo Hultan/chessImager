@@ -10,12 +10,12 @@ type rendererHighlight struct {
 	*Imager
 }
 
-func (r *rendererHighlight) draw(c *gg.Context) error {
-	if r.ctx == nil {
+func (r *rendererHighlight) draw(c *gg.Context, ctx *ImageContext) error {
+	if ctx == nil {
 		return nil
 	}
 
-	for _, high := range r.ctx.Highlight {
+	for _, high := range ctx.Highlight {
 		a, err := newAlg(high.Square, r.settings.Board.Default.Inverted)
 		if err != nil {
 			return err
