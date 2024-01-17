@@ -78,15 +78,13 @@ This example also uses the styles that are defined in the [config/default.json](
    imager := chessImager.NewImager()
    
    // Create a new image context
-   ctx := imager.NewContext()
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   ctx := imager.NewContextWithFEN(fen)
    
    // Highlight square e7, annotate square e7 with "!!" and
    // show move e1-e7 using the styles specified in default.json.
    ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
    
-   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   _ = ctx.SetFEN(fen)
-
    // Render image
    image, _ := imager.RenderEx(ctx)
 ```
@@ -327,11 +325,9 @@ style that is specified in the currently used JSON file:
 ```go
    imager := chessImager.NewImager()
 
-   ctx := imager.NewContext()
+   ctx := imager.NewContextWithFEN(fen)
    ctx.AddHighlight("e7")
    
-   _ = ctx.SetFEN(fen)
-
    image := imager.RenderEx(ctx)
 ```
 
@@ -341,12 +337,10 @@ styling to this specific square:
 ```go
    imager := chessImager.NewImager()
    
-   ctx := imager.NewContext()
+   ctx := imager.NewContextWithFEN(fen)
    hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0, 0)
    ctx.AddHighlightEx("e7", hs)
-   
-   _ = ctx.SetFEN(fen)
-   
+      
    image := imager.RenderEx(ctx)
 ```
 
@@ -470,11 +464,9 @@ You can add an annotation by using the method `AddAnnotation()` on the [ImageCon
 ```go
    imager := chessImager.NewImager()
 
-   ctx := imager.NewContext()
+   ctx := imager.NewContextWithFEN(fen)
    ctx.AddAnnotation("e7", "!!")
    
-   _ = ctx.SetFEN(fen)
-
    image, _ := imager.RenderEx(ctx)
 ```
 
@@ -483,15 +475,13 @@ styling to this specific square:
 
 ```go
    imager := chessImager.NewImager()
-   ctx := imager.NewContext()
+   ctx := imager.NewContextWithFEN(fen)
    as, _ := ctx.NewAnnotationStyle(
       chessImager.PositionTopLeft,
       25, 20, 1,
       "E8E57C", "000000", "FFFFFF",
    )
    ctx.AddAnnotationEx("e7", "11", as)
-
-   _ = ctx.SetFEN(fen)
 
    image, _ := imager.RenderEx(ctx)
 ```
@@ -517,11 +507,9 @@ square and the to square.
 ```go
    imager := chessImager.NewImager()
 
-   ctx := imager.NewContext()
+   ctx := imager.NewContextWithFEN(fen)
    ctx.AddMove("e7", "c5")
 
-   _ = ctx.SetFEN(fen)
-   
    image, _ := imager.RenderEx(ctx)
 ```
 
@@ -529,7 +517,7 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
 
 ```go
    imager := chessImager.NewImager()
-   ctx := imager.NewContext()
+   ctx := imager.NewContextWithFEN(fen)
    
    // Create a move style, for the move e7-c5
    ms, _ := ctx.NewMoveStyle(
@@ -539,8 +527,6 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
       0.2,                      // Dot size
    )
    ctx.AddMoveEx("e7", "c5", ms)
-
-   _ = ctx.SetFEN(fen)
    
    image, _ := imager.RenderEx(ctx)
 ```
@@ -596,7 +582,8 @@ Read more about renderers and their order in the [render order](#render-order) s
    _ = imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
    
    // Create a new image context
-   ctx := imager.NewContext()
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   ctx := imager.NewContextWithFEN(fen)
    
    // Create a highlight style, for the square e7
    hs, _ := ctx.NewHighlightStyle(
@@ -625,9 +612,6 @@ Read more about renderers and their order in the [render order](#render-order) s
    // show move e1-e7.
    ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
    
-   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   _ = ctx.SetFEN(fen)
-   
    // Render the image 
    image, _ := imager.RenderEx(ctx)
 ```
@@ -649,10 +633,8 @@ In this [example](examples/other/other.go) we will create our own JSON file and 
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
 	// show move e1-e7. 
-	ctx := imager.NewContext().AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
-
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-    _ = ctx.SetFEN(fen)
+	ctx := imager.NewContextWithFEN(fen).AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
 	// Render the image
 	img, _ := imager.RenderEx(ctx)
@@ -673,11 +655,9 @@ In this [example](examples/castling/castling.go) we will look at how to create c
 
    // Create a new image context, and add white king side castling,
    // and black queen side castling.
-   ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
-   
    const fen = "2kr4/8/8/8/8/8/8/5RK1 b - - 1 25"
-   _ = ctx.SetFEN(fen)
-
+   ctx := imager.NewContextWithFEN(fen).AddMove("0-0", "").AddMove("", "0-0-0")
+   
    // Render the image
    img, _ := imager.RenderEx(ctx)
 ```
@@ -724,9 +704,9 @@ func main() {
       for _, move := range game.Moves {
          _ = b.MakeMove(move)
 
-         ctx := imager.NewContext()
+         ctx := imager.NewContextWithFEN(b.String())
          ctx.AddMove(move.From.String(), move.To.String()).AddHighlight(move.From.String()).AddHighlight(move.To.String())
-		  _ = ctx.SetFEN(b.String())
+		  
          img, _ := imager.RenderEx(ctx)
 
          file, _ := os.Create(fmt.Sprintf("%d.png", i))
