@@ -17,9 +17,10 @@ import (
 //go:embed config/default.json
 var defaultSettings string
 
+// Imager is the main struct that is used to create chess board images
 type Imager struct {
 	fen        string
-	ctx        *Context
+	ctx        *ImageContext
 	boardImage image.Image
 
 	// Used to circumvent a bug in the fogleman/gg package, see
@@ -55,8 +56,8 @@ func (i *Imager) Render(fen string) (image.Image, error) {
 	return i.RenderEx(fen, nil)
 }
 
-// RenderEx renders an image of a chess board based on a FEN string and a context.
-func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
+// RenderEx renders an image of a chess board based on a FEN string and an image context.
+func (i *Imager) RenderEx(fen string, ctx *ImageContext) (image.Image, error) {
 	var err error
 
 	if !validateFen(fen) {
@@ -85,12 +86,12 @@ func (i *Imager) RenderEx(fen string, ctx *Context) (image.Image, error) {
 	return c.Image(), nil
 }
 
-// NewContext creates a new context, which can be used to:
+// NewContext creates a new image context, which can be used to:
 // * Add highlighted squares
 // * Add annotations
 // * Add moves
-func (i *Imager) NewContext() *Context {
-	return &Context{}
+func (i *Imager) NewContext() *ImageContext {
+	return &ImageContext{}
 }
 
 // SetOrder can be used to set the render order.

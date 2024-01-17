@@ -11,7 +11,7 @@ func main() {
 	// Create a new imager using embedded default.json settings
 	imager := chessImager.NewImager()
 
-	// Create a new context
+	// Create a new image context
 	ctx := imager.NewContext()
 
 	// Highlight square e7

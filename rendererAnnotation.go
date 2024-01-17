@@ -46,7 +46,7 @@ func (r *rendererAnnotation) draw(c *gg.Context) error {
 }
 
 func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rectangle, error) {
-	a, err := newAlg(annotation.Square, r.settings)
+	a, err := newAlg(annotation.Square, r.settings.Board.Default.Inverted)
 	if err != nil {
 		return Rectangle{}, err
 	}

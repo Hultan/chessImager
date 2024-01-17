@@ -27,7 +27,7 @@ func TestMediumExample(t *testing.T) {
 	// Create a new imager using embedded default.json settings
 	imager := chessImager.NewImager()
 
-	// Create a new context
+	// Create a new image context
 	ctx := imager.NewContext()
 
 	// Highlight square e7
@@ -60,7 +60,7 @@ func TestAdvancedExample(t *testing.T) {
 		t.Fatalf("failed to set rendering order : %v", err)
 	}
 
-	// Create a new context
+	// Create a new image context
 	ctx := imager.NewContext()
 
 	// Create a highlight style, for the square e7
@@ -121,7 +121,7 @@ func TestOtherExample(t *testing.T) {
 		t.Fatalf("failed to create imager : %v", err)
 	}
 
-	// Create a new context
+	// Create a new image context
 	ctx := imager.NewContext()
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and

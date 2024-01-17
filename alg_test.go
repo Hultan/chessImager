@@ -40,7 +40,7 @@ func Test_newAlg(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := newAlg(tt.args.s)
+			got, err := newAlg(tt.args.s, false)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("newAlg() error = %v, wantErr %v", err, tt.wantErr)
 				return

@@ -11,7 +11,7 @@ func main() {
 	// Create a new imager using embedded default.json settings
 	imager := chessImager.NewImager()
 
-	// Create a new context, and add white king side castling,
+	// Create a new image context, and add white king side castling,
 	// and black queen side castling.
 	ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
 

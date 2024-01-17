@@ -14,7 +14,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
-3. [Context](#context)
+3. [Image Context](#image-context)
 4. [Render order](#render-order)
 5. [Border renderer](#border-renderer)
 6. [Board renderer](#board-renderer)
@@ -77,7 +77,7 @@ This example also uses the styles that are defined in the [config/default.json](
    // Create a new imager using embedded default.json settings
    imager := chessImager.NewImager()
    
-   // Create a new context
+   // Create a new image context
    ctx := imager.NewContext()
    
    // Highlight square e7, annotate square e7 with "!!" and
@@ -139,13 +139,13 @@ The path must point to the TTF font file. Example:
    }
 ```
 
-## Context
+## Image Context
 
-For simple chess board images, you don't need a context. You can just use `chessImager.NewImager().Render(fen)` and
-be done with it.
+For simple chess board images, you don't need an image context. You can just use `chessImager.NewImager().Render(fen)
+` and be done with it.
 
-For more advanced chess board images, you will need to create a Context object, using the `chessImager.NewContext()`
-function. Using this context object, you can add **highlighted squares**, **annotations** and **moves**.
+For more advanced chess board images, you will need to create an image Context object, using the `chessImager.
+NewContext()` function. Using this context object, you can add **highlighted squares**, **annotations** and **moves**.
 
 Every new context created, resets the moves, annotations and highlighted squares lists, so it is strongly recommended
 to create a new context for each new image that you want to generate. When you are ready to render the image, you 
@@ -577,7 +577,7 @@ Read more about renderers and their order in the [render order](#render-order) s
    // Set the rendering order
    _ = imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
    
-   // Create a new context
+   // Create a new image context
    ctx := imager.NewContext()
    
    // Create a highlight style, for the square e7
@@ -649,7 +649,7 @@ In this [example](examples/castling/castling.go) we will look at how to create c
    // Create a new imager using embedded default.json settings
    imager := chessImager.NewImager()
 
-   // Create a new context, and add white king side castling,
+   // Create a new image context, and add white king side castling,
    // and black queen side castling.
    ctx := imager.NewContext().AddMove("0-0", "").AddMove("", "0-0-0")
    

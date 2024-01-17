@@ -7,7 +7,7 @@ import (
 )
 
 func TestColors(t *testing.T) {
-	// Create a new context
+	// Create a new image context
 	ctx := chessImager.NewImager().NewContext()
 
 	// Test color #RRGGBBAA

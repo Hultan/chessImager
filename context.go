@@ -1,61 +1,61 @@
 package chessImager
 
 //
-// Context is used for advanced chess images
+// ImageContext is used for advanced chess images
 // (images that includes highlighted squares,
 // annotations and/or moves)
 //
 
-type Context struct {
+type ImageContext struct {
 	Highlight   []HighlightedSquare
 	Moves       []Move
 	Annotations []Annotation
 }
 
 // AddHighlight adds a new highlighted square.
-func (c *Context) AddHighlight(square string) *Context {
+func (c *ImageContext) AddHighlight(square string) *ImageContext {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square})
 
 	return c
 }
 
 // AddHighlightEx adds a new highlighted square with a specific style.
-func (c *Context) AddHighlightEx(square string, style *HighlightStyle) *Context {
+func (c *ImageContext) AddHighlightEx(square string, style *HighlightStyle) *ImageContext {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square, Style: style})
 
 	return c
 }
 
 // AddAnnotation adds a new annotation.
-func (c *Context) AddAnnotation(square, text string) *Context {
+func (c *ImageContext) AddAnnotation(square, text string) *ImageContext {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text})
 
 	return c
 }
 
 // AddAnnotationEx adds a new annotation with a specific style.
-func (c *Context) AddAnnotationEx(square, text string, style *AnnotationStyle) *Context {
+func (c *ImageContext) AddAnnotationEx(square, text string, style *AnnotationStyle) *ImageContext {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text, Style: style})
 
 	return c
 }
 
 // AddMove adds a move.
-func (c *Context) AddMove(from, to string) *Context {
+func (c *ImageContext) AddMove(from, to string) *ImageContext {
 	c.Moves = append(c.Moves, Move{From: from, To: to})
 
 	return c
 }
 
 // AddMoveEx adds a move with a specific style.
-func (c *Context) AddMoveEx(from, to string, style *MoveStyle) *Context {
+func (c *ImageContext) AddMoveEx(from, to string, style *MoveStyle) *ImageContext {
 	c.Moves = append(c.Moves, Move{From: from, To: to, Style: style})
 
 	return c
 }
 
 // NewHighlightStyle creates a new highlight style.
-func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int, factor float64) (*HighlightStyle, error) {
+func (c *ImageContext) NewHighlightStyle(typ HighlightType, color string, width int, factor float64) (*HighlightStyle, error) {
 	col, err := hexToRGBA(color)
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (c *Context) NewHighlightStyle(typ HighlightType, color string, width int, 
 }
 
 // NewAnnotationStyle creates a new annotation style.
-func (c *Context) NewAnnotationStyle(pos PositionType, size, fontSize, borderWidth int, bgc, fc,
+func (c *ImageContext) NewAnnotationStyle(pos PositionType, size, fontSize, borderWidth int, bgc, fc,
 	bc string) (*AnnotationStyle, error) {
 
 	fCol, err := hexToRGBA(fc)
@@ -99,7 +99,7 @@ func (c *Context) NewAnnotationStyle(pos PositionType, size, fontSize, borderWid
 }
 
 // NewMoveStyle creates a new move style.
-func (c *Context) NewMoveStyle(typ MoveType, color string, color2 string, factor float64) (*MoveStyle, error) {
+func (c *ImageContext) NewMoveStyle(typ MoveType, color string, color2 string, factor float64) (*MoveStyle, error) {
 	col, err := hexToRGBA(color)
 	if err != nil {
 		return nil, err

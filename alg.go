@@ -11,7 +11,7 @@ type alg struct {
 
 	x, y     int
 	status   moveStatus
-	settings *Settings
+	inverted bool
 }
 
 var algs = map[string]alg{
@@ -24,7 +24,7 @@ var algs = map[string]alg{
 
 // newAlg calculates coordinates (0-7),(0-7) from a chess position string, like "C5".
 // It also handles special cases, like castling and empty strings.
-func newAlg(s string, settings *Settings) (alg, error) {
+func newAlg(s string, inverted bool) (alg, error) {
 	s = strings.ToLower(s)
 
 	fixedAlg, ok := algs[s]
@@ -34,7 +34,7 @@ func newAlg(s string, settings *Settings) (alg, error) {
 	}
 
 	// Check illegal moves
-	a := alg{pos: s, status: moveStatusIllegal, settings: settings}
+	a := alg{pos: s, status: moveStatusIllegal, inverted: inverted}
 	if len(s) != 2 {
 		return a, errors.New("invalid length of alg")
 	} else if s[0] < 'a' || s[0] > 'h' {
@@ -57,7 +57,7 @@ func (a alg) coords() (int, int) {
 		panic("not a normal move, check status field")
 	}
 
-	if a.settings.Board.Default.Inverted {
+	if a.inverted {
 		return invert(a.x), invert(a.y)
 	}
 	return a.x, a.y
