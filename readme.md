@@ -68,8 +68,10 @@ For more examples, see the section [more examples](#more-examples) last in this 
 ### Medium:
 
 Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need 
-to create a [context](#context) object, using the `imager.NewContext()` method. We also need to use the `imager.RenderEx()` method 
-so that we can add both the FEN string and [context](#context).
+to create a [ImageContext](#image-context) object, using the `imager.NewContext()` method. We also need to use the 
+`imager.
+RenderEx()` method 
+so that we can add both the FEN string and [ImageContext](#image-context).
 
 This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
 
@@ -318,7 +320,9 @@ json` file.
 
 The factor 0.5 means that the circle or cross should be 50% of the width of the square.
 
-You can add a highlighted square by using the method `AddHighlight()` on the [context](#context) object in the style that is specified in the currently used JSON file:
+You can add a highlighted square by using the method `AddHighlight()` on the [ImageContext](#image-context) object in 
+the 
+style that is specified in the currently used JSON file:
 
 ```go
    imager := chessImager.NewImager()
@@ -457,7 +461,7 @@ The style of the annotation is normally determined by the default annotation sty
 | border_color     | string  | The border color of the annotation circle                              |
 | border_width     | integer | The width of the border                                                |
 
-You can add an annotation by using the method `AddAnnotation()` on the [context](#context) object:
+You can add an annotation by using the method `AddAnnotation()` on the [ImageContext](#image-context) object:
 
 ```go
    imager := chessImager.NewImager()
@@ -498,7 +502,8 @@ that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()
 | factor  | float   | The size of the dots or arrow, relative to the square size                  |
 | padding | float   | How much space should there be between the two arrows in castling moves     |
 
-You can add a move by using the method `AddMove()` on the [context](#context) object, by providing the from square and the to square.
+You can add a move by using the method `AddMove()` on the [ImageContext](#image-context) object, by providing the from 
+square and the to square.
 
 ```go
    imager := chessImager.NewImager()
