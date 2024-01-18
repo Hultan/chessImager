@@ -27,8 +27,6 @@ func (r Rectangle) shrink(f float64) Rectangle {
 	return rr
 }
 
-// TODO : Should return an image.Rectangle instead?
-
 func (r Rectangle) toImageRect() image.Rectangle {
 	return image.Rect(int(r.X), int(r.Y), int(r.X+r.Width), int(r.Y+r.Height))
 }
