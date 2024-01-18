@@ -1,7 +1,5 @@
 package chessImager
 
-import "fmt"
-
 //
 // ImageContext is used for advanced chess images
 // (advanced images are images that includes a FEN
@@ -14,16 +12,6 @@ type ImageContext struct {
 	Highlight   []HighlightedSquare
 	Moves       []Move
 	Annotations []Annotation
-}
-
-// SetFEN adds a FEN string to the ImageContext object
-func (c *ImageContext) SetFEN(fen string) error {
-	if !validateFen(fen) {
-		return fmt.Errorf("invalid FEN : %v", fen)
-	}
-
-	c.Fen = fen
-	return nil
 }
 
 // AddHighlight adds a new highlighted square.

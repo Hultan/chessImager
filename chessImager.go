@@ -79,19 +79,10 @@ func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
 }
 
 // NewContext creates a new image context, which can be used to:
-// * Add the FEN string
 // * Add highlighted squares
 // * Add annotations
 // * Add moves
-func (i *Imager) NewContext() *ImageContext {
-	return &ImageContext{}
-}
-
-// NewContextWithFEN creates a new image context with a FEN string set, which can be used to:
-// * Add highlighted squares
-// * Add annotations
-// * Add moves
-func (i *Imager) NewContextWithFEN(fen string) *ImageContext {
+func (i *Imager) NewContext(fen string) *ImageContext {
 	return &ImageContext{Fen: fen}
 }
 

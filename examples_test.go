@@ -26,15 +26,13 @@ func TestMediumExample(t *testing.T) {
 	imager := NewImager()
 
 	// Create a new image context
-	ctx := imager.NewContext()
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	ctx := imager.NewContext(fen)
 
 	// Highlight square e7
 	// Annotate square e7 with "!!"
 	// Show move e1-e7
 	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
-
-	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	_ = ctx.SetFEN(fen)
 
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
@@ -61,7 +59,8 @@ func TestAdvancedExample(t *testing.T) {
 	}
 
 	// Create a new image context
-	ctx := imager.NewContext()
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	ctx := imager.NewContext(fen)
 
 	// Create a highlight style, for the square e7
 	hs, err := ctx.NewHighlightStyle(
@@ -99,9 +98,6 @@ func TestAdvancedExample(t *testing.T) {
 	// show move e1-e7.
 	ctx.AddHighlightWithStyle("e7", hs).AddAnnotationWithStyle("e7", "!!", as).AddMoveWithStyle("e1", "e7", ms)
 
-	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	_ = ctx.SetFEN(fen)
-
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
@@ -124,14 +120,12 @@ func TestOtherExample(t *testing.T) {
 	}
 
 	// Create a new image context
-	ctx := imager.NewContext()
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	ctx := imager.NewContext(fen)
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
 	// show move e1-e7.
 	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
-
-	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-	_ = ctx.SetFEN(fen)
 
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)

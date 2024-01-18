@@ -13,7 +13,7 @@ func main() {
 
 	// Create a new image context, and add white king side castling,
 	// and black queen side castling.
-	ctx := imager.NewContextWithFEN("2kr4/8/8/8/8/8/8/5RK1 b - - 1 25").AddMove("0-0", "").AddMove("", "0-0-0")
+	ctx := imager.NewContext("2kr4/8/8/8/8/8/8/5RK1 b - - 1 25").AddMove("0-0", "").AddMove("", "0-0-0")
 
 	// Render the image
 	img, _ := imager.RenderWithContext(ctx)
