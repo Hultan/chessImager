@@ -4,8 +4,9 @@ import "fmt"
 
 //
 // ImageContext is used for advanced chess images
-// (images that includes a FEN string and optionally
-// highlighted squares, annotations and/or moves.
+// (advanced images are images that includes a FEN
+// string and optionally highlighted squares,
+// annotations and/or moves.
 //
 
 type ImageContext struct {
@@ -32,8 +33,8 @@ func (c *ImageContext) AddHighlight(square string) *ImageContext {
 	return c
 }
 
-// AddHighlightEx adds a new highlighted square with a specific style.
-func (c *ImageContext) AddHighlightEx(square string, style *HighlightStyle) *ImageContext {
+// AddHighlightWithStyle adds a new highlighted square with a specific style.
+func (c *ImageContext) AddHighlightWithStyle(square string, style *HighlightStyle) *ImageContext {
 	c.Highlight = append(c.Highlight, HighlightedSquare{Square: square, Style: style})
 
 	return c
@@ -46,8 +47,8 @@ func (c *ImageContext) AddAnnotation(square, text string) *ImageContext {
 	return c
 }
 
-// AddAnnotationEx adds a new annotation with a specific style.
-func (c *ImageContext) AddAnnotationEx(square, text string, style *AnnotationStyle) *ImageContext {
+// AddAnnotationWithStyle adds a new annotation with a specific style.
+func (c *ImageContext) AddAnnotationWithStyle(square, text string, style *AnnotationStyle) *ImageContext {
 	c.Annotations = append(c.Annotations, Annotation{Square: square, Text: text, Style: style})
 
 	return c
@@ -60,8 +61,8 @@ func (c *ImageContext) AddMove(from, to string) *ImageContext {
 	return c
 }
 
-// AddMoveEx adds a move with a specific style.
-func (c *ImageContext) AddMoveEx(from, to string, style *MoveStyle) *ImageContext {
+// AddMoveWithStyle adds a move with a specific style.
+func (c *ImageContext) AddMoveWithStyle(from, to string, style *MoveStyle) *ImageContext {
 	c.Moves = append(c.Moves, Move{From: from, To: to, Style: style})
 
 	return c

@@ -173,7 +173,7 @@ func TestSetOrderDefault(t *testing.T) {
 	imager := NewImager()
 
 	ctx := imager.NewContext()
-	ctx.AddHighlightEx("e7", nil)
+	ctx.AddHighlightWithStyle("e7", nil)
 
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
 	_ = ctx.SetFEN(fen)
@@ -203,7 +203,7 @@ func TestSetOrderVariant(t *testing.T) {
 	}
 
 	ctx := imager.NewContext()
-	ctx.AddHighlightEx("e7", nil)
+	ctx.AddHighlightWithStyle("e7", nil)
 
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
 	_ = ctx.SetFEN(fen)

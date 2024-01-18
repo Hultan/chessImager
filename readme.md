@@ -331,7 +331,7 @@ style that is specified in the currently used JSON file:
    image := imager.RenderWithContext(ctx)
 ```
 
-Another alternative is to use the method `AddHighlightEx()`, that allows you to provide some special
+Another alternative is to use the method `AddHighlightWithStyle()`, that allows you to provide some special
 styling to this specific square:
 
 ```go
@@ -339,7 +339,7 @@ styling to this specific square:
    
    ctx := imager.NewContextWithFEN(fen)
    hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0, 0)
-   ctx.AddHighlightEx("e7", hs)
+   ctx.AddHighlightWithStyle("e7", hs)
       
    image := imager.RenderWithContext(ctx)
 ```
@@ -470,7 +470,7 @@ You can add an annotation by using the method `AddAnnotation()` on the [ImageCon
    image, _ := imager.RenderWithContext(ctx)
 ```
 
-Another alternative is to use the method `AddAnnotationEx()`, that allows you to provide some special
+Another alternative is to use the method `AddAnnotationWithStyle()`, that allows you to provide some special
 styling to this specific square:
 
 ```go
@@ -481,7 +481,7 @@ styling to this specific square:
       25, 20, 1,
       "E8E57C", "000000", "FFFFFF",
    )
-   ctx.AddAnnotationEx("e7", "11", as)
+   ctx.AddAnnotationWithStyle("e7", "11", as)
 
    image, _ := imager.RenderWithContext(ctx)
 ```
@@ -491,7 +491,7 @@ styling to this specific square:
 The moves renderer is responsible for rendering moves, that is, indicating that a piece has moved from one square to another.
 
 The style of the move can be changed in the [config/default.json](config/default.json) file (or your own version of 
-that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveEx()` method.
+that file), or by providing a `chessImager.MoveStyle` struct to the `AddMoveWithStyle()` method.
 
 | Name    | Type    | Description                                                                 |
 |---------|---------|-----------------------------------------------------------------------------|
@@ -513,7 +513,7 @@ square and the to square.
    image, _ := imager.RenderWithContext(ctx)
 ```
 
-Another alternative is to use the method `AddMoveEx()`, that allows you to provide some special styling to this particular move, on top of the from square and the to square:
+Another alternative is to use the method `AddMoveWithStyle()`, that allows you to provide some special styling to this particular move, on top of the from square and the to square:
 
 ```go
    imager := chessImager.NewImager()
@@ -526,7 +526,7 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
       "#9D6B5EFF",              // Dot color 2
       0.2,                      // Dot size
    )
-   ctx.AddMoveEx("e7", "c5", ms)
+   ctx.AddMoveWithStyle("e7", "c5", ms)
    
    image, _ := imager.RenderWithContext(ctx)
 ```
@@ -536,20 +536,20 @@ To create a castling move, use one of the following eight variations:
 
 ```go
     // White king side castling
-    ctx.AddMoveEx("0-0", "", ms) // or
-    ctx.AddMoveEx("o-o", "", ms)
+    ctx.AddMove("0-0", "") // or
+    ctx.AddMove("o-o", "")
 
     // White queen side castling
-    ctx.AddMoveEx("0-0-0", "", ms) // or
-    ctx.AddMoveEx("o-o-o", "", ms)
+    ctx.AddMove("0-0-0", "") // or
+    ctx.AddMove("o-o-o", "")
 
     // Black king side castling
-    ctx.AddMoveEx("", "0-0", ms) // or
-    ctx.AddMoveEx("", "o-o", ms)
+    ctx.AddMove("", "0-0") // or
+    ctx.AddMove("", "o-o")
 
     // Black queen side castling
-    ctx.AddMoveEx("", "0-0-0", ms) // or
-    ctx.AddMoveEx("", "o-o-o", ms)
+    ctx.AddMove("", "0-0-0") // or
+    ctx.AddMove("", "o-o-o")
 ```
 
 The color `movestyle.color` is used for the kings arrow or dots, and the color `movestyle.color2` is used for the rooks arrow or dots.
@@ -610,7 +610,9 @@ Read more about renderers and their order in the [render order](#render-order) s
    
    // Highlight the e7 square, annotate e7 as a brilliant move (!!) and
    // show move e1-e7.
-   ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
+   ctx.AddHighlightWithStyle("e7", hs)
+      .AddAnnotationWithStyle("e7", "!!", as)
+      .AddMoveWithStyle("e1", "e7", ms)
    
    // Render the image 
    image, _ := imager.RenderWithContext(ctx)

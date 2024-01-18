@@ -42,7 +42,7 @@ func main() {
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
 	// show move e1-e7.
-	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
+	ctx.AddHighlightWithStyle("e7", hs).AddAnnotationWithStyle("e7", "!!", as).AddMoveWithStyle("e1", "e7", ms)
 
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
