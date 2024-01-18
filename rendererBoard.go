@@ -2,6 +2,9 @@ package chessImager
 
 import (
 	"errors"
+	"fmt"
+	"image"
+	"os"
 
 	"github.com/fogleman/gg"
 )
@@ -15,7 +18,10 @@ func (r *rendererBoard) draw(c *gg.Context, _ *ImageContext) error {
 	case boardTypeDefault:
 		r.drawDefault(c)
 	case boardTypeImage:
-		r.drawImage(c)
+		err := r.drawImage(c)
+		if err != nil {
+			return err
+		}
 	default:
 		return errors.New("invalid board type")
 	}
@@ -43,6 +49,19 @@ func (r *rendererBoard) drawDefault(c *gg.Context) {
 	}
 }
 
-func (r *rendererBoard) drawImage(c *gg.Context) {
-	c.DrawImage(r.boardImage, 0, 0)
+func (r *rendererBoard) drawImage(c *gg.Context) error {
+	f, err := os.Open(r.settings.Board.Image.Path)
+	if err != nil {
+		return fmt.Errorf("failed to load image : %v", err)
+	}
+	defer f.Close()
+
+	img, _, err := image.Decode(f)
+	if err != nil {
+		return fmt.Errorf("failed to encode image : %v", err)
+	}
+
+	c.DrawImage(img, 0, 0)
+
+	return nil
 }

@@ -41,10 +41,6 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 		return nil, err
 	}
 
-	if err = i.validateSettings(); err != nil {
-		return nil, err
-	}
-
 	return i, nil
 }
 
@@ -153,44 +149,22 @@ func (i *Imager) getBoardSize() (image.Rectangle, error) {
 			},
 		}, nil
 	case boardTypeImage:
-		return i.boardImage.Bounds(), nil
+		f, err := os.Open(i.settings.Board.Image.Path)
+		if err != nil {
+			return image.Rectangle{}, fmt.Errorf("failed to load image : %v", err)
+		}
+		defer f.Close()
+
+		img, _, err := image.Decode(f)
+		if err != nil {
+			return image.Rectangle{}, fmt.Errorf("failed to encode image : %v", err)
+		}
+
+		return img.Bounds(), nil
 
 	default:
 		return image.Rectangle{}, fmt.Errorf("invalid board type : %v", i.settings.Board.Type)
 	}
-}
-
-// validateSettings validates some of the values in the JSON file
-func (i *Imager) validateSettings() error {
-	if i.settings.Board.Type == boardTypeImage {
-		if err := tryLoadImage(i.settings.Board.Image.Path, &i.boardImage); err != nil {
-			return err
-		}
-	}
-
-	if i.settings.Pieces.Type == piecesTypeImageMap {
-		var img image.Image
-		if err := tryLoadImage(i.settings.Pieces.ImageMap.Path, &img); err != nil {
-			return err
-		}
-	}
-
-	if i.settings.Pieces.Type == piecesTypeImages {
-		var img image.Image
-		for _, p := range i.settings.Pieces.Images.Pieces {
-			if err := tryLoadImage(p.Path, &img); err != nil {
-				return err
-			}
-		}
-	}
-
-	if i.settings.FontStyle.Path != "" {
-		if err := tryLoadFile(i.settings.FontStyle.Path); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
@@ -287,32 +261,4 @@ func loadDefaultSettings() *Settings {
 	}
 
 	return s
-}
-
-// tryLoadImage tries to load the specified image, makes sure it exists,
-// and is an image.
-func tryLoadImage(path string, img *image.Image) error {
-	f, err := os.Open(path)
-	if err != nil {
-		return fmt.Errorf("failed to load image : %v", err)
-	}
-	defer f.Close()
-
-	*img, _, err = image.Decode(f)
-	if err != nil {
-		return fmt.Errorf("failed to encode image : %v", err)
-	}
-
-	return nil
-}
-
-// tryLoadFile tries to load the specified file, makes sure it exists.
-func tryLoadFile(path string) error {
-	f, err := os.Open(path)
-	if err != nil {
-		return fmt.Errorf("failed to file (%s) : %v", path, err)
-	}
-	defer f.Close()
-
-	return nil
 }
