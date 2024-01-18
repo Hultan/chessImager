@@ -24,12 +24,8 @@ var letter2Piece = map[rune]chessPiece{
 }
 
 func validateFen(fen string) bool {
-	fens := strings.Split(fen, " ")
-	if len(fens) < 6 {
-		return false
-	}
-
 	// We only care about the first section (board section) of the FEN string.
+	fens := strings.Split(fen, " ")
 	items := strings.Split(fens[0], "/")
 	if len(items) != 8 {
 		return false
