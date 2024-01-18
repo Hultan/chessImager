@@ -138,7 +138,7 @@ func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, items []PieceRe
 		return errors.New("failed to create SubImager. Wrong image type? Try PNG")
 	}
 	for _, item := range items {
-		pieces[item.piece] = r.resize(sub.SubImage(image.Rect(item.rect.toImageRect())))
+		pieces[item.piece] = r.resize(sub.SubImage(item.rect.toImageRect()))
 	}
 	return nil
 }

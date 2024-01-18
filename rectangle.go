@@ -1,5 +1,7 @@
 package chessImager
 
+import "image"
+
 type Rectangle struct {
 	X      float64 `json:"x"`
 	Y      float64 `json:"y"`
@@ -27,8 +29,8 @@ func (r Rectangle) shrink(f float64) Rectangle {
 
 // TODO : Should return an image.Rectangle instead?
 
-func (r Rectangle) toImageRect() (int, int, int, int) {
-	return int(r.X), int(r.Y), int(r.X + r.Width), int(r.Y + r.Height)
+func (r Rectangle) toImageRect() image.Rectangle {
+	return image.Rect(int(r.X), int(r.Y), int(r.X+r.Width), int(r.Y+r.Height))
 }
 
 func (r Rectangle) center() (float64, float64) {
