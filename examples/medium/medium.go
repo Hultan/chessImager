@@ -20,7 +20,7 @@ func main() {
 	ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	// Save the image to a file
 	file, _ := os.Create("examples/medium/medium.png")

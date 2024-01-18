@@ -69,7 +69,7 @@ For more examples, see the section [more examples](#more-examples) last in this 
 
 Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need 
 to create a [ImageContext](#image-context) object, using the `imager.NewContext()` method. We also need to use the 
-`imager.RenderEx()` method so that we can provide the [ImageContext](#image-context).
+`imager.RenderWithContext()` method so that we can provide the [ImageContext](#image-context).
 
 This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
 
@@ -86,7 +86,7 @@ This example also uses the styles that are defined in the [config/default.json](
    ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
    
    // Render image
-   image, _ := imager.RenderEx(ctx)
+   image, _ := imager.RenderWithContext(ctx)
 ```
 This would generate the following image:
 
@@ -100,9 +100,9 @@ Start by creating an **Imager** struct by calling the **NewImager()** function. 
 chess board images from a **FEN** string by using the **Imager.Render()** method.
 
 If you want to create more advanced images with move arrows, highlighted squares or annotations, you'll need a 
-**Context** object. You can create that by using the **imager.NewContext()** method. Add all the moves, highlighted 
-squares, annotations and the FEN string to the **context** object, and then call the **Imager.RenderEx()** method, and 
-provide the **Context** object to that method. 
+**Context** object. You can create that by using the **imager.NewContext()** or **imager.NewContextWithFEN()** method. 
+Add all the moves, highlighted squares, annotations and the FEN string to the **context** object, and then call the 
+**Imager.RenderWithContext()** method, and provide the **Context** object to that method. 
 
 The purpose of the **Context** struct is that you create one **Imager** object at the beginning of your code, and then 
 one **Context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
@@ -149,7 +149,7 @@ NewContext()` function. Using this context object, you can add **highlighted squ
 
 Every new context created, resets the moves, annotations and highlighted squares lists, so it is strongly recommended
 to create a new context for each new image that you want to generate. When you are ready to render the image, you 
-pass along the context object to the `chessImager.RenderEx()` function.
+pass along the context object to the `chessImager.RenderWithContext()` function.
 
 ## Render order
 
@@ -328,7 +328,7 @@ style that is specified in the currently used JSON file:
    ctx := imager.NewContextWithFEN(fen)
    ctx.AddHighlight("e7")
    
-   image := imager.RenderEx(ctx)
+   image := imager.RenderWithContext(ctx)
 ```
 
 Another alternative is to use the method `AddHighlightEx()`, that allows you to provide some special
@@ -341,7 +341,7 @@ styling to this specific square:
    hs, _ := ctx.NewHighlightStyle(0, "#88008888", 0, 0)
    ctx.AddHighlightEx("e7", hs)
       
-   image := imager.RenderEx(ctx)
+   image := imager.RenderWithContext(ctx)
 ```
 
 ## Piece renderer
@@ -467,7 +467,7 @@ You can add an annotation by using the method `AddAnnotation()` on the [ImageCon
    ctx := imager.NewContextWithFEN(fen)
    ctx.AddAnnotation("e7", "!!")
    
-   image, _ := imager.RenderEx(ctx)
+   image, _ := imager.RenderWithContext(ctx)
 ```
 
 Another alternative is to use the method `AddAnnotationEx()`, that allows you to provide some special
@@ -483,7 +483,7 @@ styling to this specific square:
    )
    ctx.AddAnnotationEx("e7", "11", as)
 
-   image, _ := imager.RenderEx(ctx)
+   image, _ := imager.RenderWithContext(ctx)
 ```
 
 ## Moves renderer
@@ -510,7 +510,7 @@ square and the to square.
    ctx := imager.NewContextWithFEN(fen)
    ctx.AddMove("e7", "c5")
 
-   image, _ := imager.RenderEx(ctx)
+   image, _ := imager.RenderWithContext(ctx)
 ```
 
 Another alternative is to use the method `AddMoveEx()`, that allows you to provide some special styling to this particular move, on top of the from square and the to square:
@@ -528,7 +528,7 @@ Another alternative is to use the method `AddMoveEx()`, that allows you to provi
    )
    ctx.AddMoveEx("e7", "c5", ms)
    
-   image, _ := imager.RenderEx(ctx)
+   image, _ := imager.RenderWithContext(ctx)
 ```
 ### Moves renderer - Castling
 
@@ -613,7 +613,7 @@ Read more about renderers and their order in the [render order](#render-order) s
    ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
    
    // Render the image 
-   image, _ := imager.RenderEx(ctx)
+   image, _ := imager.RenderWithContext(ctx)
 ```
 
 This code will generate the following image:
@@ -637,7 +637,7 @@ In this [example](examples/other/other.go) we will create our own JSON file and 
 	ctx := imager.NewContextWithFEN(fen).AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 ```
 This code will generate the following image:
 
@@ -659,7 +659,7 @@ In this [example](examples/castling/castling.go) we will look at how to create c
    ctx := imager.NewContextWithFEN(fen).AddMove("0-0", "").AddMove("", "0-0-0")
    
    // Render the image
-   img, _ := imager.RenderEx(ctx)
+   img, _ := imager.RenderWithContext(ctx)
 ```
 This code will generate the following image:
 
@@ -707,7 +707,7 @@ func main() {
          ctx := imager.NewContextWithFEN(b.String())
          ctx.AddMove(move.From.String(), move.To.String()).AddHighlight(move.From.String()).AddHighlight(move.To.String())
 		  
-         img, _ := imager.RenderEx(ctx)
+         img, _ := imager.RenderWithContext(ctx)
 
          file, _ := os.Create(fmt.Sprintf("%d.png", i))
          _ = png.Encode(file, img)

@@ -51,11 +51,11 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 // Render renders an image of a chess board based on a FEN string.
 func (i *Imager) Render(fen string) (image.Image, error) {
 	ctx := &ImageContext{Fen: fen}
-	return i.RenderEx(ctx)
+	return i.RenderWithContext(ctx)
 }
 
-// RenderEx renders an image of a chess board based on an image context.
-func (i *Imager) RenderEx(ctx *ImageContext) (image.Image, error) {
+// RenderWithContext renders an image of a chess board based on an image context.
+func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
 	var err error
 
 	size, err := i.getBoardSize()

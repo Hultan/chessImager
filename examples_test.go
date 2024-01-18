@@ -37,7 +37,7 @@ func TestMediumExample(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, err := imager.RenderEx(ctx)
+	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
 		t.Fatalf("failed to render : %v", err)
 	}
@@ -103,7 +103,7 @@ func TestAdvancedExample(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, err := imager.RenderEx(ctx)
+	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
 		t.Fatalf("failed to render : %v", err)
 	}
@@ -134,7 +134,7 @@ func TestOtherExample(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, err := imager.RenderEx(ctx)
+	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
 		t.Fatalf("failed to render : %v", err)
 	}

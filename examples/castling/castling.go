@@ -16,7 +16,7 @@ func main() {
 	ctx := imager.NewContextWithFEN("2kr4/8/8/8/8/8/8/5RK1 b - - 1 25").AddMove("0-0", "").AddMove("", "0-0-0")
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	// Save the image to a file
 	file, _ := os.Create("examples/castling/castling.png")

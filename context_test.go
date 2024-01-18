@@ -23,7 +23,7 @@ func TestMovesDots(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -43,7 +43,7 @@ func TestMovesKnight(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -61,7 +61,7 @@ func TestMovesBishop(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -79,7 +79,7 @@ func TestMovesRook(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -96,7 +96,7 @@ func TestMovesCastlingKing(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -113,7 +113,7 @@ func TestMovesCastlingQueen(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -134,7 +134,7 @@ func TestMovesCastlingKing_Dots(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -155,7 +155,7 @@ func TestMovesCastlingQueen_Dots(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -200,7 +200,7 @@ func TestHighlight(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }
@@ -246,7 +246,7 @@ func TestAnnotation(t *testing.T) {
 	_ = ctx.SetFEN(fen)
 
 	// Render the image
-	img, _ := imager.RenderEx(ctx)
+	img, _ := imager.RenderWithContext(ctx)
 
 	compareImages(t, filename, &img)
 }

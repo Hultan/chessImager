@@ -45,7 +45,7 @@ func main() {
 	ctx.AddHighlightEx("e7", hs).AddAnnotationEx("e7", "!!", as).AddMoveEx("e1", "e7", ms)
 
 	// Render the image
-	img, err := imager.RenderEx(ctx)
+	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
 		panic(err)
 	}
