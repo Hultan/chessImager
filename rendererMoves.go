@@ -14,6 +14,7 @@ func (r *rendererMoves) draw(c *gg.Context, ctx *ImageContext) error {
 	if ctx == nil {
 		return nil
 	}
+
 	for _, move := range ctx.Moves {
 		err := r.renderMove(c, move)
 		if err != nil {
@@ -25,8 +26,8 @@ func (r *rendererMoves) draw(c *gg.Context, ctx *ImageContext) error {
 }
 
 func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
-	style := r.getStyle(move)
 	var err error
+	style := r.getStyle(move)
 
 	switch style.Type {
 	case MoveTypeDots:

@@ -23,9 +23,9 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 
 	switch {
 	case from.status == moveStatusIllegal:
-		return errors.New(fmt.Sprintf("illegal move : %s", from))
+		return errors.New(fmt.Sprintf("illegal from move : %s", from))
 	case to.status == moveStatusIllegal:
-		return errors.New(fmt.Sprintf("illegal move : %s", to))
+		return errors.New(fmt.Sprintf("illegal to move : %s", to))
 	case from.status == moveStatusKingSideCastling && to.status == moveStatusEmpty:
 		r.renderCastlingArrow(c, style, whiteKingSideCastling)
 	case from.status == moveStatusQueenSideCastling && to.status == moveStatusEmpty:
@@ -62,13 +62,13 @@ func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, m
 
 	if dx == 0 || dy == 0 || abs(dx) == abs(dy) {
 		// Render pawn, rook, bishop, king and queen moves (ie straight moves)
-		dir := r.getDirection(dx, dy)
+		dir := r.getStraightMoveDirection(dx, dy)
 		length := math.Sqrt((tx-fx)*(tx-fx) + (ty-fy)*(ty-fy))
+		factor := 1.0
 		if dir%90 != 0 {
-			length += rect.Width/2*math.Sqrt(2) - styleBox.Width
-		} else {
-			length += rect.Width/2 - styleBox.Width
+			factor = math.Sqrt(2)
 		}
+		length += rect.Width/2*factor - styleBox.Width
 		r.renderArrow(c, length, styleBox.Width, fx, fy, 0, dir)
 	} else {
 		// Knight type move (or other weird illegal move)
@@ -226,7 +226,7 @@ func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 	}
 }
 
-func (r *rendererMoves) getDirection(dx int, dy int) direction {
+func (r *rendererMoves) getStraightMoveDirection(dx int, dy int) direction {
 	switch {
 	case dx == 0 && dy < 0:
 		return directionSouth
