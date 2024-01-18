@@ -7,10 +7,7 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 
 ## Table of Contents
 
-1. [Examples](#examples)
-    1. [Simple](#simple)
-    2. [Medium](#medium)
-2. [The Basics](#the-basics)
+1. [The Basics](#the-basics)
 2. [Configuration](#configuration)
     1. [Colors](#configuration---colors)
     2. [Fonts](#configuration---fonts)
@@ -29,75 +26,19 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 10. [Annotations renderer](#annotations-renderer)
 11. [Moves renderer](#moves-renderer)
     1. [Castling](#moves-renderer---castling)
-12. [More examples](#more-examples)
-    1. [Advanced](#advanced)
-    2. [Other](#other)
-    3. [Castling](#castling)
-    4. [PGN](#pgn)
-
-## Examples:
-
-All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
-
-https://www.chess.com/games/view/969971
-
-For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
-
-### Simple:
-
-The first [example](examples/simple/simple.go) is super easy. Rendering a chess board image, based on a FEN string, is basically one line of code. Add a few more lines of code to
-save the image to disk, and you have this code:
-
-```go
-   // Render simple image
-   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   img, _ := chessImager.NewImager().Render(fen)
-   
-   // Save image
-   file, _ := os.Create("/path/to/img.png")
-   defer fileSimple.Close()
-   _ = png.Encode(file, img)
-```
-
-This code will generate the following image, using the default styling in [config/default.json](config/default.json):
-
-<img src="examples/simple/simple.png" alt="simple example" width="350"/>
-
-For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
-
-### Medium:
-
-Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need 
-to create a [ImageContext](#image-context) object, using the `imager.NewContext()` method. We also need to use the 
-`imager.RenderWithContext()` method so that we can provide the [ImageContext](#image-context).
-
-This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
-
-```go
-   // Create a new imager using embedded default.json settings
-   imager := chessImager.NewImager()
-   
-   // Create a new image context
-   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
-   ctx := imager.NewContextWithFEN(fen)
-   
-   // Highlight square e7, annotate square e7 with "!!" and
-   // show move e1-e7 using the styles specified in default.json.
-   ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
-   
-   // Render image
-   image, _ := imager.RenderWithContext(ctx)
-```
-This would generate the following image:
-
-<img src="examples/medium/medium.png" alt="drawing" width="350"/>
-
-For more examples, see the section [more examples](#more-examples) last in this readme file. Or checkout the [examples folder](examples).
+12. [Examples](#examples)
+    1. [Simple](#simple)
+    2. [Medium](#medium)
+    3. [Advanced](#advanced)
+    4. [Other](#other)
+    5. [Castling](#castling)
+    6. [PGN](#pgn)
 
 ## The Basics
+For examples of how to use chessImager, see the [Examples section](#examples), at the end of this readme.
 
-Start by creating an **Imager** struct by calling the **NewImager()** function. With this object, you can render simple 
-chess board images from a **FEN** string by using the **Imager.Render()** method.
+Start by creating an **Imager** object by calling the **NewImager()** function. With this object, you can render simple 
+chess board images from a **FEN** string by using the **chessImager.Render()** method.
 
 If you want to create more advanced images with move arrows, highlighted squares or annotations, you'll need a 
 **Context** object. You can create that by using the **imager.NewContext()** or **imager.NewContextWithFEN()** method. 
@@ -107,6 +48,7 @@ Add all the moves, highlighted squares, annotations and the FEN string to the **
 The purpose of the **Context** struct is that you create one **Imager** object at the beginning of your code, and then 
 one **Context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
 discard the **Context** object, but keep the **Imager** object.
+
 
 ## Configuration
 
@@ -558,7 +500,58 @@ See the [castling example](examples/castling/castling.go) where the following im
 
 <img src="examples/castling/castling.png" alt="drawing" width="350"/>
 
-## More examples
+## Examples:
+
+All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
+
+https://www.chess.com/games/view/969971
+
+### Simple:
+
+The first [example](examples/simple/simple.go) is super easy. Rendering a chess board image, based on a FEN string, is basically one line of code. Add a few more lines of code to
+save the image to disk, and you have this code:
+
+```go
+   // Render simple image
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   img, _ := chessImager.NewImager().Render(fen)
+   
+   // Save image
+   file, _ := os.Create("/path/to/img.png")
+   defer fileSimple.Close()
+   _ = png.Encode(file, img)
+```
+
+This code will generate the following image, using the default styling in [config/default.json](config/default.json):
+
+<img src="examples/simple/simple.png" alt="simple example" width="350"/>
+
+### Medium:
+
+Here is a slightly more [advanced example](examples/medium/medium.go), that adds a highlighted square, an annotation and a move. For this we need
+to create a [ImageContext](#image-context) object, using the `imager.NewContext()` method. We also need to use the
+`imager.RenderWithContext()` method so that we can provide the [ImageContext](#image-context).
+
+This example also uses the styles that are defined in the [config/default.json](config/default.json) files:
+
+```go
+   // Create a new imager using embedded default.json settings
+   imager := chessImager.NewImager()
+   
+   // Create a new image context
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   ctx := imager.NewContextWithFEN(fen)
+   
+   // Highlight square e7, annotate square e7 with "!!" and
+   // show move e1-e7 using the styles specified in default.json.
+   ctx.AddHighlight("e7").AddAnnotation("e7", "!!").AddMove("e1", "e7")
+   
+   // Render image
+   image, _ := imager.RenderWithContext(ctx)
+```
+This would generate the following image:
+
+<img src="examples/medium/medium.png" alt="drawing" width="350"/>
 
 ### Advanced:
 
