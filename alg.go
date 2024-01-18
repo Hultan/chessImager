@@ -16,10 +16,10 @@ type alg struct {
 
 var algs = map[string]alg{
 	"":      {pos: "", status: moveStatusEmpty},
-	"0-0":   {pos: "", status: moveStatusKingSideCastling},
-	"o-o":   {pos: "", status: moveStatusKingSideCastling},
-	"0-0-0": {pos: "", status: moveStatusQueenSideCastling},
-	"o-o-o": {pos: "", status: moveStatusQueenSideCastling},
+	"0-0":   {pos: "0-0", status: moveStatusKingSideCastling},
+	"o-o":   {pos: "o-o", status: moveStatusKingSideCastling},
+	"0-0-0": {pos: "0-0-0", status: moveStatusQueenSideCastling},
+	"o-o-o": {pos: "o-o-o", status: moveStatusQueenSideCastling},
 }
 
 // newAlg calculates coordinates (0-7),(0-7) from a chess position string, like "C5".
@@ -53,7 +53,8 @@ func newAlg(s string, inverted bool) (alg, error) {
 
 func (a alg) coords() (int, int) {
 	if a.status != moveStatusNormal {
-		// ok to panic here, it's an internal struct
+		// ok to panic here, it's an internal struct, and it is
+		// being used wrong!
 		panic("not a normal move, check status field")
 	}
 
