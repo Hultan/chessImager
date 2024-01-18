@@ -20,19 +20,7 @@ type RankFile struct {
 }
 
 func (r *rendererRankAndFile) draw(c *gg.Context, _ *ImageContext) error {
-	// If Board.Type is BoardTypeImage then we should not draw ranks and files
-	if r.settings.Board.Type == boardTypeImage {
-		return nil
-	}
-
-	// If the user has chosen to not render rank and file, then return
-	if r.settings.RankAndFile.Type == rankAndFileTypeNone {
-		return nil
-	}
-
-	// Don't bother drawing ranks and files when to border is too thin
-	border := float64(r.settings.Border.Width)
-	if border < borderLimit {
+	if r.shouldDrawRankAndFile() {
 		return nil
 	}
 
@@ -56,6 +44,13 @@ func (r *rendererRankAndFile) draw(c *gg.Context, _ *ImageContext) error {
 	}
 
 	return nil
+}
+
+func (r *rendererRankAndFile) shouldDrawRankAndFile() bool {
+	border := float64(r.settings.Border.Width)
+	return r.settings.Board.Type == boardTypeImage ||
+		r.settings.RankAndFile.Type == rankAndFileTypeNone ||
+		border < borderLimit
 }
 
 func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
