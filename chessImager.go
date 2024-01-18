@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -29,7 +30,12 @@ type Imager struct {
 // NewImager creates a new Imager.
 func NewImager() *Imager {
 	i := &Imager{}
-	i.settings = loadDefaultSettings()
+
+	// We ignore the error here, since the default embedded settings file
+	// should always be correct.
+	s, _ := loadDefaultSettings()
+	i.settings = s
+
 	return i
 }
 
@@ -46,8 +52,7 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 
 // Render renders an image of a chess board based on a FEN string.
 func (i *Imager) Render(fen string) (image.Image, error) {
-	ctx := &ImageContext{Fen: fen}
-	return i.RenderWithContext(ctx)
+	return i.RenderWithContext(&ImageContext{Fen: fen})
 }
 
 // RenderWithContext renders an image of a chess board based on an image context.
@@ -240,25 +245,23 @@ func loadSettings(path string) (*Settings, error) {
 		return nil, err
 	}
 
+	return decodeSettings(f)
+}
+
+// loadDefaultSettings loads the embedded default settings
+func loadDefaultSettings() (*Settings, error) {
+	r := strings.NewReader(defaultSettings)
+
+	return decodeSettings(r)
+}
+
+// decodeSettings decode the string/file and returns a Settings object and an error
+func decodeSettings(r io.Reader) (*Settings, error) {
 	s := &Settings{}
-	err = json.NewDecoder(f).Decode(s)
+	err := json.NewDecoder(r).Decode(s)
 	if err != nil {
 		return nil, err
 	}
 
 	return s, nil
-}
-
-// loadDefaultSettings loads the embedded default settings
-func loadDefaultSettings() *Settings {
-	r := strings.NewReader(defaultSettings)
-
-	s := &Settings{}
-	// Ok to panic here, the embedded settings should always be correct
-	err := json.NewDecoder(r).Decode(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return s
 }
