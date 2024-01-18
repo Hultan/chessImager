@@ -38,7 +38,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context, _ *ImageContext) error {
 
 	fontSize := r.settings.RankAndFile.FontSize
 	c.SetRGBA(r.settings.RankAndFile.FontColor.toRGBA())
-	err := r.setFontFace(r.settings.FontStyle.Path, c, fontSize)
+	err := r.setFontFace(c, fontSize)
 	if err != nil {
 		return err
 	}

@@ -32,7 +32,7 @@ func (r *rendererAnnotation) draw(c *gg.Context, ctx *ImageContext) error {
 
 		// Draw annotation text
 		c.SetRGBA(style.FontColor.toRGBA())
-		err = r.setFontFace(r.settings.FontStyle.Path, c, r.getStyle(annotation).FontSize)
+		err = r.setFontFace(c, r.getStyle(annotation).FontSize)
 		if err != nil {
 			return err
 		}

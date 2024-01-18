@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"image"
 	"io"
-	"log"
 	"os"
 	"strings"
 
@@ -108,6 +107,10 @@ func (i *Imager) SetOrder(order []int) error {
 func (i *Imager) getRenderers() ([]renderer, error) {
 	var result []renderer
 
+	if len(i.settings.Order) != 7 {
+		return result, fmt.Errorf("len(order) must be 7")
+	}
+
 	renderers := map[int]renderer{
 		0: &rendererBorder{i},
 		1: &rendererBoard{i},
@@ -116,10 +119,6 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 		4: &rendererPiece{i},
 		5: &rendererAnnotation{i},
 		6: &rendererMoves{i},
-	}
-
-	if len(i.settings.Order) != 7 {
-		return result, fmt.Errorf("len(order) must be 7")
 	}
 
 	for _, idx := range i.settings.Order {
@@ -165,12 +164,12 @@ func (i *Imager) getBoardSize() (image.Rectangle, error) {
 	}
 }
 
-func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
-	if path == "" {
+func (i *Imager) setFontFace(c *gg.Context, size int) error {
+	if i.settings.FontStyle.Path == "" {
 		// Use standard font
 		font, err := truetype.Parse(goregular.TTF)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
 		face := truetype.NewFace(font, &truetype.Options{Size: float64(size)})
@@ -178,7 +177,7 @@ func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
 		i.useInternalFont = true
 	} else {
 		// Load font specified in config file
-		err := c.LoadFontFace(path, float64(size))
+		err := c.LoadFontFace(i.settings.FontStyle.Path, float64(size))
 		if err != nil {
 			return fmt.Errorf("failed to load font face : %v", err)
 		}
