@@ -24,30 +24,25 @@ type Imager struct {
 	// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 	useInternalFont bool
 	settings        *Settings
-	boardImage      image.Image
 }
 
 // NewImager creates a new Imager.
 func NewImager() *Imager {
-	i := &Imager{}
-
 	// We ignore the error here, since the default embedded settings file
 	// should always be correct.
 	s, _ := loadDefaultSettings()
-	i.settings = s
 
-	return i
+	return &Imager{settings: s}
 }
 
 // NewImagerFromPath creates a new Imager using a user-defined JSON file.
 func NewImagerFromPath(path string) (i *Imager, err error) {
-	i = &Imager{}
-	i.settings, err = loadSettings(path)
+	s, err := loadSettings(path)
 	if err != nil {
 		return nil, err
 	}
 
-	return i, nil
+	return &Imager{settings: s}, nil
 }
 
 // Render renders an image of a chess board based on a FEN string.
@@ -57,8 +52,6 @@ func (i *Imager) Render(fen string) (image.Image, error) {
 
 // RenderWithContext renders an image of a chess board based on an image context.
 func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
-	var err error
-
 	size, err := i.getBoardSize()
 	if err != nil {
 		return nil, err
