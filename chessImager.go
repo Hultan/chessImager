@@ -216,6 +216,48 @@ func (i *Imager) setFontFace(path string, c *gg.Context, size int) error {
 	return nil
 }
 
+func (i *Imager) getBoardBox() Rectangle {
+	switch i.settings.Board.Type {
+	case boardTypeDefault:
+		border := float64(i.settings.Border.Width)
+		size := float64(i.settings.Board.Default.Size)
+
+		return Rectangle{
+			X:      border,
+			Y:      border,
+			Width:  size,
+			Height: size,
+		}
+	case boardTypeImage:
+		return i.settings.Board.Image.Rect
+	default:
+		panic("invalid board type")
+	}
+}
+
+func (i *Imager) getSquareBox(x, y int) Rectangle {
+	board := i.getBoardBox()
+	square := board.Width / 8
+
+	var dx, dy float64
+	switch i.settings.Board.Type {
+	case boardTypeDefault:
+		border := float64(i.settings.Border.Width)
+		dx, dy = border, border
+	case boardTypeImage:
+		dx, dy = board.X, board.Y
+	default:
+		panic("invalid board type")
+	}
+
+	return Rectangle{
+		X:      dx + float64(x)*square,
+		Y:      dy + float64(invert(y))*square,
+		Width:  square,
+		Height: square,
+	}
+}
+
 // loadSettings loads the settings from a json file
 // Path : The path to load the settings from.
 func loadSettings(path string) (*Settings, error) {

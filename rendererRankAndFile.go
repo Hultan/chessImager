@@ -48,7 +48,7 @@ func (r *rendererRankAndFile) draw(c *gg.Context, _ *ImageContext) error {
 		r.drawRanksAndFiles(c, 0, 0)
 	case rankAndFileTypeInSquares:
 		const padding = 3
-		square := float64(r.settings.getBoardBox().Width) / 8
+		square := float64(r.getBoardBox().Width) / 8
 		diff := (square - float64(fontSize) - padding) / 2
 		r.drawRanksAndFiles(c, diff, diff)
 	default:
@@ -89,7 +89,7 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 		if r.settings.RankAndFile.Type == rankAndFileTypeInBorder {
 			box = r.getRankBox(i)
 		} else {
-			box = r.settings.getSquareBox(0, i)
+			box = r.getSquareBox(0, i)
 		}
 		rf = append(rf, RankFile{box: box, text: text, typ: rank})
 
@@ -98,7 +98,7 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 		if r.settings.RankAndFile.Type == rankAndFileTypeInBorder {
 			box = r.getFileBox(i)
 		} else {
-			box = r.settings.getSquareBox(i, 0)
+			box = r.getSquareBox(i, 0)
 		}
 		rf = append(rf, RankFile{box: box, text: text, typ: file})
 	}
@@ -123,7 +123,7 @@ func (r *rendererRankAndFile) getFileText(n int) string {
 }
 
 func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
-	square := float64(r.settings.getBoardBox().Width) / 8
+	square := float64(r.getBoardBox().Width) / 8
 	border := float64(r.settings.Border.Width)
 
 	return Rectangle{
@@ -135,7 +135,7 @@ func (r *rendererRankAndFile) getRankBox(rank int) Rectangle {
 }
 
 func (r *rendererRankAndFile) getFileBox(file int) Rectangle {
-	square := float64(r.settings.getBoardBox().Width) / 8
+	square := float64(r.getBoardBox().Width) / 8
 	border := float64(r.settings.Border.Width)
 
 	return Rectangle{

@@ -51,7 +51,7 @@ func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rect
 		return Rectangle{}, err
 	}
 
-	rect := r.settings.getSquareBox(a.coords())
+	rect := r.getSquareBox(a.coords())
 	style := r.getStyle(annotation)
 	size := float64(style.Size)
 	space := 2.0

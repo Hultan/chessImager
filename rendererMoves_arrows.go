@@ -52,7 +52,7 @@ func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, m
 		return nil // Ignore no move
 	}
 
-	fx, fy := r.settings.getSquareBox(fromX, fromY).center()
+	fx, fy := r.getSquareBox(fromX, fromY).center()
 	rect, err := r.getNextToLast(move)
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	var dir1, dir2 = directionEast, directionWest
 	var lengthFactor = 1.5
 
-	square := r.settings.getSquareBox(0, 0)
+	square := r.getSquareBox(0, 0)
 	cdy := square.shrink(style.Factor).Width/2 + style.Padding
 
 	switch castling {
@@ -110,13 +110,13 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	// Render king castling arrow
 	king, _ := newAlg(kingPos, r.settings.Board.Default.Inverted)
 	styleBox := square.shrink(style.Factor)
-	fx, fy := r.settings.getSquareBox(king.coords()).center()
+	fx, fy := r.getSquareBox(king.coords()).center()
 	r.renderArrow(c, square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
 	// Render rook castling arrow
 	c.SetRGBA(style.Color2.toRGBA())
 	rook, _ := newAlg(rookPos, r.settings.Board.Default.Inverted)
-	fx, fy = r.settings.getSquareBox(rook.coords()).center()
+	fx, fy = r.getSquareBox(rook.coords()).center()
 	r.renderArrow(c, square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
 }
 
@@ -216,11 +216,11 @@ func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 	case dx == 0 && dy == 0:
 		return Rectangle{}, errors.New("no move") // Ignore no move
 	case dx == 0 || dy == 0 || abs(dx) == abs(dy): // Straight moves
-		return r.settings.getSquareBox(to.x-sgn(dx), to.y-sgn(dy)), nil
+		return r.getSquareBox(to.x-sgn(dx), to.y-sgn(dy)), nil
 	case abs(dx) == 1 && abs(dy) == 2: // Knight move 1
-		return r.settings.getSquareBox(to.x-sgn(dx), to.y), nil
+		return r.getSquareBox(to.x-sgn(dx), to.y), nil
 	case abs(dx) == 2 && abs(dy) == 1: // Knight move 2
-		return r.settings.getSquareBox(to.x, to.y-sgn(dy)), nil
+		return r.getSquareBox(to.x, to.y-sgn(dy)), nil
 	default:
 		panic("illegal move")
 	}
