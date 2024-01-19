@@ -42,13 +42,12 @@ chess board images from a **FEN** string by using the **chessImager.Render()** m
 
 If you want to create more advanced images with move arrows, highlighted squares or annotations, you'll need a 
 **Context** object. You can create that by using the **imager.NewContext()** method and passing a fen string to it. 
-Add all the moves, highlighted squares, annotations and the FEN string to the **context** object, and then call the 
-**Imager.RenderWithContext()** method, and provide the **Context** object to that method. 
+Add all the moves, highlighted squares and annotations to the **context** object, and then call 
+the **Imager.RenderWithContext()** method, and provide the **Context** object to that method. 
 
 The purpose of the **Context** struct is that you create one **Imager** object at the beginning of your code, and then 
 one **Context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
 discard the **Context** object, but keep the **Imager** object.
-
 
 ## Configuration
 
