@@ -1,9 +1,11 @@
+[![GoDoc](https://godoc.org/github.com/Hultan/chessImager?status.svg)](https://godoc.org/github.com/Hultan/chessImager)
 # ChessImager
 
 **ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly
 configurable, so that you can create chess board images that look exactly the way you want them to look.
 
 ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s repository [chessimage](https://github.com/cjsaylor/chessimage).
+
 
 ## Table of Contents
 
