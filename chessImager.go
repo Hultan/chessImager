@@ -292,11 +292,11 @@ func abs[T constraints.Float | constraints.Integer](x T) T {
 	return x
 }
 
-func sgn(dx int) int {
+func sgn(v int) int {
 	switch {
-	case dx < 0:
+	case v < 0:
 		return -1
-	case dx == 0:
+	case v == 0:
 		return 0
 	default:
 		return 1
