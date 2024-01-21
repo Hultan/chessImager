@@ -80,7 +80,7 @@
     "color": "#32CD32FF",
     "color2": "#6495EDFF",
     "factor": 0.15,
-    "padding": 5
+    "padding": 10
   },
   "font_style": {
     "path" : ""

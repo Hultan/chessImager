@@ -88,7 +88,7 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	var lengthFactor = 1.5
 
 	square := r.getSquareBox(0, 0)
-	cdy := square.shrink(style.Factor).Width/2 + style.Padding
+	cdy := style.Padding
 
 	switch castling {
 	case whiteKingSideCastling:

@@ -89,6 +89,7 @@ func TestAdvancedExample(t *testing.T) {
 		"#9D6B5EFF",  // Dot color
 		"#9D6B5EFF",  // Dot color 2
 		0.2,          // Dot size
+		0,            // Padding
 	)
 	if err != nil {
 		t.Fatalf("failed to create move style : %v", err)

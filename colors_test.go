@@ -10,7 +10,7 @@ func TestColors(t *testing.T) {
 	ctx := NewImager().NewContext(fen)
 
 	// Test color #RRGGBBAA
-	s, err := ctx.NewMoveStyle(MoveTypeDots, "#9D6B5EFF", "9D6B5E", 0.2)
+	s, err := ctx.NewMoveStyle(MoveTypeDots, "#9D6B5EFF", "9D6B5E", 0.2, 0)
 	if err != nil {
 		t.Fatalf("failed to create style with color #RRGGBBAA: %v", err)
 	}
@@ -19,7 +19,7 @@ func TestColors(t *testing.T) {
 	}
 
 	// Test color #RRGGBB
-	s, err = ctx.NewMoveStyle(MoveTypeDots, "#9D6B5E", "9D6B5E", 0.2)
+	s, err = ctx.NewMoveStyle(MoveTypeDots, "#9D6B5E", "9D6B5E", 0.2, 0)
 	if err != nil {
 		t.Fatalf("failed to create style with color #RRGGBB: %v", err)
 	}
@@ -28,7 +28,7 @@ func TestColors(t *testing.T) {
 	}
 
 	// Test color RRGGBBAA
-	s, err = ctx.NewMoveStyle(MoveTypeDots, "9D6B5EFF", "9D6B5E", 0.2)
+	s, err = ctx.NewMoveStyle(MoveTypeDots, "9D6B5EFF", "9D6B5E", 0.2, 0)
 	if err != nil {
 		t.Fatalf("failed to create style with color RRGGBBAA: %v", err)
 	}
@@ -37,7 +37,7 @@ func TestColors(t *testing.T) {
 	}
 
 	// Test color RRGGBB
-	s, err = ctx.NewMoveStyle(MoveTypeDots, "9D6B5E", "9D6B5E", 0.2)
+	s, err = ctx.NewMoveStyle(MoveTypeDots, "9D6B5E", "9D6B5E", 0.2, 0)
 	if err != nil {
 		t.Fatalf("failed to create style with color RRGGBB: %v", err)
 	}

@@ -11,7 +11,7 @@ func TestMovesDots(t *testing.T) {
 	imager := NewImager()
 	ctx := imager.NewContext(fen)
 
-	style, err := ctx.NewMoveStyle(MoveTypeDots, "#333333", "#333333", 0.5)
+	style, err := ctx.NewMoveStyle(MoveTypeDots, "#333333", "#333333", 0.5, 0)
 	if err != nil {
 		t.Fatalf("Failed to create a highlight style: %v", err)
 	}
@@ -113,7 +113,7 @@ func TestMovesCastlingKing_Dots(t *testing.T) {
 	imager := NewImager()
 	ctx := imager.NewContext(fen)
 
-	style, err := ctx.NewMoveStyle(MoveTypeDots, "#33FF33", "#3333FF", 0.2)
+	style, err := ctx.NewMoveStyle(MoveTypeDots, "#33FF33", "#3333FF", 0.2, 10)
 	if err != nil {
 		t.Fatalf("Failed to create a highlight style: %v", err)
 	}
@@ -132,7 +132,7 @@ func TestMovesCastlingQueen_Dots(t *testing.T) {
 	imager := NewImager()
 	ctx := imager.NewContext(fen)
 
-	style, err := ctx.NewMoveStyle(MoveTypeDots, "#33FF33", "#3333FF", 0.2)
+	style, err := ctx.NewMoveStyle(MoveTypeDots, "#33FF33", "#3333FF", 0.2, 10)
 	if err != nil {
 		t.Fatalf("Failed to create a highlight style: %v", err)
 	}

@@ -101,7 +101,8 @@ func (c *ImageContext) NewAnnotationStyle(pos PositionType, size, fontSize, bord
 }
 
 // NewMoveStyle creates a new move style.
-func (c *ImageContext) NewMoveStyle(typ MoveType, color string, color2 string, factor float64) (*MoveStyle, error) {
+func (c *ImageContext) NewMoveStyle(typ MoveType, color string, color2 string, factor float64,
+	padding float64) (*MoveStyle, error) {
 	col, err := hexToRGBA(color)
 	if err != nil {
 		return nil, err
@@ -113,9 +114,10 @@ func (c *ImageContext) NewMoveStyle(typ MoveType, color string, color2 string, f
 	}
 
 	return &MoveStyle{
-		Color:  ColorRGBA{col},
-		Color2: ColorRGBA{col2},
-		Type:   typ,
-		Factor: factor,
+		Color:   ColorRGBA{col},
+		Color2:  ColorRGBA{col2},
+		Type:    typ,
+		Factor:  factor,
+		Padding: padding,
 	}, nil
 }

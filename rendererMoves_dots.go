@@ -95,7 +95,7 @@ func (r *rendererMoves) renderCastlingDottedLine(c *gg.Context, castling castlin
 		rookMoves = 4
 	}
 	// Calculate the castling dy
-	cdy := r.getSquareBox(0, 0).shrink(style.Factor).Width/2 + style.Padding
+	cdy := style.Padding
 
 	c.SetRGBA(style.Color.toRGBA())
 	r.renderDottedLine(c, &kx, &ky, dx, dy, 3, -cdy, style)
