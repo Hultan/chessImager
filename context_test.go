@@ -249,3 +249,16 @@ func TestRenderInverted(t *testing.T) {
 
 	compareImages(t, filename, &img)
 }
+
+func TestRenderInvertedImage(t *testing.T) {
+	filename := "movesInvertedImage.png"
+
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	imager, _ := NewImagerFromPath("test/data/other.json")
+	ctx := imager.NewContext(fen)
+
+	// Render the image
+	img, _ := imager.RenderWithContextInverted(ctx)
+
+	compareImages(t, filename, &img)
+}

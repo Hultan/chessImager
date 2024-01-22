@@ -79,6 +79,7 @@ func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
 }
 
 // RenderWithContextInverted renders an image of an inverted chess board based on an image context.
+// When Board.Type = Image, a normal board with white at the bottom will be generated.
 func (i *Imager) RenderWithContextInverted(ctx *ImageContext) (image.Image, error) {
 	old := i.settings.Board.Default.Inverted
 	i.settings.Board.Default.Inverted = true
