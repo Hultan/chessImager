@@ -78,6 +78,16 @@ func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
 	return c.Image(), nil
 }
 
+// RenderWithContextInverted renders an image of an inverted chess board based on an image context.
+func (i *Imager) RenderWithContextInverted(ctx *ImageContext) (image.Image, error) {
+	old := i.settings.Board.Default.Inverted
+	i.settings.Board.Default.Inverted = true
+	img, err := i.RenderWithContext(ctx)
+	i.settings.Board.Default.Inverted = old
+
+	return img, err
+}
+
 // NewContext creates a new image context, which can be used to:
 // * Add highlighted squares
 // * Add annotations

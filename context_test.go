@@ -230,3 +230,22 @@ func TestAnnotation(t *testing.T) {
 
 	compareImages(t, filename, &img)
 }
+
+func TestRenderInverted(t *testing.T) {
+	filename := "movesInverted.png"
+
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	imager := NewImager()
+	ctx := imager.NewContext(fen)
+
+	// Render the image
+	oldInverted := imager.settings.Board.Default.Inverted
+	img, _ := imager.RenderWithContextInverted(ctx)
+	newInverted := imager.settings.Board.Default.Inverted
+
+	if newInverted != oldInverted {
+		t.Errorf("Expected inverted flag to not change!")
+	}
+
+	compareImages(t, filename, &img)
+}
