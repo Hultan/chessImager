@@ -1,5 +1,4 @@
 test:
-	go build chessImager.go
 	go test ./... -v
 
 test_coverage:
