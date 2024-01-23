@@ -46,14 +46,15 @@ For examples of how to use chessImager, see the [Examples section](#examples), a
 Start by creating an **Imager** object by calling the **chessImager.NewImager()** function. With this object, you can 
 render simple chess board images from a **FEN** string by using the **imager.Render()** method.
 
-If you want to create more advanced images with move arrows, highlighted squares or annotations, you'll need a 
-**Context** object. You can create that by using the **imager.NewContext()** method and passing a fen string to it. 
-Add all the moves, highlighted squares and annotations to the **context** object, and then call 
-the **imager.RenderWithContext()** method, and provide the **context** object to that method. 
+If you want to create more advanced images with move arrows, highlighted squares and/or annotations, you'll need a 
+**ImageContext** object for each image you want to create. You can create that by using the **imager.NewContext()** 
+method and passing a fen string to it. Add all the moves, highlighted squares and annotations to
+the **context** object, and then call the **imager.RenderWithContext()** method, and provide the
+**context** object to that method. 
 
-The purpose of the **Context** object is that you create one **Imager** object at the beginning of your code, and then 
-one **Context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
-discard the old **Context** object, and create a new one.
+The purpose of the **context** object is that you create one **imager** object at the beginning of your code, and then 
+one **context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
+discard the **context** object, and create a new one.
 
 ## Configuration
 
