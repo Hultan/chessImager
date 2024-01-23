@@ -1,8 +1,8 @@
 [![License](https://img.shields.io/github/license/Hultan/chessImager?style=flat)]()
 [![GoDoc](https://godoc.org/github.com/Hultan/chessImager?status.svg)](https://godoc.org/github.com/Hultan/chessImager)
+[![Go Report Card](https://goreportcard.com/badge/Hultan/chessImager)](https://goreportcard.com/report/Hultan/chessImager)
 <!--[![Build Status](https://github.com/Hultan/chessImager/actions/workflows/ci.yml/badge.svg)](https://github.
 com/Hultan/chessImager/actions?query=workflow%2ACI+branch=main)-->
-[![Go Report Card](https://goreportcard.com/badge/Hultan/chessImager)](https://goreportcard.com/report/Hultan/chessImager)
 # ChessImager
 
 **ChessImager** is a **Go** package that creates images of chess boards based on a **FEN** string. It is highly
