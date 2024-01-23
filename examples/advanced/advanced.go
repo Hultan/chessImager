@@ -38,6 +38,7 @@ func main() {
 		"#9D6B5EFF",              // Dot color
 		"#9D6B5EFF",              // Dot color 2
 		0.2,                      // Dot size
+		0,                        // Padding
 	)
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and

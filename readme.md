@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/github/license/Hultan/chessImager?style=flat)]()
 [![GoDoc](https://godoc.org/github.com/Hultan/chessImager?status.svg)](https://godoc.org/github.com/Hultan/chessImager)
 [![Go Report Card](https://goreportcard.com/badge/Hultan/chessImager)](https://goreportcard.com/report/Hultan/chessImager)
-<!--[![Build Status](https://github.com/Hultan/chessImager/actions/workflows/ci.yml/badge.svg)](https://github.
+<!--[![Test Status](https://github.com/Hultan/chessImager/actions/workflows/ci.yml/badge.svg)](https://github.
 com/Hultan/chessImager/actions?query=workflow%2ACI+branch=main)-->
 # ChessImager
 
@@ -460,6 +460,7 @@ Another alternative is to use the method `AddMoveWithStyle()`, that allows you t
       "#9D6B5EFF",              // Dot color
       "#9D6B5EFF",              // Dot color 2
       0.2,                      // Dot size
+	  0,                        // Padding
    )
    ctx.AddMoveWithStyle("e7", "c5", ms)
    
@@ -592,8 +593,9 @@ Read more about renderers and their order in the [render order](#render-order) s
       "#9D6B5EFF",                        // Dot color 
 	  "#9D6B5EFF",                        // Dot color 2
       0.2,                                // Dot size
+	  0,                                  // Padding
    )
-   
+   ~~~~
    // Highlight the e7 square, annotate e7 as a brilliant move (!!) and
    // show move e1-e7.
    ctx.AddHighlightWithStyle("e7", hs)
