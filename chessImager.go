@@ -21,7 +21,7 @@ import (
 var defaultSettings string
 
 type renderer interface {
-	draw(*gg.Context, *ImageContext) error
+	draw() error
 }
 
 // Imager is the main struct that is used to create chess board images
@@ -64,12 +64,12 @@ func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
 	}
 	c := gg.NewContextForImage(image.NewRGBA(size))
 
-	r, err := i.getRenderers()
+	r, err := i.getRenderers(c, ctx)
 	if err != nil {
 		return nil, err
 	}
 	for _, rend := range r {
-		err = rend.draw(c, ctx)
+		err = rend.draw()
 		if err != nil {
 			return nil, err
 		}
@@ -113,7 +113,7 @@ func (i *Imager) SetOrder(order []int) error {
 }
 
 // getRenderers returns a slice of all the renderers in the given order
-func (i *Imager) getRenderers() ([]renderer, error) {
+func (i *Imager) getRenderers(gg *gg.Context, ctx *ImageContext) ([]renderer, error) {
 	var result []renderer
 
 	if len(i.settings.Order) != 7 {
@@ -121,13 +121,13 @@ func (i *Imager) getRenderers() ([]renderer, error) {
 	}
 
 	renderers := map[int]renderer{
-		0: &rendererBorder{i},
-		1: &rendererBoard{i},
-		2: &rendererRankAndFile{i},
-		3: &rendererHighlight{i},
-		4: &rendererPiece{i},
-		5: &rendererAnnotation{i},
-		6: &rendererMoves{i},
+		0: &rendererBorder{Imager: i, ctx: ctx, gg: gg},
+		1: &rendererBoard{Imager: i, ctx: ctx, gg: gg},
+		2: &rendererRankAndFile{Imager: i, ctx: ctx, gg: gg},
+		3: &rendererHighlight{Imager: i, ctx: ctx, gg: gg},
+		4: &rendererPiece{Imager: i, ctx: ctx, gg: gg},
+		5: &rendererAnnotation{Imager: i, ctx: ctx, gg: gg},
+		6: &rendererMoves{Imager: i, ctx: ctx, gg: gg},
 	}
 
 	for _, idx := range i.settings.Order {
