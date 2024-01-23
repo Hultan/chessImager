@@ -243,7 +243,7 @@ func TestRenderInverted(t *testing.T) {
 	img, _ := imager.RenderWithContextInverted(ctx)
 	newInverted := imager.settings.Board.Default.Inverted
 
-	if newInverted == oldInverted {
+	if newInverted != oldInverted {
 		t.Errorf("Expected inverted flag to not change!")
 	}
 
