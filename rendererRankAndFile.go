@@ -11,6 +11,8 @@ const borderLimit = 10
 
 type rendererRankAndFile struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
 type RankFile struct {
@@ -19,26 +21,26 @@ type RankFile struct {
 	text string
 }
 
-func (r *rendererRankAndFile) draw(c *gg.Context, _ *ImageContext) error {
+func (r *rendererRankAndFile) draw() error {
 	if r.shouldDrawRankAndFile() {
 		return nil
 	}
 
 	fontSize := r.settings.RankAndFile.FontSize
-	c.SetRGBA(r.settings.RankAndFile.FontColor.toRGBA())
-	err := r.setFontFace(c, fontSize)
+	r.gg.SetRGBA(r.settings.RankAndFile.FontColor.toRGBA())
+	err := r.setFontFace(r.gg, fontSize)
 	if err != nil {
 		return err
 	}
 
 	switch r.settings.RankAndFile.Type {
 	case rankAndFileTypeInBorder:
-		r.drawRanksAndFiles(c, 0, 0)
+		r.drawRanksAndFiles(0, 0)
 	case rankAndFileTypeInSquares:
 		const padding = 3
 		square := float64(r.getBoardBox().Width) / 8
 		diff := (square - float64(fontSize) - padding) / 2
-		r.drawRanksAndFiles(c, diff, diff)
+		r.drawRanksAndFiles(diff, diff)
 	default:
 		return errors.New("invalid rank and file type")
 	}
@@ -53,7 +55,7 @@ func (r *rendererRankAndFile) shouldDrawRankAndFile() bool {
 		border < borderLimit
 }
 
-func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
+func (r *rendererRankAndFile) drawRanksAndFiles(dx, dy float64) {
 	rfBoxes := r.getRFBoxes()
 
 	var diff float64
@@ -62,14 +64,14 @@ func (r *rendererRankAndFile) drawRanksAndFiles(c *gg.Context, dx, dy float64) {
 	}
 
 	for _, rfBox := range rfBoxes {
-		tw, th := c.MeasureString(rfBox.text)
+		tw, th := r.gg.MeasureString(rfBox.text)
 		x := rfBox.box.X + (rfBox.box.Width-tw)/2
 		// We are adjusting by 2 pixels here because of bug in MeasureString?
 		y := rfBox.box.Y + (rfBox.box.Height-th)/2 + th + diff
 		if rfBox.typ == rank {
-			c.DrawString(rfBox.text, x-dx, y-dy)
+			r.gg.DrawString(rfBox.text, x-dx, y-dy)
 		} else {
-			c.DrawString(rfBox.text, x+dx, y+dy)
+			r.gg.DrawString(rfBox.text, x+dx, y+dy)
 		}
 	}
 }

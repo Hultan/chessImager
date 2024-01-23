@@ -8,21 +8,23 @@ import (
 
 type rendererAnnotation struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
-func (r *rendererAnnotation) draw(c *gg.Context, ctx *ImageContext) error {
-	if ctx == nil {
+func (r *rendererAnnotation) draw() error {
+	if r.ctx == nil {
 		return nil
 	}
-	for _, annotation := range ctx.Annotations {
+	for _, annotation := range r.ctx.Annotations {
 		rect, err := r.getAnnotationRectangle(annotation)
 		if err != nil {
 			return err
 		}
 
-		r.drawAnnotationCircle(c, annotation, rect)
+		r.drawAnnotationCircle(annotation, rect)
 
-		err = r.drawAnnotationText(c, annotation, rect)
+		err = r.drawAnnotationText(annotation, rect)
 		if err != nil {
 			return err
 		}
@@ -31,32 +33,32 @@ func (r *rendererAnnotation) draw(c *gg.Context, ctx *ImageContext) error {
 	return nil
 }
 
-func (r *rendererAnnotation) drawAnnotationText(c *gg.Context, annotation Annotation, rect Rectangle) error {
+func (r *rendererAnnotation) drawAnnotationText(annotation Annotation, rect Rectangle) error {
 	x, y := rect.center()
 	style := r.getStyle(annotation)
-	err := r.setFontFace(c, style.FontSize)
+	err := r.setFontFace(r.gg, style.FontSize)
 
-	c.SetRGBA(style.FontColor.toRGBA())
+	r.gg.SetRGBA(style.FontColor.toRGBA())
 	if err != nil {
 		return err
 	}
 	if r.useInternalFont {
 		y -= 3 // SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 	}
-	c.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
+	r.gg.DrawStringAnchored(annotation.Text, x, y, 0.5, 0.5)
 
 	return nil
 }
 
-func (r *rendererAnnotation) drawAnnotationCircle(c *gg.Context, annotation Annotation, rect Rectangle) {
+func (r *rendererAnnotation) drawAnnotationCircle(annotation Annotation, rect Rectangle) {
 	style := r.getStyle(annotation)
 	x, y := rect.center()
-	c.SetRGBA(style.BorderColor.toRGBA())
-	c.DrawCircle(x, y, rect.Width/2)
-	c.Fill()
-	c.SetRGBA(style.BackgroundColor.toRGBA())
-	c.DrawCircle(x, y, rect.Width/2-float64(r.getStyle(annotation).BorderWidth))
-	c.Fill()
+	r.gg.SetRGBA(style.BorderColor.toRGBA())
+	r.gg.DrawCircle(x, y, rect.Width/2)
+	r.gg.Fill()
+	r.gg.SetRGBA(style.BackgroundColor.toRGBA())
+	r.gg.DrawCircle(x, y, rect.Width/2-float64(r.getStyle(annotation).BorderWidth))
+	r.gg.Fill()
 }
 
 func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rectangle, error) {

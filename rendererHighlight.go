@@ -8,14 +8,16 @@ import (
 
 type rendererHighlight struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
-func (r *rendererHighlight) draw(c *gg.Context, ctx *ImageContext) error {
-	if ctx == nil {
+func (r *rendererHighlight) draw() error {
+	if r.ctx == nil {
 		return nil
 	}
 
-	for _, high := range ctx.Highlight {
+	for _, high := range r.ctx.Highlight {
 		square, err := newAlg(high.Square, r.settings.Board.Default.Inverted)
 		if err != nil {
 			return err
@@ -23,19 +25,19 @@ func (r *rendererHighlight) draw(c *gg.Context, ctx *ImageContext) error {
 		b := r.getSquareBox(square.coords())
 
 		style := r.getStyle(high)
-		c.SetRGBA(style.Color.toRGBA())
+		r.gg.SetRGBA(style.Color.toRGBA())
 
 		switch style.Type {
 		case HighlightTypeFull:
-			r.highlightFull(c, b)
+			r.highlightFull(b)
 		case HighlightTypeBorder:
-			r.highlightBorder(c, b, style)
+			r.highlightBorder(b, style)
 		case HighlightTypeCircle:
-			r.highlightCircle(c, b, style)
+			r.highlightCircle(b, style)
 		case HighlightTypeFilledCircle:
-			r.highlightCircleFilled(c, b, style)
+			r.highlightCircleFilled(b, style)
 		case HighlightTypeX:
-			r.highlightX(c, b, style)
+			r.highlightX(b, style)
 		default:
 			return errors.New("invalid highlight type")
 		}
@@ -44,42 +46,42 @@ func (r *rendererHighlight) draw(c *gg.Context, ctx *ImageContext) error {
 	return nil
 }
 
-func (r *rendererHighlight) highlightX(c *gg.Context, b Rectangle, style *HighlightStyle) {
+func (r *rendererHighlight) highlightX(b Rectangle, style *HighlightStyle) {
 	bb := b.shrink(style.Factor)
 	x, y, w, h := bb.coords()
-	c.SetLineWidth(float64(style.Width))
-	c.DrawLine(x, y, x+w, y+h)
-	c.DrawLine(x+w, y, x, y+h)
-	c.Stroke()
+	r.gg.SetLineWidth(float64(style.Width))
+	r.gg.DrawLine(x, y, x+w, y+h)
+	r.gg.DrawLine(x+w, y, x, y+h)
+	r.gg.Stroke()
 }
 
-func (r *rendererHighlight) highlightCircleFilled(c *gg.Context, b Rectangle, style *HighlightStyle) {
+func (r *rendererHighlight) highlightCircleFilled(b Rectangle, style *HighlightStyle) {
 	bb := b.shrink(style.Factor)
 	x, y := bb.center()
-	c.DrawCircle(x, y, bb.Width/2)
-	c.Fill()
+	r.gg.DrawCircle(x, y, bb.Width/2)
+	r.gg.Fill()
 }
 
-func (r *rendererHighlight) highlightCircle(c *gg.Context, b Rectangle, style *HighlightStyle) {
+func (r *rendererHighlight) highlightCircle(b Rectangle, style *HighlightStyle) {
 	bb := b.shrink(style.Factor)
 	x, y := bb.center()
-	c.SetLineWidth(float64(style.Width))
-	c.DrawCircle(x, y, bb.Width/2)
-	c.Stroke()
+	r.gg.SetLineWidth(float64(style.Width))
+	r.gg.DrawCircle(x, y, bb.Width/2)
+	r.gg.Stroke()
 }
 
-func (r *rendererHighlight) highlightBorder(c *gg.Context, b Rectangle, style *HighlightStyle) {
+func (r *rendererHighlight) highlightBorder(b Rectangle, style *HighlightStyle) {
 	x, y, w, h := b.coords()
 	bw := float64(style.Width)
-	c.SetLineWidth(bw)
-	c.DrawRectangle(x+bw/2, y+bw/2, w-bw, h-bw)
-	c.Stroke()
+	r.gg.SetLineWidth(bw)
+	r.gg.DrawRectangle(x+bw/2, y+bw/2, w-bw, h-bw)
+	r.gg.Stroke()
 }
 
-func (r *rendererHighlight) highlightFull(c *gg.Context, b Rectangle) {
+func (r *rendererHighlight) highlightFull(b Rectangle) {
 	x, y, w, h := b.coords()
-	c.DrawRectangle(x, y, w, h)
-	c.Fill()
+	r.gg.DrawRectangle(x, y, w, h)
+	r.gg.Fill()
 }
 
 func (r *rendererHighlight) getStyle(high HighlightedSquare) *HighlightStyle {

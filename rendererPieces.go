@@ -17,6 +17,8 @@ var defaultPieces []byte
 
 type rendererPiece struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
 type PieceRectangle struct {
@@ -28,15 +30,15 @@ type SubImager interface {
 	SubImage(r image.Rectangle) image.Image
 }
 
-func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
-	err := r.loadPieces(ctx)
+func (r *rendererPiece) draw() error {
+	err := r.loadPieces()
 	if err != nil {
 		return err
 	}
 
 	// FEN is validated before rendering starts,
 	// so it should be OK here.
-	fen := normalizeFEN(ctx.Fen)
+	fen := normalizeFEN(r.ctx.Fen)
 	fens := strings.Split(fen, "/")
 
 	var inv = r.settings.Board.Default.Inverted
@@ -47,7 +49,7 @@ func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
 	for rank, row := range fens {
 		for file, piece := range row {
 			if p := letter2Piece[piece]; p != noPiece {
-				c.DrawImage(r.getImageAndPosition(ctx.pieces[p], file, rank, inv))
+				r.gg.DrawImage(r.getImageAndPosition(r.ctx.pieces[p], file, rank, inv))
 			}
 		}
 	}
@@ -55,11 +57,11 @@ func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
 	return nil
 }
 
-func (r *rendererPiece) loadPieces(ctx *ImageContext) error {
-	ctx.pieces = make(map[chessPiece]image.Image, 12)
+func (r *rendererPiece) loadPieces() error {
+	r.ctx.pieces = make(map[chessPiece]image.Image, 12)
 
-	r.loadPieceMap(ctx)
-	r.loadEmbeddedPieceMap(ctx)
+	r.loadPieceMap()
+	r.loadEmbeddedPieceMap()
 
 	switch r.settings.Pieces.Type {
 	case piecesTypeDefault:
@@ -67,7 +69,7 @@ func (r *rendererPiece) loadPieces(ctx *ImageContext) error {
 		if err != nil {
 			return err
 		}
-		err = r.loadImageMapPieces(imageMap, ctx.embeddedPieces, ctx)
+		err = r.loadImageMapPieces(imageMap, r.ctx.embeddedPieces)
 		if err != nil {
 			return err
 		}
@@ -82,7 +84,7 @@ func (r *rendererPiece) loadPieces(ctx *ImageContext) error {
 				return err
 			}
 
-			ctx.pieces[ctx.pieceMap[strings.ToUpper(piece.Piece)]] = r.resize(img)
+			r.ctx.pieces[r.ctx.pieceMap[strings.ToUpper(piece.Piece)]] = r.resize(img)
 		}
 	case piecesTypeImageMap:
 		f, err := os.Open(r.settings.Pieces.ImageMap.Path)
@@ -93,8 +95,8 @@ func (r *rendererPiece) loadPieces(ctx *ImageContext) error {
 		if err != nil {
 			return err
 		}
-		pr := r.createPieceRectangleSlice(r.settings.Pieces.ImageMap.Pieces, ctx)
-		err = r.loadImageMapPieces(imageMap, pr, ctx)
+		pr := r.createPieceRectangleSlice(r.settings.Pieces.ImageMap.Pieces)
+		err = r.loadImageMapPieces(imageMap, pr)
 		if err != nil {
 			return err
 		}
@@ -103,22 +105,22 @@ func (r *rendererPiece) loadPieces(ctx *ImageContext) error {
 	return nil
 }
 
-func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, pr []PieceRectangle, ctx *ImageContext) error {
+func (r *rendererPiece) loadImageMapPieces(imageMap image.Image, pr []PieceRectangle) error {
 	sub, ok := imageMap.(SubImager)
 	if !ok {
 		return errors.New("failed to create SubImager. Wrong image type? Try PNG")
 	}
 	for _, item := range pr {
-		ctx.pieces[item.piece] = r.resize(sub.SubImage(item.rect.toImageRect()))
+		r.ctx.pieces[item.piece] = r.resize(sub.SubImage(item.rect.toImageRect()))
 	}
 	return nil
 }
 
-func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece, ctx *ImageContext) []PieceRectangle {
+func (r *rendererPiece) createPieceRectangleSlice(mapPieces [12]ImageMapPiece) []PieceRectangle {
 	result := make([]PieceRectangle, len(mapPieces))
 	for _, piece := range mapPieces {
 		result = append(result, PieceRectangle{
-			piece: ctx.pieceMap[strings.ToUpper(piece.Piece)],
+			piece: r.ctx.pieceMap[strings.ToUpper(piece.Piece)],
 			rect:  piece.Rect,
 		})
 	}
@@ -143,8 +145,8 @@ func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int, inv bool)
 	return img, int(board.X) + x*int(box.Width) + diff, int(board.Y) + y*int(box.Height) + diff
 }
 
-func (r *rendererPiece) loadPieceMap(ctx *ImageContext) {
-	ctx.pieceMap = map[string]chessPiece{
+func (r *rendererPiece) loadPieceMap() {
+	r.ctx.pieceMap = map[string]chessPiece{
 		"WK": whiteKing,
 		"WQ": whiteQueen,
 		"WR": whiteRook,
@@ -160,8 +162,8 @@ func (r *rendererPiece) loadPieceMap(ctx *ImageContext) {
 	}
 }
 
-func (r *rendererPiece) loadEmbeddedPieceMap(ctx *ImageContext) {
-	ctx.embeddedPieces = []PieceRectangle{
+func (r *rendererPiece) loadEmbeddedPieceMap() {
+	r.ctx.embeddedPieces = []PieceRectangle{
 		{whiteKing, Rectangle{0, 0, 333, 333}},
 		{whiteQueen, Rectangle{333, 0, 333, 333}},
 		{whiteBishop, Rectangle{666, 0, 333, 333}},

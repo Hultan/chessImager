@@ -8,15 +8,17 @@ import (
 
 type rendererMoves struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
-func (r *rendererMoves) draw(c *gg.Context, ctx *ImageContext) error {
-	if ctx == nil {
+func (r *rendererMoves) draw() error {
+	if r.ctx == nil {
 		return nil
 	}
 
-	for _, move := range ctx.Moves {
-		err := r.renderMove(c, move)
+	for _, move := range r.ctx.Moves {
+		err := r.renderMove(move)
 		if err != nil {
 			return err
 		}
@@ -25,15 +27,15 @@ func (r *rendererMoves) draw(c *gg.Context, ctx *ImageContext) error {
 	return nil
 }
 
-func (r *rendererMoves) renderMove(c *gg.Context, move Move) error {
+func (r *rendererMoves) renderMove(move Move) error {
 	var err error
 	style := r.getStyle(move)
 
 	switch style.Type {
 	case MoveTypeDots:
-		err = r.renderDottedMove(c, style, move)
+		err = r.renderDottedMove(style, move)
 	case MoveTypeArrow:
-		err = r.renderArrowMove(c, style, move)
+		err = r.renderArrowMove(style, move)
 	default:
 		err = errors.New("illegal move type")
 	}

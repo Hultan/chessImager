@@ -4,16 +4,18 @@ import "github.com/fogleman/gg"
 
 type rendererBorder struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
-func (r *rendererBorder) draw(c *gg.Context, _ *ImageContext) error {
+func (r *rendererBorder) draw() error {
 	if r.settings.Board.Type == boardTypeImage {
 		return nil
 	}
 
 	// Set background color to border color
-	c.SetRGBA(r.settings.Border.Color.toRGBA())
-	c.Clear()
+	r.gg.SetRGBA(r.settings.Border.Color.toRGBA())
+	r.gg.Clear()
 
 	return nil
 }

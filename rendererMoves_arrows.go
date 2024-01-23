@@ -8,8 +8,8 @@ import (
 	"github.com/fogleman/gg"
 )
 
-func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Move) error {
-	c.SetRGBA(style.Color.toRGBA())
+func (r *rendererMoves) renderArrowMove(style *MoveStyle, move Move) error {
+	r.gg.SetRGBA(style.Color.toRGBA())
 
 	from, err := newAlg(move.From, r.settings.Board.Default.Inverted)
 	if err != nil {
@@ -27,15 +27,15 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 	case to.status == moveStatusIllegal:
 		return errors.New(fmt.Sprintf("illegal to move : %s", to))
 	case from.status == moveStatusKingSideCastling && to.status == moveStatusEmpty:
-		r.renderCastlingArrow(c, style, whiteKingSideCastling)
+		r.renderCastlingArrow(style, whiteKingSideCastling)
 	case from.status == moveStatusQueenSideCastling && to.status == moveStatusEmpty:
-		r.renderCastlingArrow(c, style, whiteQueenSideCastling)
+		r.renderCastlingArrow(style, whiteQueenSideCastling)
 	case from.status == moveStatusEmpty && to.status == moveStatusKingSideCastling:
-		r.renderCastlingArrow(c, style, blackKingSideCastling)
+		r.renderCastlingArrow(style, blackKingSideCastling)
 	case from.status == moveStatusEmpty && to.status == moveStatusQueenSideCastling:
-		r.renderCastlingArrow(c, style, blackQueenSideCastling)
+		r.renderCastlingArrow(style, blackQueenSideCastling)
 	case from.status == moveStatusNormal && to.status == moveStatusNormal:
-		err = r.renderNormalMoveArrow(c, style, move, from, to)
+		err = r.renderNormalMoveArrow(style, move, from, to)
 		if err != nil {
 			return err
 		}
@@ -44,7 +44,7 @@ func (r *rendererMoves) renderArrowMove(c *gg.Context, style *MoveStyle, move Mo
 	return nil
 }
 
-func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, move Move, from alg, to alg) error {
+func (r *rendererMoves) renderNormalMoveArrow(style *MoveStyle, move Move, from alg, to alg) error {
 	fromX, fromY := from.coords()
 	toX, toY := to.coords()
 	dx, dy := toX-fromX, toY-fromY
@@ -69,20 +69,20 @@ func (r *rendererMoves) renderNormalMoveArrow(c *gg.Context, style *MoveStyle, m
 			factor = math.Sqrt(2)
 		}
 		length += rect.Width/2*factor - styleBox.Width
-		r.renderArrow(c, length, styleBox.Width, fx, fy, 0, dir)
+		r.renderArrow(length, styleBox.Width, fx, fy, 0, dir)
 	} else {
 		// Knight type move (or other weird illegal move)
 		dir, rl := r.getKnightDirection(dx, dy)
 		if rl == right {
-			r.renderKnightArrowRight(c, rect.Width, styleBox.Width, fx, fy, dir)
+			r.renderKnightArrowRight(rect.Width, styleBox.Width, fx, fy, dir)
 		} else {
-			r.renderKnightArrowLeft(c, rect.Width, styleBox.Width, fx, fy, dir)
+			r.renderKnightArrowLeft(rect.Width, styleBox.Width, fx, fy, dir)
 		}
 	}
 	return nil
 }
 
-func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, castling castlingStatus) {
+func (r *rendererMoves) renderCastlingArrow(style *MoveStyle, castling castlingStatus) {
 	var kingPos, rookPos string
 	var dir1, dir2 = directionEast, directionWest
 	var lengthFactor = 1.5
@@ -111,63 +111,63 @@ func (r *rendererMoves) renderCastlingArrow(c *gg.Context, style *MoveStyle, cas
 	king, _ := newAlg(kingPos, r.settings.Board.Default.Inverted)
 	styleBox := square.shrink(style.Factor)
 	fx, fy := r.getSquareBox(king.coords()).center()
-	r.renderArrow(c, square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
+	r.renderArrow(square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
 	// Render rook castling arrow
-	c.SetRGBA(style.Color2.toRGBA())
+	r.gg.SetRGBA(style.Color2.toRGBA())
 	rook, _ := newAlg(rookPos, r.settings.Board.Default.Inverted)
 	fx, fy = r.getSquareBox(rook.coords()).center()
-	r.renderArrow(c, square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
+	r.renderArrow(square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
 }
 
-func (r *rendererMoves) renderArrow(c *gg.Context, length, width, fx, fy, dy float64, dir direction) {
-	c.RotateAbout(gg.Radians(float64(dir)), fx, fy)
-	c.MoveTo(fx-width/2+dy, fy)
-	c.LineTo(fx-width/2+dy, fy-length)
-	c.LineTo(fx-width+dy, fy-length)
-	c.LineTo(fx+dy, fy-length-width)
-	c.LineTo(fx+width+dy, fy-length)
-	c.LineTo(fx+width/2+dy, fy-length)
-	c.LineTo(fx+width/2+dy, fy)
-	c.LineTo(fx-width/2+dy, fy)
-	c.Fill()
-	c.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
+func (r *rendererMoves) renderArrow(length, width, fx, fy, dy float64, dir direction) {
+	r.gg.RotateAbout(gg.Radians(float64(dir)), fx, fy)
+	r.gg.MoveTo(fx-width/2+dy, fy)
+	r.gg.LineTo(fx-width/2+dy, fy-length)
+	r.gg.LineTo(fx-width+dy, fy-length)
+	r.gg.LineTo(fx+dy, fy-length-width)
+	r.gg.LineTo(fx+width+dy, fy-length)
+	r.gg.LineTo(fx+width/2+dy, fy-length)
+	r.gg.LineTo(fx+width/2+dy, fy)
+	r.gg.LineTo(fx-width/2+dy, fy)
+	r.gg.Fill()
+	r.gg.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
 }
 
-func (r *rendererMoves) renderKnightArrowRight(c *gg.Context, square, width, fx, fy float64, dir direction) {
+func (r *rendererMoves) renderKnightArrowRight(square, width, fx, fy float64, dir direction) {
 	length := square * 2
 
-	c.RotateAbout(gg.Radians(float64(dir)), fx, fy)
-	c.MoveTo(fx-width/2, fy)
-	c.LineTo(fx-width/2, fy-length-width/2)
-	c.LineTo(fx+square/2-width, fy-length-width/2)
-	c.LineTo(fx+square/2-width, fy-length-width)
-	c.LineTo(fx+square/2, fy-length)
-	c.LineTo(fx+square/2-width, fy-length+width)
-	c.LineTo(fx+square/2-width, fy-length+width/2)
-	c.LineTo(fx+width/2, fy-length+width/2)
-	c.LineTo(fx+width/2, fy)
-	c.LineTo(fx-width/2, fy)
-	c.Fill()
-	c.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
+	r.gg.RotateAbout(gg.Radians(float64(dir)), fx, fy)
+	r.gg.MoveTo(fx-width/2, fy)
+	r.gg.LineTo(fx-width/2, fy-length-width/2)
+	r.gg.LineTo(fx+square/2-width, fy-length-width/2)
+	r.gg.LineTo(fx+square/2-width, fy-length-width)
+	r.gg.LineTo(fx+square/2, fy-length)
+	r.gg.LineTo(fx+square/2-width, fy-length+width)
+	r.gg.LineTo(fx+square/2-width, fy-length+width/2)
+	r.gg.LineTo(fx+width/2, fy-length+width/2)
+	r.gg.LineTo(fx+width/2, fy)
+	r.gg.LineTo(fx-width/2, fy)
+	r.gg.Fill()
+	r.gg.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
 }
 
-func (r *rendererMoves) renderKnightArrowLeft(c *gg.Context, square, width, fx, fy float64, dir direction) {
+func (r *rendererMoves) renderKnightArrowLeft(square, width, fx, fy float64, dir direction) {
 	length := square * 2
 
-	c.RotateAbout(gg.Radians(float64(dir)), fx, fy)
-	c.MoveTo(fx-width/2, fy)
-	c.LineTo(fx-width/2, fy-length+width/2)
-	c.LineTo(fx-square/2+width, fy-length+width/2)
-	c.LineTo(fx-square/2+width, fy-length+width)
-	c.LineTo(fx-square/2, fy-length)
-	c.LineTo(fx-square/2+width, fy-length-width)
-	c.LineTo(fx-square/2+width, fy-length-width/2)
-	c.LineTo(fx+width/2, fy-length-width/2)
-	c.LineTo(fx+width/2, fy)
-	c.LineTo(fx-width/2, fy)
-	c.Fill()
-	c.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
+	r.gg.RotateAbout(gg.Radians(float64(dir)), fx, fy)
+	r.gg.MoveTo(fx-width/2, fy)
+	r.gg.LineTo(fx-width/2, fy-length+width/2)
+	r.gg.LineTo(fx-square/2+width, fy-length+width/2)
+	r.gg.LineTo(fx-square/2+width, fy-length+width)
+	r.gg.LineTo(fx-square/2, fy-length)
+	r.gg.LineTo(fx-square/2+width, fy-length-width)
+	r.gg.LineTo(fx-square/2+width, fy-length-width/2)
+	r.gg.LineTo(fx+width/2, fy-length-width/2)
+	r.gg.LineTo(fx+width/2, fy)
+	r.gg.LineTo(fx-width/2, fy)
+	r.gg.Fill()
+	r.gg.RotateAbout(gg.Radians(float64(-dir)), fx, fy)
 }
 
 func (r *rendererMoves) getKnightDirection(dx int, dy int) (direction, leftRight) {

@@ -11,14 +11,16 @@ import (
 
 type rendererBoard struct {
 	*Imager
+	ctx *ImageContext
+	gg  *gg.Context
 }
 
-func (r *rendererBoard) draw(c *gg.Context, _ *ImageContext) error {
+func (r *rendererBoard) draw() error {
 	switch r.settings.Board.Type {
 	case boardTypeDefault:
-		r.drawDefault(c)
+		r.drawDefault()
 	case boardTypeImage:
-		err := r.drawImage(c)
+		err := r.drawImage()
 		if err != nil {
 			return err
 		}
@@ -29,27 +31,27 @@ func (r *rendererBoard) draw(c *gg.Context, _ *ImageContext) error {
 	return nil
 }
 
-func (r *rendererBoard) drawDefault(c *gg.Context) {
+func (r *rendererBoard) drawDefault() {
 	board := r.getBoardBox()
 
 	// Draw the entire board in the black color
-	c.SetRGBA(r.settings.Board.Default.Black.toRGBA())
-	c.DrawRectangle(board.coords())
-	c.Fill()
+	r.gg.SetRGBA(r.settings.Board.Default.Black.toRGBA())
+	r.gg.DrawRectangle(board.coords())
+	r.gg.Fill()
 
 	// Draw the white squares, on top of the black board
-	c.SetRGBA(r.settings.Board.Default.White.toRGBA())
+	r.gg.SetRGBA(r.settings.Board.Default.White.toRGBA())
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
 			if (y+x)%2 == 1 {
-				c.DrawRectangle(r.getSquareBox(x, y).coords())
-				c.Fill()
+				r.gg.DrawRectangle(r.getSquareBox(x, y).coords())
+				r.gg.Fill()
 			}
 		}
 	}
 }
 
-func (r *rendererBoard) drawImage(c *gg.Context) error {
+func (r *rendererBoard) drawImage() error {
 	f, err := os.Open(r.settings.Board.Image.Path)
 	if err != nil {
 		return fmt.Errorf("failed to load image : %v", err)
@@ -61,7 +63,7 @@ func (r *rendererBoard) drawImage(c *gg.Context) error {
 		return fmt.Errorf("failed to encode image : %v", err)
 	}
 
-	c.DrawImage(img, 0, 0)
+	r.gg.DrawImage(img, 0, 0)
 
 	return nil
 }
