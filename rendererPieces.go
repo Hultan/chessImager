@@ -29,9 +29,6 @@ type SubImager interface {
 }
 
 func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
-	r.loadPieceMap(ctx)
-	r.loadEmbeddedPieceMap(ctx)
-
 	err := r.loadPieces(ctx)
 	if err != nil {
 		return err
@@ -60,6 +57,9 @@ func (r *rendererPiece) draw(c *gg.Context, ctx *ImageContext) error {
 
 func (r *rendererPiece) loadPieces(ctx *ImageContext) error {
 	ctx.pieces = make(map[chessPiece]image.Image, 12)
+
+	r.loadPieceMap(ctx)
+	r.loadEmbeddedPieceMap(ctx)
 
 	switch r.settings.Pieces.Type {
 	case piecesTypeDefault:
