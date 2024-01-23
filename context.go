@@ -1,5 +1,7 @@
 package chessImager
 
+import "image"
+
 //
 // ImageContext is used for advanced chess images
 // (advanced images are images that includes a FEN
@@ -8,6 +10,10 @@ package chessImager
 //
 
 type ImageContext struct {
+	pieces         map[chessPiece]image.Image
+	pieceMap       map[string]chessPiece
+	embeddedPieces []PieceRectangle
+
 	Fen         string
 	Highlight   []HighlightedSquare
 	Moves       []Move

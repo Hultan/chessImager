@@ -5,6 +5,8 @@ import (
 )
 
 func TestMovesDots(t *testing.T) {
+	t.Parallel()
+
 	filename := "moves.png"
 
 	const fen = "8/r7/4n3/8/4q3/6n1/8/8 b - - 1 25"
@@ -27,6 +29,8 @@ func TestMovesDots(t *testing.T) {
 }
 
 func TestMovesKnight(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesKnight.png"
 
 	const fen = "8/8/5n2/8/8/8/8/8 b - - 1 25"
@@ -45,6 +49,8 @@ func TestMovesKnight(t *testing.T) {
 }
 
 func TestMovesBishop(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesBishop.png"
 
 	const fen = "8/8/5B2/8/8/8/8/8 b - - 1 25"
@@ -61,6 +67,8 @@ func TestMovesBishop(t *testing.T) {
 }
 
 func TestMovesRook(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesRook.png"
 
 	const fen = "8/8/5R2/8/8/8/8/8 b - - 1 25"
@@ -77,6 +85,8 @@ func TestMovesRook(t *testing.T) {
 }
 
 func TestMovesCastlingKing(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesCastling.png"
 
 	const fen = "5rk1/8/8/8/8/8/8/5rk1 b - - 1 25"
@@ -92,6 +102,8 @@ func TestMovesCastlingKing(t *testing.T) {
 }
 
 func TestMovesCastlingQueen(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesCastling2.png"
 
 	const fen = "2kr4/8/8/8/8/8/8/2kr4 b - - 1 25"
@@ -107,6 +119,8 @@ func TestMovesCastlingQueen(t *testing.T) {
 }
 
 func TestMovesCastlingKing_Dots(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesCastlingDots.png"
 
 	const fen = "5rk1/8/8/8/8/8/8/5rk1 b - - 1 25"
@@ -126,6 +140,8 @@ func TestMovesCastlingKing_Dots(t *testing.T) {
 }
 
 func TestMovesCastlingQueen_Dots(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesCastling2Dots.png"
 
 	const fen = "2kr4/8/8/8/8/8/8/2kr4 b - - 1 25"
@@ -145,6 +161,8 @@ func TestMovesCastlingQueen_Dots(t *testing.T) {
 }
 
 func TestHighlight(t *testing.T) {
+	t.Parallel()
+
 	filename := "highlight.png"
 
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
@@ -188,6 +206,8 @@ func TestHighlight(t *testing.T) {
 }
 
 func TestAnnotation(t *testing.T) {
+	t.Parallel()
+
 	filename := "annotations.png"
 
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
@@ -232,6 +252,8 @@ func TestAnnotation(t *testing.T) {
 }
 
 func TestRenderInverted(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesInverted.png"
 
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
@@ -251,6 +273,8 @@ func TestRenderInverted(t *testing.T) {
 }
 
 func TestRenderInvertedImage(t *testing.T) {
+	t.Parallel()
+
 	filename := "movesInvertedImage.png"
 
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"

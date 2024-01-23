@@ -5,6 +5,8 @@ import (
 )
 
 func TestBoardDefault(t *testing.T) {
+	t.Parallel()
+
 	filename := "boardDefault.png"
 
 	imager, err := NewImagerFromPath("test/data/boardDefault.json")
@@ -23,6 +25,8 @@ func TestBoardDefault(t *testing.T) {
 }
 
 func TestBoardImage(t *testing.T) {
+	t.Parallel()
+
 	filename := "boardImage.png"
 
 	imager, err := NewImagerFromPath("test/data/boardImage.json")
@@ -41,6 +45,8 @@ func TestBoardImage(t *testing.T) {
 }
 
 func TestBorder(t *testing.T) {
+	t.Parallel()
+
 	filename := "border.png"
 
 	imager, err := NewImagerFromPath("test/data/border.json")
@@ -59,6 +65,8 @@ func TestBorder(t *testing.T) {
 }
 
 func TestRankAndFileNone(t *testing.T) {
+	t.Parallel()
+
 	filename := "rankAndFileNone.png"
 
 	imager, err := NewImagerFromPath("test/data/rankAndFileNone.json")
@@ -77,6 +85,8 @@ func TestRankAndFileNone(t *testing.T) {
 }
 
 func TestRankAndFileBorder(t *testing.T) {
+	t.Parallel()
+
 	filename := "rankAndFileBorder.png"
 
 	imager, err := NewImagerFromPath("test/data/rankAndFileBorder.json")
@@ -95,6 +105,8 @@ func TestRankAndFileBorder(t *testing.T) {
 }
 
 func TestRankAndFileSquare(t *testing.T) {
+	t.Parallel()
+
 	filename := "rankAndFileSquare.png"
 
 	imager, err := NewImagerFromPath("test/data/rankAndFileSquare.json")
@@ -113,6 +125,8 @@ func TestRankAndFileSquare(t *testing.T) {
 }
 
 func TestPiecesDefault(t *testing.T) {
+	t.Parallel()
+
 	filename := "piecesDefault.png"
 
 	imager, err := NewImagerFromPath("test/data/piecesDefault.json")
@@ -131,6 +145,8 @@ func TestPiecesDefault(t *testing.T) {
 }
 
 func TestPiecesImages(t *testing.T) {
+	t.Parallel()
+
 	filename := "piecesImages.png"
 
 	imager, err := NewImagerFromPath("test/data/piecesImages.json")
@@ -149,6 +165,8 @@ func TestPiecesImages(t *testing.T) {
 }
 
 func TestPiecesImageMap(t *testing.T) {
+	t.Parallel()
+
 	filename := "piecesImageMap.png"
 
 	imager, err := NewImagerFromPath("test/data/piecesImageMap.json")
@@ -167,6 +185,8 @@ func TestPiecesImageMap(t *testing.T) {
 }
 
 func TestSetOrderDefault(t *testing.T) {
+	t.Parallel()
+
 	filename := "setOrderDefault.png"
 
 	// Create a new imager using embedded default.json settings
@@ -188,6 +208,8 @@ func TestSetOrderDefault(t *testing.T) {
 }
 
 func TestSetOrderVariant(t *testing.T) {
+	t.Parallel()
+
 	filename := "setOrderVariant.png"
 
 	// Create a new imager using embedded default.json settings

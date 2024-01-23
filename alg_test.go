@@ -6,6 +6,8 @@ import (
 )
 
 func Test_newAlg(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		s string
 	}
