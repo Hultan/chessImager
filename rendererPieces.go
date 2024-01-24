@@ -31,7 +31,7 @@ type SubImager interface {
 }
 
 func (r *rendererPiece) draw() error {
-	err := r.loadPieces()
+	err := r.init()
 	if err != nil {
 		return err
 	}
@@ -57,11 +57,47 @@ func (r *rendererPiece) draw() error {
 	return nil
 }
 
+func (r *rendererPiece) init() error {
+	r.ctx.pieceMap = map[string]chessPiece{
+		"WK": whiteKing,
+		"WQ": whiteQueen,
+		"WR": whiteRook,
+		"WN": whiteKnight,
+		"WB": whiteBishop,
+		"WP": whitePawn,
+		"BK": blackKing,
+		"BQ": blackQueen,
+		"BR": blackRook,
+		"BN": blackKnight,
+		"BB": blackBishop,
+		"BP": blackPawn,
+	}
+
+	r.ctx.embeddedPieces = []PieceRectangle{
+		{whiteKing, Rectangle{0, 0, 333, 333}},
+		{whiteQueen, Rectangle{333, 0, 333, 333}},
+		{whiteBishop, Rectangle{666, 0, 333, 333}},
+		{whiteKnight, Rectangle{999, 0, 333, 333}},
+		{whiteRook, Rectangle{1332, 0, 333, 333}},
+		{whitePawn, Rectangle{1665, 0, 333, 333}},
+		{blackKing, Rectangle{0, 333, 333, 333}},
+		{blackQueen, Rectangle{333, 333, 333, 333}},
+		{blackBishop, Rectangle{666, 333, 333, 333}},
+		{blackKnight, Rectangle{999, 333, 333, 333}},
+		{blackRook, Rectangle{1332, 333, 333, 333}},
+		{blackPawn, Rectangle{1665, 333, 333, 333}},
+	}
+
+	err := r.loadPieces()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *rendererPiece) loadPieces() error {
 	r.ctx.pieces = make(map[chessPiece]image.Image, 12)
-
-	r.loadPieceMap()
-	r.loadEmbeddedPieceMap()
 
 	switch r.settings.Pieces.Type {
 	case piecesTypeDefault:
@@ -143,38 +179,4 @@ func (r *rendererPiece) getImageAndPosition(img image.Image, x, y int, inv bool)
 	}
 
 	return img, int(board.X) + x*int(box.Width) + diff, int(board.Y) + y*int(box.Height) + diff
-}
-
-func (r *rendererPiece) loadPieceMap() {
-	r.ctx.pieceMap = map[string]chessPiece{
-		"WK": whiteKing,
-		"WQ": whiteQueen,
-		"WR": whiteRook,
-		"WN": whiteKnight,
-		"WB": whiteBishop,
-		"WP": whitePawn,
-		"BK": blackKing,
-		"BQ": blackQueen,
-		"BR": blackRook,
-		"BN": blackKnight,
-		"BB": blackBishop,
-		"BP": blackPawn,
-	}
-}
-
-func (r *rendererPiece) loadEmbeddedPieceMap() {
-	r.ctx.embeddedPieces = []PieceRectangle{
-		{whiteKing, Rectangle{0, 0, 333, 333}},
-		{whiteQueen, Rectangle{333, 0, 333, 333}},
-		{whiteBishop, Rectangle{666, 0, 333, 333}},
-		{whiteKnight, Rectangle{999, 0, 333, 333}},
-		{whiteRook, Rectangle{1332, 0, 333, 333}},
-		{whitePawn, Rectangle{1665, 0, 333, 333}},
-		{blackKing, Rectangle{0, 333, 333, 333}},
-		{blackQueen, Rectangle{333, 333, 333, 333}},
-		{blackBishop, Rectangle{666, 333, 333, 333}},
-		{blackKnight, Rectangle{999, 333, 333, 333}},
-		{blackRook, Rectangle{1332, 333, 333, 333}},
-		{blackPawn, Rectangle{1665, 333, 333, 333}},
-	}
 }
