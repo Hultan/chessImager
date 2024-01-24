@@ -55,6 +55,7 @@ func TestBoardImage(t *testing.T) {
 
 func TestBoardImageInvalid(t *testing.T) {
 	t.Parallel()
+
 	imager, err := NewImagerFromPath("test/data/boardInvalidImagePath.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
@@ -69,6 +70,7 @@ func TestBoardImageInvalid(t *testing.T) {
 
 func TestInvalidSetOrder(t *testing.T) {
 	t.Parallel()
+
 	imager, err := NewImagerFromPath("test/data/boardImage.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
@@ -82,6 +84,7 @@ func TestInvalidSetOrder(t *testing.T) {
 
 func TestInvalidSetOrderReset(t *testing.T) {
 	t.Parallel()
+
 	imager, err := NewImagerFromPath("test/data/boardImage.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
@@ -95,6 +98,7 @@ func TestInvalidSetOrderReset(t *testing.T) {
 
 func TestInvalidSetOrderIndex(t *testing.T) {
 	t.Parallel()
+
 	imager, err := NewImagerFromPath("test/data/boardImage.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
@@ -108,6 +112,7 @@ func TestInvalidSetOrderIndex(t *testing.T) {
 
 func TestInvalidSetOrderDuplicateIndex(t *testing.T) {
 	t.Parallel()
+
 	imager, err := NewImagerFromPath("test/data/boardImage.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)
@@ -121,6 +126,7 @@ func TestInvalidSetOrderDuplicateIndex(t *testing.T) {
 
 func TestInvalidSetOrderJson(t *testing.T) {
 	t.Parallel()
+
 	imager, err := NewImagerFromPath("test/data/boardInvalidOrder.json")
 	if err != nil {
 		t.Fatalf("Failed to load JSON file: %v", err)

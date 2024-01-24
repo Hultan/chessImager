@@ -7,6 +7,8 @@ import (
 )
 
 func Test_hexToRGBA(t *testing.T) {
+	t.Parallel()
+
 	type args struct {
 		hex string
 	}

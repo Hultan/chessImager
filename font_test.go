@@ -5,6 +5,8 @@ import (
 )
 
 func TestFontStandard(t *testing.T) {
+	t.Parallel()
+
 	filename := "fontStandard.png"
 
 	imager, err := NewImagerFromPath("test/data/fontStandard.json")
@@ -23,6 +25,8 @@ func TestFontStandard(t *testing.T) {
 }
 
 func TestFontRoboto(t *testing.T) {
+	t.Parallel()
+
 	filename := "fontRoboto.png"
 
 	imager, err := NewImagerFromPath("test/data/fontRoboto.json")

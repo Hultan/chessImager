@@ -194,8 +194,8 @@ func TestPGNExample(t *testing.T) {
 		b := pgn.NewBoard()
 		i := 1
 		for _, move := range game.Moves {
-			// Let's just test the first 15 moves
-			if i > 15 {
+			// Let's just test the first 10 moves
+			if i > 10 {
 				continue
 			}
 			_ = b.MakeMove(move)

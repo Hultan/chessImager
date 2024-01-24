@@ -138,6 +138,8 @@ func Test_newAlgCoordPanic(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
+	t.Parallel()
+
 	a, _ := newAlg("e4", false)
 	got := a.String()
 	if got != "move: e4" {
