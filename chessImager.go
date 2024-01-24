@@ -58,6 +58,10 @@ func (i *Imager) Render(fen string) (image.Image, error) {
 
 // RenderWithContext renders an image of a chess board based on an image context.
 func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
+	if ok := validateFen(ctx.Fen); !ok {
+		return nil, fmt.Errorf("invalid fen: %v", ctx.Fen)
+	}
+
 	size, err := i.getBoardSize()
 	if err != nil {
 		return nil, err
@@ -105,6 +109,18 @@ func (i *Imager) SetOrder(order []int) error {
 
 	if len(order) != 7 {
 		return fmt.Errorf("len(order) must be 7")
+	}
+
+	var index = map[int]bool{}
+
+	for _, i := range order {
+		if i < 0 || i > 6 {
+			return fmt.Errorf("invalid renderer index")
+		}
+		if ok := index[i]; ok {
+			return fmt.Errorf("renderer index added twice")
+		}
+		index[i] = true
 	}
 
 	i.settings.Order = order

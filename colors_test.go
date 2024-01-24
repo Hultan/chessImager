@@ -1,8 +1,39 @@
 package chessImager
 
 import (
+	"image/color"
+	"reflect"
 	"testing"
 )
+
+func Test_hexToRGBA(t *testing.T) {
+	type args struct {
+		hex string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantCol color.RGBA
+		wantErr bool
+	}{
+		{name: "#888888FF", args: args{"#888888FF"}, wantCol: color.RGBA{R: 136, G: 136, B: 136, A: 255},
+			wantErr: false},
+		{name: "#888888GG", args: args{"#888888GG"}, wantCol: color.RGBA{R: 136, G: 136, B: 136, A: 0}, wantErr: true},
+		{name: "#88888GG", args: args{"#88888GG"}, wantCol: color.RGBA{R: 0, G: 0, B: 0, A: 0}, wantErr: true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotCol, err := hexToRGBA(tt.args.hex)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("hexToRGBA() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(gotCol, tt.wantCol) {
+				t.Errorf("hexToRGBA() gotCol = %v, want %v", gotCol, tt.wantCol)
+			}
+		})
+	}
+}
 
 func TestColors(t *testing.T) {
 	t.Parallel()

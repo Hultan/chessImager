@@ -53,3 +53,94 @@ func Test_newAlg(t *testing.T) {
 		})
 	}
 }
+
+func Test_newAlgCoord(t *testing.T) {
+	t.Parallel()
+
+	type args struct {
+		s        string
+		inverted bool
+	}
+	tests := []struct {
+		name         string
+		args         args
+		want1, want2 int
+	}{
+		{"A1", args{"A1", false}, 0, 0},
+		{"H8", args{"H8", false}, 7, 7},
+		{"A8", args{"A8", false}, 0, 7},
+		{"H1", args{"H1", false}, 7, 0},
+		{"a1", args{"a1", false}, 0, 0},
+		{"h8", args{"h8", false}, 7, 7},
+		{"a8", args{"a8", false}, 0, 7},
+		{"h1", args{"h1", false}, 7, 0},
+
+		{"A1", args{"A1", true}, 7, 7},
+		{"H8", args{"H8", true}, 0, 0},
+		{"A8", args{"A8", true}, 7, 0},
+		{"H1", args{"H1", true}, 0, 7},
+		{"a1", args{"a1", true}, 7, 7},
+		{"h8", args{"h8", true}, 0, 0},
+		{"a8", args{"a8", true}, 7, 0},
+		{"h1", args{"h1", true}, 0, 7},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, _ := newAlg(tt.args.s, tt.args.inverted)
+			got1, got2 := got.coords()
+			if got1 != tt.want1 {
+				t.Errorf("got1 = %v, want1 %v", got1, tt.want1)
+			}
+			if got2 != tt.want2 {
+				t.Errorf("got1 = %v, want1 %v", got2, tt.want2)
+			}
+		})
+	}
+}
+
+func Test_newAlgCoordPanic(t *testing.T) {
+	t.Parallel()
+
+	type args struct {
+		s        string
+		inverted bool
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{"", args{"", false}},
+		{"0-0", args{"0-0", false}},
+		{"0-0-0", args{"0-0-0", false}},
+		{"o-o", args{"o-o", false}},
+		{"o-o-o", args{"0-0-0", false}},
+		{"i9", args{"i9", false}},
+		{"a", args{"a", false}},
+		{"", args{"", true}},
+		{"0-0", args{"0-0", true}},
+		{"0-0-0", args{"0-0-0", true}},
+		{"o-o", args{"o-o", true}},
+		{"o-o-o", args{"0-0-0", true}},
+		{"i9", args{"i9", true}},
+		{"a", args{"a", true}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			defer func() {
+				if r := recover(); r == nil {
+					t.Errorf("The code did not panic")
+				}
+			}()
+			got, _ := newAlg(tt.args.s, tt.args.inverted)
+			_, _ = got.coords()
+		})
+	}
+}
+
+func TestString(t *testing.T) {
+	a, _ := newAlg("e4", false)
+	got := a.String()
+	if got != "move: e4" {
+		t.Errorf("String(e4) failed: %v", got)
+	}
+}
