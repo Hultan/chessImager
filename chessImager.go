@@ -107,6 +107,17 @@ func (i *Imager) SetOrder(order []int) error {
 		order = []int{0, 1, 2, 3, 4, 5, 6}
 	}
 
+	err := i.validateOrder(order)
+	if err != nil {
+		return err
+	}
+
+	i.settings.Order = order
+
+	return nil
+}
+
+func (i *Imager) validateOrder(order []int) error {
 	if len(order) != 7 {
 		return fmt.Errorf("len(order) must be 7")
 	}
@@ -122,9 +133,6 @@ func (i *Imager) SetOrder(order []int) error {
 		}
 		index[i] = true
 	}
-
-	i.settings.Order = order
-
 	return nil
 }
 
@@ -132,8 +140,9 @@ func (i *Imager) SetOrder(order []int) error {
 func (i *Imager) getRenderers(gg *gg.Context, ctx *ImageContext) ([]renderer, error) {
 	var result []renderer
 
-	if len(i.settings.Order) != 7 {
-		return result, fmt.Errorf("len(order) must be 7")
+	err := i.validateOrder(i.settings.Order)
+	if err != nil {
+		return nil, err
 	}
 
 	renderers := map[int]renderer{
