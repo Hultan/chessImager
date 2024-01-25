@@ -90,7 +90,7 @@ func TestInvalidSetOrderReset(t *testing.T) {
 		t.Fatalf("Failed to load JSON file: %v", err)
 	}
 
-	err = imager.SetOrder([]int{})
+	err = imager.SetOrder(nil)
 	if err != nil {
 		t.Fatalf("SetOrder reset failed")
 	}
