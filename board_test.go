@@ -330,3 +330,38 @@ func TestSetOrderVariant(t *testing.T) {
 
 	compareImages(t, filename, &img)
 }
+
+func TestLoadSettings(t *testing.T) {
+	t.Parallel()
+
+	filename := "piecesImageMap.png"
+
+	imager, err := NewImagerFromPath("test/data/piecesImageMap.json")
+	if err != nil {
+		t.Fatalf("Failed to load JSON file: %v", err)
+	}
+
+	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+	img1, err := imager.Render(fen)
+	if err != nil {
+		t.Fatalf("failed to render : %v", err)
+	}
+
+	compareImages(t, filename, &img1)
+
+	filename = "piecesImages.png"
+
+	err = imager.LoadSettings("test/data/piecesImages.json")
+	if err != nil {
+		t.Fatalf("Failed to load new settings file: %v", err)
+	}
+
+	// Render the image
+	img2, err := imager.Render(fen)
+	if err != nil {
+		t.Fatalf("Failed to render chess board: %v", err)
+	}
+
+	compareImages(t, filename, &img2)
+
+}

@@ -51,6 +51,18 @@ func NewImagerFromPath(path string) (i *Imager, err error) {
 	return &Imager{settings: s}, nil
 }
 
+// LoadSettings loads in a new settings file.
+func (i *Imager) LoadSettings(path string) error {
+	s, err := loadSettings(path)
+	if err != nil {
+		return err
+	}
+
+	i.settings = s
+
+	return nil
+}
+
 // Render renders an image of a chess board based on a FEN string.
 func (i *Imager) Render(fen string) (image.Image, error) {
 	return i.RenderWithContext(&ImageContext{Fen: fen})
