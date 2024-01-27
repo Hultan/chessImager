@@ -15,7 +15,7 @@ func TestMovesDots(t *testing.T) {
 
 	style, err := ctx.NewMoveStyle(MoveTypeDots, "#333333", "#333333", 0.5, 0)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddMoveWithStyle("a1", "a7", style)
 	ctx.AddMoveWithStyle("b1", "e4", style)
@@ -129,7 +129,7 @@ func TestMovesCastlingKing_Dots(t *testing.T) {
 
 	style, err := ctx.NewMoveStyle(MoveTypeDots, "#33FF33", "#3333FF", 0.2, 10)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddMoveWithStyle("0-0", "", style).AddMoveWithStyle("", "0-0", style)
 
@@ -150,7 +150,7 @@ func TestMovesCastlingQueen_Dots(t *testing.T) {
 
 	style, err := ctx.NewMoveStyle(MoveTypeDots, "#33FF33", "#3333FF", 0.2, 10)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddMoveWithStyle("0-0-0", "", style).AddMoveWithStyle("", "0-0-0", style)
 
@@ -171,31 +171,31 @@ func TestHighlight(t *testing.T) {
 
 	style, err := ctx.NewHighlightStyle(HighlightTypeFull, "#333333", 5, 1)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddHighlightWithStyle("a1", style)
 
 	style, err = ctx.NewHighlightStyle(HighlightTypeCircle, "#444444", 5, 1)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddHighlightWithStyle("b2", style)
 
 	style, err = ctx.NewHighlightStyle(HighlightTypeFilledCircle, "#555555", 5, 1)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddHighlightWithStyle("c3", style)
 
 	style, err = ctx.NewHighlightStyle(HighlightTypeBorder, "#666666", 5, 1)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddHighlightWithStyle("d4", style)
 
 	style, err = ctx.NewHighlightStyle(HighlightTypeX, "#777777", 5, 1)
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddHighlightWithStyle("e5", style)
 
@@ -216,32 +216,32 @@ func TestAnnotation(t *testing.T) {
 
 	style, err := ctx.NewAnnotationStyle(PositionTypeTopLeft, 20, 17, 1, "#FFFFFFFF", "#000000FF", "#FF0000FF")
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddAnnotationWithStyle("D1", "!", style)
 
 	style, err = ctx.NewAnnotationStyle(PositionTypeTopRight, 20, 17, 1, "#FFFFFFFF", "#000000FF", "#FF0000FF")
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddAnnotationWithStyle("E1", "!", style)
 
 	style, err = ctx.NewAnnotationStyle(PositionTypeBottomRight, 20, 17, 1, "#FFFFFFFF", "#000000FF", "#FF0000FF")
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddAnnotationWithStyle("F1", "!", style)
 
 	style, err = ctx.NewAnnotationStyle(PositionTypeBottomLeft, 20, 17, 1, "#FFFFFFFF", "#000000FF",
 		"#FF0000FF")
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddAnnotationWithStyle("G1", "!", style)
 
 	style, err = ctx.NewAnnotationStyle(PositionTypeMiddle, 20, 17, 1, "#FFFFFFFF", "#000000FF", "#FF0000FF")
 	if err != nil {
-		t.Fatalf("Failed to create a highlight style: %v", err)
+		t.Errorf("Failed to create a highlight style: %v", err)
 	}
 	ctx.AddAnnotationWithStyle("H1", "!", style)
 

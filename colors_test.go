@@ -47,37 +47,37 @@ func TestColors(t *testing.T) {
 	// Test color #RRGGBBAA
 	s, err := ctx.NewMoveStyle(MoveTypeDots, "#9D6B5EFF", "9D6B5E", 0.2, 0)
 	if err != nil {
-		t.Fatalf("failed to create style with color #RRGGBBAA: %v", err)
+		t.Errorf("failed to create style with color #RRGGBBAA: %v", err)
 	}
 	if !validateColor(s) {
-		t.Fatalf("failed to validate style with color #RRGGBBAA: %v", err)
+		t.Errorf("failed to validate style with color #RRGGBBAA: %v", err)
 	}
 
 	// Test color #RRGGBB
 	s, err = ctx.NewMoveStyle(MoveTypeDots, "#9D6B5E", "9D6B5E", 0.2, 0)
 	if err != nil {
-		t.Fatalf("failed to create style with color #RRGGBB: %v", err)
+		t.Errorf("failed to create style with color #RRGGBB: %v", err)
 	}
 	if !validateColor(s) {
-		t.Fatalf("failed to validate style with color #RRGGBB: %v", err)
+		t.Errorf("failed to validate style with color #RRGGBB: %v", err)
 	}
 
 	// Test color RRGGBBAA
 	s, err = ctx.NewMoveStyle(MoveTypeDots, "9D6B5EFF", "9D6B5E", 0.2, 0)
 	if err != nil {
-		t.Fatalf("failed to create style with color RRGGBBAA: %v", err)
+		t.Errorf("failed to create style with color RRGGBBAA: %v", err)
 	}
 	if !validateColor(s) {
-		t.Fatalf("failed to validate style with color RRGGBBAA: %v", err)
+		t.Errorf("failed to validate style with color RRGGBBAA: %v", err)
 	}
 
 	// Test color RRGGBB
 	s, err = ctx.NewMoveStyle(MoveTypeDots, "9D6B5E", "9D6B5E", 0.2, 0)
 	if err != nil {
-		t.Fatalf("failed to create style with color RRGGBB: %v", err)
+		t.Errorf("failed to create style with color RRGGBB: %v", err)
 	}
 	if !validateColor(s) {
-		t.Fatalf("failed to validate style with color RRGGBB: %v", err)
+		t.Errorf("failed to validate style with color RRGGBB: %v", err)
 	}
 }
 
@@ -94,13 +94,13 @@ func TestColorRGBA_MarshalJSON(t *testing.T) {
 
 	b, err := c.MarshalJSON()
 	if err != nil {
-		t.Fatalf("failed to marshal color: %v", err)
+		t.Errorf("failed to marshal color: %v", err)
 	}
 
 	valid := []byte{34, 35, 49, 48, 50, 48, 52, 48, 56, 48, 34}
 	for i, v := range valid {
 		if b[i] != v {
-			t.Fatalf("failed to marshal color: %v != %v", b[i], v)
+			t.Errorf("failed to marshal color: %v != %v", b[i], v)
 		}
 	}
 }
@@ -111,20 +111,20 @@ func TestColorRGBA_UnMarshalJSON(t *testing.T) {
 
 	err := c.UnmarshalJSON(cBytes)
 	if err != nil {
-		t.Fatalf("failed to unmarshal color: %v", err)
+		t.Errorf("failed to unmarshal color: %v", err)
 	}
 
 	if c.R != 16 {
-		t.Fatalf("failed to unmarshal color Red (%v!=16)", c.R)
+		t.Errorf("failed to unmarshal color Red (%v!=16)", c.R)
 	}
 	if c.G != 32 {
-		t.Fatalf("failed to unmarshal color Green (%v!=32)", c.G)
+		t.Errorf("failed to unmarshal color Green (%v!=32)", c.G)
 	}
 	if c.B != 64 {
-		t.Fatalf("failed to unmarshal color Blue (%v!=64)", c.B)
+		t.Errorf("failed to unmarshal color Blue (%v!=64)", c.B)
 	}
 	if c.A != 128 {
-		t.Fatalf("failed to unmarshal color Alpha (%v!=128)", c.A)
+		t.Errorf("failed to unmarshal color Alpha (%v!=128)", c.A)
 	}
 }
 
@@ -135,7 +135,7 @@ func TestColorRGBA_UnMarshalInvalidJSON(t *testing.T) {
 
 	err := c.UnmarshalJSON(cBytes)
 	if err == nil {
-		t.Fatalf("succeeded to unmarshal color: %v", err)
+		t.Errorf("succeeded to unmarshal color: %v", err)
 	}
 }
 
@@ -145,15 +145,15 @@ func TestColorRGBA_ToRGBA(t *testing.T) {
 	r, g, b, a := c.toRGBA()
 
 	if r != 0.06274509803921569 {
-		t.Fatalf("failed to unmarshal color Red (%v!=0.06274509803921569)", r)
+		t.Errorf("failed to unmarshal color Red (%v!=0.06274509803921569)", r)
 	}
 	if g != 0.12549019607843137 {
-		t.Fatalf("failed to unmarshal color Green (%v!=0.12549019607843137)", g)
+		t.Errorf("failed to unmarshal color Green (%v!=0.12549019607843137)", g)
 	}
 	if b != 0.25098039215686274 {
-		t.Fatalf("failed to unmarshal color Blue (%v!=0.25098039215686274)", b)
+		t.Errorf("failed to unmarshal color Blue (%v!=0.25098039215686274)", b)
 	}
 	if a != 0.5019607843137255 {
-		t.Fatalf("failed to unmarshal color Alpha (%v!=0.5019607843137255)", a)
+		t.Errorf("failed to unmarshal color Alpha (%v!=0.5019607843137255)", a)
 	}
 }

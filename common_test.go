@@ -10,10 +10,10 @@ import (
 func compareImages(t *testing.T, filename string, img *image.Image) {
 	ok, err := compareFiles(img, "test/valid/"+filename)
 	if err != nil {
-		t.Fatalf("error during compare : %v", err)
+		t.Errorf("error during compare : %v", err)
 	}
 	if !ok {
-		t.Fatalf("failed to compare, images differ!")
+		t.Errorf("failed to compare, images differ!")
 	}
 }
 

@@ -15,10 +15,10 @@ func TestSimpleExample(t *testing.T) {
 	const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
 	img, err := NewImager().Render(fen)
 	if err != nil {
-		t.Fatalf("failed to render : %v", err)
+		t.Errorf("failed to render : %v", err)
 	}
 	if img == nil {
-		t.Fatalf("image is nil")
+		t.Errorf("image is nil")
 	}
 
 	compareImages(t, filename, &img)
@@ -43,10 +43,10 @@ func TestMediumExample(t *testing.T) {
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
-		t.Fatalf("failed to render : %v", err)
+		t.Errorf("failed to render : %v", err)
 	}
 	if img == nil {
-		t.Fatalf("image is nil")
+		t.Errorf("image is nil")
 	}
 
 	compareImages(t, filename, &img)
@@ -63,7 +63,7 @@ func TestAdvancedExample(t *testing.T) {
 	// Set the rendering order
 	err := imager.SetOrder([]int{0, 1, 2, 3, 5, 4, 6})
 	if err != nil {
-		t.Fatalf("failed to set rendering order : %v", err)
+		t.Errorf("failed to set rendering order : %v", err)
 	}
 
 	// Create a new image context
@@ -78,7 +78,7 @@ func TestAdvancedExample(t *testing.T) {
 		0.9,                       // Highlight factor (not used for this Type)
 	)
 	if err != nil {
-		t.Fatalf("failed to create highlight style : %v", err)
+		t.Errorf("failed to create highlight style : %v", err)
 	}
 
 	// Create an annotation style, for the square e7
@@ -88,7 +88,7 @@ func TestAdvancedExample(t *testing.T) {
 		"#E8E57C", "#000000", "#FFFFFF", // Background, font, border color
 	)
 	if err != nil {
-		t.Fatalf("failed to create annotation style : %v", err)
+		t.Errorf("failed to create annotation style : %v", err)
 	}
 
 	// Create a move style, for the move e1-e7
@@ -100,7 +100,7 @@ func TestAdvancedExample(t *testing.T) {
 		0,            // Padding
 	)
 	if err != nil {
-		t.Fatalf("failed to create move style : %v", err)
+		t.Errorf("failed to create move style : %v", err)
 	}
 
 	// Highlight the e7 square, annotate e7 as a brilliant move (!!) and
@@ -110,10 +110,10 @@ func TestAdvancedExample(t *testing.T) {
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
-		t.Fatalf("failed to render : %v", err)
+		t.Errorf("failed to render : %v", err)
 	}
 	if img == nil {
-		t.Fatalf("image is nil")
+		t.Errorf("image is nil")
 	}
 
 	compareImages(t, filename, &img)
@@ -127,7 +127,7 @@ func TestOtherExample(t *testing.T) {
 	// Create a new imager using your custom JSON file
 	imager, err := NewImagerFromPath("test/data/other.json")
 	if err != nil {
-		t.Fatalf("failed to create imager : %v", err)
+		t.Errorf("failed to create imager : %v", err)
 	}
 
 	// Create a new image context and highlight the e7 square, annotate e7 as a
@@ -141,10 +141,10 @@ func TestOtherExample(t *testing.T) {
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
-		t.Fatalf("failed to render : %v", err)
+		t.Errorf("failed to render : %v", err)
 	}
 	if img == nil {
-		t.Fatalf("image is nil")
+		t.Errorf("image is nil")
 	}
 
 	compareImages(t, filename, &img)
@@ -165,10 +165,10 @@ func TestCastlingExample(t *testing.T) {
 	// Render the image
 	img, err := imager.RenderWithContext(ctx)
 	if err != nil {
-		t.Fatalf("failed to render : %v", err)
+		t.Errorf("failed to render : %v", err)
 	}
 	if img == nil {
-		t.Fatalf("image is nil")
+		t.Errorf("image is nil")
 	}
 
 	compareImages(t, filename, &img)
@@ -181,14 +181,14 @@ func TestPGNExample(t *testing.T) {
 
 	f, err := os.Open("./test/data/game.pgn")
 	if err != nil {
-		t.Fatalf("failed to open PGN file : %v", err)
+		t.Errorf("failed to open PGN file : %v", err)
 	}
 	ps := pgn.NewPGNScanner(f)
 
 	for ps.Next() {
 		game, err := ps.Scan()
 		if err != nil {
-			t.Fatalf("failed to scan PGN file : %v", err)
+			t.Errorf("failed to scan PGN file : %v", err)
 		}
 
 		b := pgn.NewBoard()
@@ -207,10 +207,10 @@ func TestPGNExample(t *testing.T) {
 
 			img, err := imager.RenderWithContext(ctx)
 			if err != nil {
-				t.Fatalf("failed to render image %d : %v", i, err)
+				t.Errorf("failed to render image %d : %v", i, err)
 			}
 			if img == nil {
-				t.Fatalf("image is nil")
+				t.Errorf("image is nil")
 			}
 
 			i++
