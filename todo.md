@@ -1,4 +1,4 @@
 # TODO :
 
 * CLI tool?
-* Might need a `chessImager.SetInverted()` method?
+* Might need a `chessImager.RenderInverted()` method?
