@@ -41,8 +41,6 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
     6. [PGN](#pgn)
 
 ## The Basics
-For examples of how to use chessImager, see the [Examples section](#examples), at the end of this readme.
-
 Start by creating an **Imager** object by calling the **chessImager.NewImager()** function. With this object, you can 
 render simple chess board images from a **FEN** string by using the **Render()** method on the **imager** object you 
 just created.
@@ -56,6 +54,8 @@ provide the **context** object to that method.
 The purpose of the **context** object is that you create one **imager** object at the beginning of your code, and then 
 one **context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
 discard the **context** object, and create a new one.
+
+*For examples of how to use chessImager, see the [Examples section](#examples), at the end of this readme.*
 
 ## Configuration
 
