@@ -62,7 +62,7 @@ func (r *rendererAnnotation) drawAnnotationCircle(annotation Annotation, rect Re
 }
 
 func (r *rendererAnnotation) getAnnotationRectangle(annotation Annotation) (Rectangle, error) {
-	square, err := newAlg(annotation.Square, r.settings.Board.Default.Inverted)
+	square, err := newAlg(annotation.Square, r.inverted)
 	if err != nil {
 		return Rectangle{}, err
 	}

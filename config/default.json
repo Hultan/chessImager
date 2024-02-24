@@ -7,13 +7,11 @@
   "board": {
     "type": 0,
     "default": {
-      "inverted": false,
       "size": 600,
       "white": "#FAF3DCFF",
       "black": "#E1DBB5FF"
     },
     "image": {
-      "inverted": false,
       "path": "./test/data/chessboard.jpg",
       "rect": {"x": 32,"y": 96, "width": 276,"height": 276}
     }

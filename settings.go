@@ -54,26 +54,22 @@ type Board struct {
 }
 
 // BoardDefault represents settings for how the board should be rendered when Board.Type=0 (default).
-// Inverted : If false, white will be on bottom.
 // Size : Size of the board excluding the border. Normally this value should be divisible by 8.
 // White : The color of the light squares
 // Black : The color of the dark squares
 type BoardDefault struct {
-	Inverted bool      `json:"inverted"`
-	Size     int       `json:"size"`
-	White    ColorRGBA `json:"white"`
-	Black    ColorRGBA `json:"black"`
+	Size  int       `json:"size"`
+	White ColorRGBA `json:"white"`
+	Black ColorRGBA `json:"black"`
 }
 
 // BoardImage represents settings for rendering the background image of a chessboard (Board.Type=1)
 // If you are using BoardImage, BoardDefault will be ignored. Also, Border and RankAndFile settings will be ignored.
-// Inverted : If false, white will be on bottom.
 // Path : Path to the background image of a chessboard
 // Rect : Rectangle that defines where the board is positioned on the image
 type BoardImage struct {
-	Inverted bool      `json:"inverted"`
-	Path     string    `json:"path"`
-	Rect     Rectangle `json:"rect"`
+	Path string    `json:"path"`
+	Rect Rectangle `json:"rect"`
 }
 
 // RankAndFile defines how the rank and file indicators should be drawn.

@@ -7,7 +7,6 @@
   "board": {
     "type": 0,
     "default": {
-      "inverted": true,
       "size": 600,
       "white": "#FFFFFFFF",
       "black": "#000000FF"

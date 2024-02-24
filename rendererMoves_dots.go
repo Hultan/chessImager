@@ -8,12 +8,12 @@ import (
 func (r *rendererMoves) renderDottedMove(style *MoveStyle, move Move) error {
 	r.gg.SetRGBA(style.Color.toRGBA())
 
-	from, err := newAlg(move.From, r.settings.Board.Default.Inverted)
+	from, err := newAlg(move.From, r.inverted)
 	if err != nil {
 		return err
 	}
 
-	to, err := newAlg(move.To, r.settings.Board.Default.Inverted)
+	to, err := newAlg(move.To, r.inverted)
 	if err != nil {
 		return err
 	}

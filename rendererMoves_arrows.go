@@ -11,12 +11,12 @@ import (
 func (r *rendererMoves) renderArrowMove(style *MoveStyle, move Move) error {
 	r.gg.SetRGBA(style.Color.toRGBA())
 
-	from, err := newAlg(move.From, r.settings.Board.Default.Inverted)
+	from, err := newAlg(move.From, r.inverted)
 	if err != nil {
 		return err
 	}
 
-	to, err := newAlg(move.To, r.settings.Board.Default.Inverted)
+	to, err := newAlg(move.To, r.inverted)
 	if err != nil {
 		return err
 	}
@@ -108,14 +108,14 @@ func (r *rendererMoves) renderCastlingArrow(style *MoveStyle, castling castlingS
 	}
 
 	// Render king castling arrow
-	king, _ := newAlg(kingPos, r.settings.Board.Default.Inverted)
+	king, _ := newAlg(kingPos, r.inverted)
 	styleBox := square.shrink(style.Factor)
 	fx, fy := r.getSquareBox(king.coords()).center()
 	r.renderArrow(square.Width*1.5, styleBox.Width, fx, fy, -cdy, dir1)
 
 	// Render rook castling arrow
 	r.gg.SetRGBA(style.Color2.toRGBA())
-	rook, _ := newAlg(rookPos, r.settings.Board.Default.Inverted)
+	rook, _ := newAlg(rookPos, r.inverted)
 	fx, fy = r.getSquareBox(rook.coords()).center()
 	r.renderArrow(square.Width*lengthFactor, styleBox.Width, fx, fy, -cdy, dir2)
 }
@@ -198,14 +198,14 @@ func (r *rendererMoves) getKnightDirection(dx int, dy int) (direction, leftRight
 func (r *rendererMoves) getNextToLast(move Move) (Rectangle, error) {
 	// We don't need to check from.status here because it has already
 	// been checked in the renderArrowMove() function.
-	from, err := newAlg(move.From, r.settings.Board.Default.Inverted)
+	from, err := newAlg(move.From, r.inverted)
 	if err != nil {
 		return Rectangle{}, err
 	}
 
 	// We don't need to check to.status here because it has already
 	// been checked in the renderArrowMove() function.
-	to, err := newAlg(move.To, r.settings.Board.Default.Inverted)
+	to, err := newAlg(move.To, r.inverted)
 	if err != nil {
 		return Rectangle{}, err
 	}

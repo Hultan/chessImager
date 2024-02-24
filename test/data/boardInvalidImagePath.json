@@ -7,7 +7,6 @@
   "board": {
     "type": 1,
     "image": {
-      "inverted": true,
       "path": "./test/data/chessboardInvalid.jpg",
       "rect": {"x": 32,"y": 96, "width": 276,"height": 276}
     }

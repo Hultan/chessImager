@@ -41,15 +41,10 @@ func (r *rendererPiece) draw() error {
 	fen := normalizeFEN(r.ctx.Fen)
 	fens := strings.Split(fen, "/")
 
-	var inv = r.settings.Board.Default.Inverted
-	if r.settings.Board.Type == boardTypeImage {
-		inv = r.settings.Board.Image.Inverted
-	}
-
 	for rank, row := range fens {
 		for file, piece := range row {
 			if p := letter2Piece[piece]; p != noPiece {
-				r.gg.DrawImage(r.getImageAndPosition(r.ctx.pieces[p], file, rank, inv))
+				r.gg.DrawImage(r.getImageAndPosition(r.ctx.pieces[p], file, rank, r.inverted))
 			}
 		}
 	}

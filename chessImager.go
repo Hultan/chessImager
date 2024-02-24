@@ -30,6 +30,7 @@ type Imager struct {
 	// SetFontFace/LoadFontFace problem : https://github.com/fogleman/gg/pull/76
 	useInternalFont bool
 	settings        *Settings
+	inverted        bool
 }
 
 // NewImager creates a new Imager.
@@ -68,8 +69,25 @@ func (i *Imager) Render(fen string) (image.Image, error) {
 	return i.RenderWithContext(&ImageContext{Fen: fen})
 }
 
+// RenderInverted renders an image of an inverted chess board based on a FEN string.
+func (i *Imager) RenderInverted(fen string) (image.Image, error) {
+	return i.RenderWithContextInverted(&ImageContext{Fen: fen})
+}
+
 // RenderWithContext renders an image of a chess board based on an image context.
 func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
+	i.inverted = false
+	return i.renderWithContext(ctx)
+}
+
+// RenderWithContextInverted renders an image of an inverted chess board based on an image context.
+func (i *Imager) RenderWithContextInverted(ctx *ImageContext) (image.Image, error) {
+	i.inverted = true
+	return i.renderWithContext(ctx)
+}
+
+// renderWithContext renders an image of a chess board based on an image context.
+func (i *Imager) renderWithContext(ctx *ImageContext) (image.Image, error) {
 	if ok := validateFen(ctx.Fen); !ok {
 		return nil, fmt.Errorf("invalid fen: %v", ctx.Fen)
 	}
@@ -92,17 +110,6 @@ func (i *Imager) RenderWithContext(ctx *ImageContext) (image.Image, error) {
 	}
 
 	return c.Image(), nil
-}
-
-// RenderWithContextInverted renders an image of an inverted chess board based on an image context.
-// When Board.Type = Image, a normal board with white at the bottom will be generated.
-func (i *Imager) RenderWithContextInverted(ctx *ImageContext) (image.Image, error) {
-	old := i.settings.Board.Default.Inverted
-	i.settings.Board.Default.Inverted = true
-	img, err := i.RenderWithContext(ctx)
-	i.settings.Board.Default.Inverted = old
-
-	return img, err
 }
 
 // NewContext creates a new image context, which can be used to:

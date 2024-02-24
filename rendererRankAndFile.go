@@ -104,7 +104,7 @@ func (r *rendererRankAndFile) getRFBoxes() []RankFile {
 }
 
 func (r *rendererRankAndFile) getRankText(n int) string {
-	if r.settings.Board.Default.Inverted {
+	if r.inverted {
 		return fmt.Sprintf("%d", 8-n)
 	} else {
 		return fmt.Sprintf("%d", n+1)
@@ -112,7 +112,7 @@ func (r *rendererRankAndFile) getRankText(n int) string {
 }
 
 func (r *rendererRankAndFile) getFileText(n int) string {
-	if r.settings.Board.Default.Inverted {
+	if r.inverted {
 		return fmt.Sprintf("%c", 'H'-n)
 	} else {
 		return fmt.Sprintf("%c", 'A'+n)

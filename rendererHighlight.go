@@ -18,7 +18,7 @@ func (r *rendererHighlight) draw() error {
 	}
 
 	for _, high := range r.ctx.Highlight {
-		square, err := newAlg(high.Square, r.settings.Board.Default.Inverted)
+		square, err := newAlg(high.Square, r.inverted)
 		if err != nil {
 			return err
 		}

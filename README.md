@@ -43,13 +43,14 @@ ChessImager is somewhat inspired by [CJSaylor](https://github.com/cjsaylor)'s re
 ## The Basics
 Start by creating an **Imager** object by calling the **chessImager.NewImager()** function. With this object, you can 
 render simple chess board images from a **FEN** string by using the **Render()** method on the **imager** object you 
-just created.
+just created. If you want to create a board where black is on bottom, you must use the **RenderInverted()** method.
 
 If you want to create more advanced images with move arrows, highlighted squares and/or annotations, you'll need a 
 **ImageContext** object for each image you want to create. You can create that by using the **NewContext()** 
 method on the **imager** object and passing a fen string to it. Add all the moves, highlighted squares and 
 annotations to the **context** object, and then call the **RenderWithContext()** method on the **imager** object, and 
-provide the **context** object to that method. 
+provide the **context** object to that method. There is also a method called **RenderWithContextInverted()**, that will
+generate an image where black is on bottom.
 
 The purpose of the **context** object is that you create one **imager** object at the beginning of your code, and then 
 one **context** object for each advanced image that you want to generate. Once an advanced image is created, you can 
@@ -189,7 +190,6 @@ The settings under **board.default** are the following:
 
 | Name     | type    | Description                                                                     |
 |----------|---------|---------------------------------------------------------------------------------|
-| inverted | boolean | White at the bottom (false), or white at the top (true).                        |
 | size     | integer | The size of the board (border not included). Should probably be divisible by 8. |
 | white    | string  | The color for the white squares                                                 |
 | black    | string  | The color for the black squares                                                 |
@@ -198,7 +198,6 @@ The settings under **board.default** are the following:
    "board": {
       "type": 0,
       "default": {
-         "inverted": false,
          "size": 600,
          "white": "#FAF3DCFF",
          "black": "#E1DBB5FF"
@@ -216,7 +215,6 @@ The settings under **board.image** are the following:
 
 | Name     | type      | Description                                                 |
 |----------|-----------|-------------------------------------------------------------|
-| inverted | boolean   | Black at the top, or white at the top.                      |
 | path     | string    | The path to the board image                                 |
 | rect     | rectangle | A rectangle that specifies where in the image the board is. |
 
@@ -224,7 +222,6 @@ The settings under **board.image** are the following:
    "board": {
       "type": 1,
       "image": {
-         "inverted": false,
          "path": "/home/[username]/chessboard.png",
          "rect": {"x": 30, "y": 50, "width": 480,"height": 480},
       }
