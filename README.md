@@ -58,6 +58,29 @@ discard the **context** object, and create a new one.
 
 *For examples of how to use chessImager, see the [Examples section](#examples), at the end of this readme.*
 
+## Simple example
+
+*This is the [simple](examples/simple/simple.go) example from the [examples](#examples) section below*
+
+Let's look at a simple example of how to use **chessImager**.  
+
+Rendering a chess board image, based on a FEN string, is basically one line of code. Add a few more lines of code to save the image to disk, and you have this code:
+
+```go
+   // Render simple image
+   const fen = "b2r3r/k3Rp1p/p2q1np1/Np1P4/3p1Q2/P4PPB/1PP4P/1K6 b - - 1 25"
+   img, _ := chessImager.NewImager().Render(fen)
+   
+   // Save image
+   file, _ := os.Create("/path/to/img.png")
+   defer fileSimple.Close()
+   _ = png.Encode(file, img)
+```
+
+This code will generate the following image, using the default styling in [config/default.json](config/default.json):
+
+<img src="examples/simple/simple.png" alt="simple example" width="350"/>
+
 ## Configuration
 
 **ChessImager** uses a configuration JSON file to define the size of the board and colors etc. You can
