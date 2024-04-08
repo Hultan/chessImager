@@ -518,7 +518,7 @@ See the [castling example](examples/castling/castling.go) where the following im
 
 ## Examples:
 
-All the examples below comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
+All the examples below (except the last two) comes from move 25 by **Kasparov**, playing against **Topalov** in **Wijk aan Zee** (**Netherlands**), in 1999:
 
 https://www.chess.com/games/view/969971
 
