@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/png"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -18,6 +19,10 @@ func compareImages(t *testing.T, filename string, img *image.Image) {
 }
 
 func compareFiles(i1 *image.Image, f2 string) (bool, error) {
+	// Store latest image in the latest folder
+	fileName := filepath.Base(f2)
+	saveImage(filepath.Join("test/latest/", fileName), *i1)
+
 	i2, err := loadImage(f2)
 	if err != nil {
 		return false, err
